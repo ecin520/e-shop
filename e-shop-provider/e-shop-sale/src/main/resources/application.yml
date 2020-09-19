@@ -1,0 +1,48 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: sale-provider
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    name: DruidDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.4.128:3306/e_mall?useSSL=FALSE&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      username: root
+      password: guowei00a
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 5
+      min-idle: 10
+      max-active: 20
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet:
+        login-username: user
+        login-password: qwer1234
+
+eureka:
+  client:
+    register-with-eureka: true
+    registry-fetch-interval-seconds: 10
+    fetch-registry: true
+    service-url:
+      defaultZone:
+        http://ecin520:guowei00a@www.eureka-1th.com:4001/eureka/,
+        http://ecin520:guowei00a@www.eureka-2th.com:4002/eureka/
+  instance:
+    instance-id:
+      e-mall-sale-provider
+    prefer-ip-address: true
+
+feign:
+  hystrix:
+    enabled: true
+#  client:
+#    config:
+#      default:
+#        requestInterceptors:
+#          - com.pytap.web.interceptor.TokenInterceptor

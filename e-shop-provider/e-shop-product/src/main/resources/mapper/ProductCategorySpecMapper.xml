@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pytap.product.dao.ProductCategorySpecDao">
+    <insert id="insertProductCategorySpecs">
+        INSERT INTO `es_product_category_spec` (product_category_id, product_spec_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{categoryId, jdbcType=BIGINT},
+            #{item, jdbcType=BIGINT})
+        </foreach>
+    </insert>
+    <select id="listProductSpecsByCategoryId" resultType="com.pytap.generator.entity.EsProductSpec">
+        SELECT
+                ps.*
+        FROM
+                `es_product_category_spec` pcs
+                LEFT JOIN `es_product_spec` ps ON pcs.product_spec_id = ps.id
+        WHERE
+                pcs.product_category_id = #{categoryId};
+    </select>
+</mapper>

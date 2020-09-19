@@ -1,0 +1,39 @@
+server:
+  port: 1024
+
+spring:
+  application:
+    name: gateway-provider
+  main:
+    allow-bean-definition-overriding: true
+
+zuul:
+  strip-prefix:
+    true
+  prefix:
+    /api
+  sensitive-headers:
+  routes:
+    OAUTH2-SERVER:
+      path: /auth/**
+      url: http://127.0.0.1:9999
+    URP-PROVIDER:
+      path: /urp/**
+      url: http://127.0.0.1:8001
+    PRODUCT-PROVIDER:
+      path: /product/**
+      url: http://127.0.0.1:8002
+
+eureka:
+  client:
+    register-with-eureka: true
+    registry-fetch-interval-seconds: 10
+    fetch-registry: true
+    service-url:
+      defaultZone:
+        http://ecin520:guowei00a@www.eureka-1th.com:4001/eureka/,
+        http://ecin520:guowei00a@www.eureka-2th.com:4002/eureka/
+  instance:
+    instance-id:
+      e-mall-gateway-provider
+    prefer-ip-address: true

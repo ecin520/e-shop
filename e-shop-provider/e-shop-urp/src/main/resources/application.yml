@@ -1,0 +1,78 @@
+server:
+  port: 8001
+
+mybatis:
+  mapper-locations:
+    - classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+spring:
+  application:
+    name: urp-provider
+  servlet:
+    multipart:
+      max-file-size:
+        52128808
+  aop:
+    auto: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    name: DruidDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.4.128:3306/e_shop?serverTimezone=UTC&characterEncoding=utf-8
+      username: root
+      password: guowei00a
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 5
+      min-idle: 10
+      max-active: 20
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet:
+        login-username: user
+        login-password: qwer1234
+  redis:
+    host: 192.168.4.128
+    port: 6379
+    password: null
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 1
+        max-active: 1000
+        max-wait: -1
+
+eureka:
+  client:
+    register-with-eureka: true
+    registry-fetch-interval-seconds: 10
+    fetch-registry: true
+    service-url:
+      defaultZone:
+        http://ecin520:guowei00a@www.eureka-1th.com:4001/eureka/,
+        http://ecin520:guowei00a@www.eureka-2th.com:4002/eureka/
+  instance:
+    instance-id:
+      e-mall-urp-provider
+    prefer-ip-address: true
+
+feign:
+  hystrix:
+    enabled: true
+
+security:
+  oauth2:
+    resource:
+      preferTokenInfo: true
+      token-info-uri: http://localhost:9999/oauth/check_token
+    client:
+      access-token-uri: http://localhost:9999/oauth/token
+      user-authorization-uri: http://localhost:9999/oauth/authorize
+      clientId: e-mall-client
+      clientSecret: e-mall
+      grant-type: password
+      scope: all

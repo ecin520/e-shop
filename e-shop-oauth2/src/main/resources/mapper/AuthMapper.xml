@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pytap.oauth2.dao.AuthMapper">
+    <select id="listUserPermissions" resultType="com.pytap.generator.entity.SysPermission">
+        SELECT
+            p.`id`,
+            p.`name`,
+            p.`description`,
+            p.`create_time`
+        FROM
+            `sys_permission` p,
+            `sys_role_permission` rp,
+            `sys_role` r
+        WHERE
+            p.`id` = rp.`permission_id`
+            AND r.`id` = rp.`role_id`
+            AND r.`id` IN (
+        SELECT
+            r.`id`
+        FROM
+            `sys_role` r,
+            `sys_user` u,
+            `sys_user_role` ur
+        WHERE
+            r.`id` = ur.`role_id`
+            AND u.`id` = ur.`user_id`
+            AND u.`id` = #{id})
+    </select>
+
+    <select id="listUserRoles" resultType="com.pytap.generator.entity.SysRole">
+        SELECT
+            r.`id`,
+            r.`name`,
+            r.`description`,
+            r.`create_time`
+        FROM
+            `sys_role` r,
+            `sys_user` u,
+            `sys_user_role` ur
+        WHERE
+            r.id = ur.`role_id`
+            AND u.id = ur.`user_id`
+            AND u.`id` = #{id}
+	 </select>
+
+    <select id="listRolePermissions" resultType="com.pytap.generator.entity.SysPermission">
+        SELECT
+            id,
+            name,
+            description,
+            create_time
+        FROM
+            `sys_permission`
+        WHERE
+            `id` IN ( SELECT permission_id FROM `sys_role_permission` WHERE `role_id` = #{id} )
+    </select>
+    <select id="getUserByUsername" resultType="com.pytap.generator.entity.SysUser">
+        SELECT * FROM `sys_user` WHERE `username` = #{username}
+    </select>
+</mapper>
