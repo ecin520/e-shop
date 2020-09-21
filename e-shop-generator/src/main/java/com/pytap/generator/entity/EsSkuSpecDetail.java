@@ -3,7 +3,7 @@ package com.pytap.generator.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EsSkuSpec implements Serializable {
+public class EsSkuSpecDetail implements Serializable {
     private Long id;
 
     private Long skuId;

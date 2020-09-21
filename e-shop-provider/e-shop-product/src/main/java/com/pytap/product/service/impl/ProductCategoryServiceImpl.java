@@ -8,7 +8,9 @@ import com.pytap.generator.entity.EsProductCategory;
 import com.pytap.generator.entity.EsProductCategoryDetail;
 import com.pytap.generator.entity.EsProductCategoryDetailExample;
 import com.pytap.generator.entity.EsProductCategoryExample;
+import com.pytap.product.model.dto.ProductCategoryDetailDTO;
 import com.pytap.product.service.ProductCategoryService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -118,6 +120,18 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         }
         List<EsProductCategoryDetail> list = productCategoryDetailMapper.selectByExampleWithBLOBs(example);
         return !list.isEmpty() ? list.get(0) : null;
+    }
+
+    @Override
+    public ProductCategoryDetailDTO getProductCategoryDetailDTOById(Long categoryDetailId) {
+        ProductCategoryDetailDTO dto = new ProductCategoryDetailDTO();
+        EsProductCategoryDetail productCategoryDetail = productCategoryDetailMapper.selectByPrimaryKey(categoryDetailId);
+        BeanUtils.copyProperties(productCategoryDetail, dto);
+
+        EsProductCategory productCategory = productCategoryMapper.selectByPrimaryKey(productCategoryDetail.getProductCategoryId());
+        dto.setProductCategory(productCategory);
+
+        return dto;
     }
 
     @Override

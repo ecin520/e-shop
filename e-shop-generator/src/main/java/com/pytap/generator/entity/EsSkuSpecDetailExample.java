@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class EsSkuSpecExample {
+public class EsSkuSpecDetailExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public EsSkuSpecExample() {
+    public EsSkuSpecDetailExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

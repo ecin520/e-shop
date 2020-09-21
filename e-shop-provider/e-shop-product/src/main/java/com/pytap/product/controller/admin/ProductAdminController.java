@@ -6,12 +6,14 @@ import com.pytap.common.utils.QueryParam;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsSkuProduct;
+import com.pytap.product.model.dto.ProductParam;
 import com.pytap.product.service.ProductService;
 import com.pytap.product.service.SkuProductService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -82,6 +84,24 @@ public class ProductAdminController {
         return ResultEntity.success(skuProductService.getSkuProduct(queryParam));
     }
 
+    @Log(value = "插入商品及商品sku")
+    @RequestMapping(value = "/param/insert", method = RequestMethod.POST)
+    public ResultEntity<Object> insertProductByParam(@RequestBody ProductParam productParam) {
+        return productService.insertProductByParam(productParam) == 1 ? ResultEntity.success() : ResultEntity.fail();
+    }
+
+    @Log(value = "更新商品及商品sku")
+    @RequestMapping(value = "/param/update", method = RequestMethod.POST)
+    public ResultEntity<Object> updateProductByParam(@RequestBody ProductParam productParam) {
+        return productService.updateProductByParam(productParam) == 1 ? ResultEntity.success() : ResultEntity.fail();
+    }
+
+    @Log(value = "通过规格id列表和商品id获取sku")
+    @RequestMapping(value = "/sku/{productId}", method = RequestMethod.POST)
+    public ResultEntity<Object> getSkuProductByParam(@PathVariable Long productId, @RequestBody List<Long> specDetailIds) {
+        return ResultEntity.success(skuProductService.getSkuProductByParam(productId, specDetailIds));
+    }
+
     @Log(value = "参数获取sku商品列表")
     @RequestMapping(value = "/sku/list", method = RequestMethod.POST)
     public ResultEntity<Pager<EsSkuProduct>> listSkuProducts(@RequestParam Map<String, String> params) {
@@ -91,9 +111,6 @@ public class ProductAdminController {
         }
         if (!StringUtils.isEmpty(params.get("productId"))) {
             queryParam.setProductId(Long.parseLong(params.get("productId")));
-        }
-        if (!StringUtils.isEmpty(params.get("productSpecDetailId"))) {
-            queryParam.setProductSpecDetailId(Long.parseLong(params.get("productSpecDetailId")));
         }
         return ResultEntity.success(skuProductService.listSkuProducts(getPageNum(params), getPageSize(params), queryParam));
     }
@@ -113,4 +130,6 @@ public class ProductAdminController {
         }
         return pageSize;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.pytap.product.dao;
 
 import com.pytap.generator.entity.EsProductSpec;
+import com.pytap.generator.entity.EsProductSpecDetail;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +28,20 @@ public interface ProductCategorySpecDao {
      * @return List<EsProductSpec>
      * */
     List<EsProductSpec> listProductSpecsByCategoryId(Long categoryId);
+
+    /**
+     * 通过standard和产品id获取规格详情列表
+     * @param standard 是否标准规格，0 -> 否, 1 -> 是
+     * @param productId 产品id
+     * @return List<EsProductSpec>
+     * */
+    List<EsProductSpecDetail> listProductSpecDetailsByProductId(@Param("standard") Integer standard, @Param("productId") Long productId);
+
+    /**
+     * 通过产品id获取规格详情列表
+     * @param productId 产品id
+     * @return List<EsProductSpec>
+     * */
+    List<EsProductSpecDetail> listSpecDetailsByProductId(@Param("productId") Long productId);
+
 }

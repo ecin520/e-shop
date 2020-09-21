@@ -3,6 +3,8 @@ package com.pytap.product.service;
 import com.pytap.common.utils.Pager;
 import com.pytap.generator.entity.EsSkuProduct;
 
+import java.util.List;
+
 /**
  * @author Ecin520
  * @date 2020/9/9 16:24
@@ -44,4 +46,12 @@ public interface SkuProductService {
      * @return Page<EsSkuProduct>
      * */
     Pager<EsSkuProduct> listSkuProducts(Integer pageNum, Integer pageSize, EsSkuProduct queryParam);
+
+    /**
+     * @param productId 商品id
+     * @param specDetailIds 规格id列表，存主键
+     * @return EsSkuProduct
+     * */
+    EsSkuProduct getSkuProductByParam(Long productId, List<Long> specDetailIds);
+
 }

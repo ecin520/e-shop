@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pytap.generator.dao.EsSkuSpecMapper">
-  <resultMap id="BaseResultMap" type="com.pytap.generator.entity.EsSkuSpec">
+<mapper namespace="com.pytap.generator.dao.EsSkuSpecDetailMapper">
+  <resultMap id="BaseResultMap" type="com.pytap.generator.entity.EsSkuSpecDetail">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="sku_id" jdbcType="BIGINT" property="skuId" />
     <result column="spec_detail_id" jdbcType="BIGINT" property="specDetailId" />
@@ -69,13 +69,13 @@
   <sql id="Base_Column_List">
     id, sku_id, spec_detail_id, update_time, create_time
   </sql>
-  <select id="selectByExample" parameterType="com.pytap.generator.entity.EsSkuSpecExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.pytap.generator.entity.EsSkuSpecDetailExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from es_sku_spec
+    from es_sku_spec_detail
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,33 +86,33 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from es_sku_spec
+    from es_sku_spec_detail
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from es_sku_spec
+    delete from es_sku_spec_detail
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.pytap.generator.entity.EsSkuSpecExample">
-    delete from es_sku_spec
+  <delete id="deleteByExample" parameterType="com.pytap.generator.entity.EsSkuSpecDetailExample">
+    delete from es_sku_spec_detail
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.pytap.generator.entity.EsSkuSpec">
+  <insert id="insert" parameterType="com.pytap.generator.entity.EsSkuSpecDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into es_sku_spec (sku_id, spec_detail_id, update_time, 
+    insert into es_sku_spec_detail (sku_id, spec_detail_id, update_time, 
       create_time)
     values (#{skuId,jdbcType=BIGINT}, #{specDetailId,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsSkuSpec">
+  <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsSkuSpecDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into es_sku_spec
+    insert into es_sku_spec_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="skuId != null">
         sku_id,
@@ -142,14 +142,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.pytap.generator.entity.EsSkuSpecExample" resultType="java.lang.Integer">
-    select count(*) from es_sku_spec
+  <select id="countByExample" parameterType="com.pytap.generator.entity.EsSkuSpecDetailExample" resultType="java.lang.Integer">
+    select count(*) from es_sku_spec_detail
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update es_sku_spec
+    update es_sku_spec_detail
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
@@ -172,7 +172,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update es_sku_spec
+    update es_sku_spec_detail
     set id = #{record.id,jdbcType=BIGINT},
       sku_id = #{record.skuId,jdbcType=BIGINT},
       spec_detail_id = #{record.specDetailId,jdbcType=BIGINT},
@@ -182,8 +182,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pytap.generator.entity.EsSkuSpec">
-    update es_sku_spec
+  <update id="updateByPrimaryKeySelective" parameterType="com.pytap.generator.entity.EsSkuSpecDetail">
+    update es_sku_spec_detail
     <set>
       <if test="skuId != null">
         sku_id = #{skuId,jdbcType=BIGINT},
@@ -200,8 +200,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pytap.generator.entity.EsSkuSpec">
-    update es_sku_spec
+  <update id="updateByPrimaryKey" parameterType="com.pytap.generator.entity.EsSkuSpecDetail">
+    update es_sku_spec_detail
     set sku_id = #{skuId,jdbcType=BIGINT},
       spec_detail_id = #{specDetailId,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

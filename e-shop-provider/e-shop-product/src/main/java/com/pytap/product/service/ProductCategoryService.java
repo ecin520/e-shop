@@ -3,6 +3,7 @@ package com.pytap.product.service;
 import com.pytap.common.utils.Pager;
 import com.pytap.generator.entity.EsProductCategory;
 import com.pytap.generator.entity.EsProductCategoryDetail;
+import com.pytap.product.model.dto.ProductCategoryDetailDTO;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public interface ProductCategoryService {
      * */
     EsProductCategory getProductCategory(EsProductCategory queryParam);
 
+
     /**
      * 列取产品分类
      * @param pageNum 第几页
@@ -76,6 +78,13 @@ public interface ProductCategoryService {
      * @return EsProductCategoryDetail
      * */
     EsProductCategoryDetail getProductCategoryDetail(EsProductCategoryDetail queryParam);
+
+    /**
+     * 通过分类详情id获产品分类DTO
+     * @param categoryDetailId 分类详情id
+     * @return ProductCategoryDetailDTO
+     * */
+    ProductCategoryDetailDTO getProductCategoryDetailDTOById(Long categoryDetailId);
 
     /**
      * 列取产品分类详情

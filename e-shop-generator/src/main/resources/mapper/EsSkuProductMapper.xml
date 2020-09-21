@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.pytap.generator.entity.EsSkuProduct">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="product_id" jdbcType="BIGINT" property="productId" />
-    <result column="product_spec_detail_id" jdbcType="BIGINT" property="productSpecDetailId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="show_image" jdbcType="VARCHAR" property="showImage" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
@@ -72,8 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, product_id, product_spec_detail_id, name, show_image, stock, price, sale, update_time, 
-    create_time
+    id, product_id, name, show_image, stock, price, sale, update_time, create_time
   </sql>
   <select id="selectByExample" parameterType="com.pytap.generator.entity.EsSkuProductExample" resultMap="BaseResultMap">
     select
@@ -109,14 +107,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into es_sku_product (product_id, product_spec_detail_id, name, 
-      show_image, stock, price, 
-      sale, update_time, create_time
-      )
-    values (#{productId,jdbcType=BIGINT}, #{productSpecDetailId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{showImage,jdbcType=VARCHAR}, #{stock,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{sale,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
-      )
+    insert into es_sku_product (product_id, name, show_image, 
+      stock, price, sale, 
+      update_time, create_time)
+    values (#{productId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{showImage,jdbcType=VARCHAR}, 
+      #{stock,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{sale,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsSkuProduct">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -126,9 +122,6 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
         product_id,
-      </if>
-      <if test="productSpecDetailId != null">
-        product_spec_detail_id,
       </if>
       <if test="name != null">
         name,
@@ -155,9 +148,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="productId != null">
         #{productId,jdbcType=BIGINT},
-      </if>
-      <if test="productSpecDetailId != null">
-        #{productSpecDetailId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -197,9 +187,6 @@
       <if test="record.productId != null">
         product_id = #{record.productId,jdbcType=BIGINT},
       </if>
-      <if test="record.productSpecDetailId != null">
-        product_spec_detail_id = #{record.productSpecDetailId,jdbcType=BIGINT},
-      </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -230,7 +217,6 @@
     update es_sku_product
     set id = #{record.id,jdbcType=BIGINT},
       product_id = #{record.productId,jdbcType=BIGINT},
-      product_spec_detail_id = #{record.productSpecDetailId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       show_image = #{record.showImage,jdbcType=VARCHAR},
       stock = #{record.stock,jdbcType=INTEGER},
@@ -247,9 +233,6 @@
     <set>
       <if test="productId != null">
         product_id = #{productId,jdbcType=BIGINT},
-      </if>
-      <if test="productSpecDetailId != null">
-        product_spec_detail_id = #{productSpecDetailId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -278,7 +261,6 @@
   <update id="updateByPrimaryKey" parameterType="com.pytap.generator.entity.EsSkuProduct">
     update es_sku_product
     set product_id = #{productId,jdbcType=BIGINT},
-      product_spec_detail_id = #{productSpecDetailId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       show_image = #{showImage,jdbcType=VARCHAR},
       stock = #{stock,jdbcType=INTEGER},

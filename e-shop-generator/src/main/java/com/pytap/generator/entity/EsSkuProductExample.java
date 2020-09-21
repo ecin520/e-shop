@@ -226,66 +226,6 @@ public class EsSkuProductExample {
             return (Criteria) this;
         }
 
-        public Criteria andProductSpecDetailIdIsNull() {
-            addCriterion("product_spec_detail_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdIsNotNull() {
-            addCriterion("product_spec_detail_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdEqualTo(Long value) {
-            addCriterion("product_spec_detail_id =", value, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdNotEqualTo(Long value) {
-            addCriterion("product_spec_detail_id <>", value, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdGreaterThan(Long value) {
-            addCriterion("product_spec_detail_id >", value, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("product_spec_detail_id >=", value, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdLessThan(Long value) {
-            addCriterion("product_spec_detail_id <", value, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdLessThanOrEqualTo(Long value) {
-            addCriterion("product_spec_detail_id <=", value, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdIn(List<Long> values) {
-            addCriterion("product_spec_detail_id in", values, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdNotIn(List<Long> values) {
-            addCriterion("product_spec_detail_id not in", values, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdBetween(Long value1, Long value2) {
-            addCriterion("product_spec_detail_id between", value1, value2, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProductSpecDetailIdNotBetween(Long value1, Long value2) {
-            addCriterion("product_spec_detail_id not between", value1, value2, "productSpecDetailId");
-            return (Criteria) this;
-        }
-
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;

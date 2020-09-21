@@ -2,13 +2,19 @@ package com.pytap.product.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.pytap.common.utils.Pager;
+import com.pytap.common.utils.SortUtil;
 import com.pytap.generator.dao.EsSkuProductMapper;
+import com.pytap.generator.dao.EsSkuSpecDetailMapper;
 import com.pytap.generator.entity.EsSkuProduct;
 import com.pytap.generator.entity.EsSkuProductExample;
+import com.pytap.generator.entity.EsSkuSpecDetail;
+import com.pytap.generator.entity.EsSkuSpecDetailExample;
 import com.pytap.product.service.SkuProductService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +27,9 @@ public class SkuProductServiceImpl implements SkuProductService {
 
     @Resource
     private EsSkuProductMapper skuProductMapper;
+
+    @Resource
+    private EsSkuSpecDetailMapper skuSpecDetailMapper;
 
     @Override
     public Integer insertSkuProduct(EsSkuProduct skuProduct) {
@@ -69,11 +78,6 @@ public class SkuProductServiceImpl implements SkuProductService {
             criteria.andProductIdEqualTo(queryParam.getProductId());
         }
 
-        // 通过规格id搜索商品
-        if (null != queryParam.getProductSpecDetailId()) {
-            criteria.andProductSpecDetailIdEqualTo(queryParam.getProductSpecDetailId());
-        }
-
         List<EsSkuProduct> list = skuProductMapper.selectByExample(example);
         Pager<EsSkuProduct> pager = new Pager<>();
         pager.setPageNum(pageNum);
@@ -81,6 +85,29 @@ public class SkuProductServiceImpl implements SkuProductService {
         pager.setContent(list);
         pager.setTotal(skuProductMapper.countByExample(example));
         return pager;
+    }
+
+    @Override
+    public EsSkuProduct getSkuProductByParam(Long productId, List<Long> specDetailIds) {
+        EsSkuProductExample skuProductExample = new EsSkuProductExample();
+        EsSkuProductExample.Criteria criteria = skuProductExample.createCriteria();
+        criteria.andProductIdEqualTo(productId);
+        List<EsSkuProduct> skuProducts = skuProductMapper.selectByExample(skuProductExample);
+
+        for (EsSkuProduct skuProduct : skuProducts) {
+            EsSkuSpecDetailExample skuSpecDetailExample = new EsSkuSpecDetailExample();
+            EsSkuSpecDetailExample.Criteria criteria1 = skuSpecDetailExample.createCriteria();
+            criteria1.andSkuIdEqualTo(skuProduct.getId());
+            List<EsSkuSpecDetail> skuSpecDetails = skuSpecDetailMapper.selectByExample(skuSpecDetailExample);
+            List<Long> list = new ArrayList<>(16);
+            for (EsSkuSpecDetail esSkuSpecDetail : skuSpecDetails) {
+                list.add(esSkuSpecDetail.getSpecDetailId());
+            }
+            if (SortUtil.compareList(list, specDetailIds)) {
+                return skuProduct;
+            }
+        }
+        return null;
     }
 
 

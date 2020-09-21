@@ -1445,6 +1445,76 @@ public class EsProductExample {
             addCriterion("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
+
+        public Criteria andParameterIsNull() {
+            addCriterion("parameter is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterIsNotNull() {
+            addCriterion("parameter is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterEqualTo(String value) {
+            addCriterion("parameter =", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterNotEqualTo(String value) {
+            addCriterion("parameter <>", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterGreaterThan(String value) {
+            addCriterion("parameter >", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterGreaterThanOrEqualTo(String value) {
+            addCriterion("parameter >=", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterLessThan(String value) {
+            addCriterion("parameter <", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterLessThanOrEqualTo(String value) {
+            addCriterion("parameter <=", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterLike(String value) {
+            addCriterion("parameter like", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterNotLike(String value) {
+            addCriterion("parameter not like", value, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterIn(List<String> values) {
+            addCriterion("parameter in", values, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterNotIn(List<String> values) {
+            addCriterion("parameter not in", values, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterBetween(String value1, String value2) {
+            addCriterion("parameter between", value1, value2, "parameter");
+            return (Criteria) this;
+        }
+
+        public Criteria andParameterNotBetween(String value1, String value2) {
+            addCriterion("parameter not between", value1, value2, "parameter");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

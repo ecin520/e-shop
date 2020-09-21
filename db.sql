@@ -223,6 +223,7 @@ CREATE TABLE es_product (
 		`product_category_detail_name` VARCHAR ( 64 ) COMMENT '分类详情名称',
 		`shop_name` VARCHAR ( 64 ) COMMENT '店铺名称',
 		`name` VARCHAR(64) NOT NULL COMMENT '商品名称',
+		`parameter` VARCHAR(2400) COMMENT '商品参数，键值对JSON存储',
 		`show_image` VARCHAR(2600) COMMENT '展示图片，英文逗号隔开',
 		`item_no` VARCHAR(64) NOT NULL COMMENT '货号',
 		`delete_status` INT (1) COMMENT '删除状态 0 -> 删除, 1 -> 未删除',
@@ -244,12 +245,13 @@ CREATE TABLE es_product (
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT 'spu商品表';
 
 
+
 -- sku商品表
 DROP TABLE IF EXISTS es_sku_product;
 CREATE TABLE es_sku_product (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`product_id` BIGINT NOT NULL COMMENT '商品id',
-		`name` VARCHAR(64) NOT NULL COMMENT '商品名称',
+		`name` VARCHAR(64) COMMENT '商品名称',
 		`show_image` VARCHAR(260) COMMENT '展示图片',
 		`stock` INT COMMENT '库存',
 		`price` DECIMAL(10,2) COMMENT '价格',

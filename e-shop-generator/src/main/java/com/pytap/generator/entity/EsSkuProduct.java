@@ -9,8 +9,6 @@ public class EsSkuProduct implements Serializable {
 
     private Long productId;
 
-    private Long productSpecDetailId;
-
     private String name;
 
     private String showImage;
@@ -41,14 +39,6 @@ public class EsSkuProduct implements Serializable {
 
     public void setProductId(Long productId) {
         this.productId = productId;
-    }
-
-    public Long getProductSpecDetailId() {
-        return productSpecDetailId;
-    }
-
-    public void setProductSpecDetailId(Long productSpecDetailId) {
-        this.productSpecDetailId = productSpecDetailId;
     }
 
     public String getName() {
@@ -115,7 +105,6 @@ public class EsSkuProduct implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", productId=").append(productId);
-        sb.append(", productSpecDetailId=").append(productSpecDetailId);
         sb.append(", name=").append(name);
         sb.append(", showImage=").append(showImage);
         sb.append(", stock=").append(stock);

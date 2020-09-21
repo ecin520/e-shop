@@ -5,6 +5,7 @@ import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProductCategory;
 import com.pytap.generator.entity.EsProductCategoryDetail;
+import com.pytap.product.model.dto.ProductCategoryDetailDTO;
 import com.pytap.product.service.ProductCategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,6 +72,12 @@ public class CategoryAdminController {
     @RequestMapping(value = "/detail/update", method = RequestMethod.PUT)
     public ResultEntity<Object> updateProductCategoryDetail(@RequestBody EsProductCategoryDetail productCategoryDetail) {
         return 1 != productCategoryService.updateProductCategoryDetail(productCategoryDetail) ? ResultEntity.fail("更新商品分类详情失败") : ResultEntity.success("更新商品分类详情成功");
+    }
+
+    @Log("通过分类详情id获取分类详情传输对象")
+    @RequestMapping(value = "/detail/{categoryDetailId}", method = RequestMethod.GET)
+    public ResultEntity<ProductCategoryDetailDTO> getProductCategoryDetailDTOById(@PathVariable Long categoryDetailId) {
+        return ResultEntity.success(productCategoryService.getProductCategoryDetailDTOById(categoryDetailId));
     }
 
 }
