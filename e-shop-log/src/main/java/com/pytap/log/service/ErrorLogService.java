@@ -23,6 +23,13 @@ public interface ErrorLogService {
 	List<ErrorLogDTO> getErrorLogs(ErrorLogDTO errorLogDTO);
 
 	/**
+	 * 返回传入key的error日志
+	 * @param date 传入日期
+	 * @return List<Object>
+	 * */
+	List<Object> listErrorLogsByDate(String date);
+
+	/**
 	 * 返回所有异常日志信息
 	 * @return List<ErrorLogDTO>
 	 * */

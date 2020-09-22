@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.UUIDUtil;
 import com.pytap.generator.dao.EsProductMapper;
+import com.pytap.generator.dao.EsProductSpecDetailMapper;
 import com.pytap.generator.dao.EsSkuProductMapper;
 import com.pytap.generator.dao.EsSkuSpecDetailMapper;
 import com.pytap.generator.entity.*;
@@ -34,6 +35,9 @@ public class ProductServiceImpl implements ProductService {
     @Resource
     private EsSkuSpecDetailMapper skuSpecDetailMapper;
 
+    @Resource
+    private EsProductSpecDetailMapper productSpecDetailMapper;
+
     @Override
     public Integer insertProduct(EsProduct product) {
         product.setCreateTime(new Date());
@@ -46,10 +50,16 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer deleteProductById(Long id) {
-        // 先删除商品对应的sku
+        // 通过商品id获取sku
         EsSkuProductExample example = new EsSkuProductExample();
         EsSkuProductExample.Criteria criteria = example.createCriteria();
         criteria.andProductIdEqualTo(id);
+
+        // 删除sku_spec_detail关系,获取该商品所有sku，遍历后通过skuId删除sku_spec关联
+        List<EsSkuProduct> skuProducts = skuProductMapper.selectByExample(example);
+        deleteSkuSpecDetails(skuProducts);
+
+        // 删除商品所有sku
         skuProductMapper.deleteByExample(example);
 
         productMapper.deleteByPrimaryKey(id);
@@ -157,6 +167,8 @@ public class ProductServiceImpl implements ProductService {
 
             EsSkuProduct skuProduct = new EsSkuProduct();
             BeanUtils.copyProperties(skuProductParam, skuProduct);
+
+            skuProduct.setName(integrationName(skuProductParam));
             skuProduct.setProductId(product.getId());
             skuProduct.setSale(0);
             skuProduct.setCreateTime(new Date());
@@ -177,28 +189,26 @@ public class ProductServiceImpl implements ProductService {
         BeanUtils.copyProperties(productParam.getProduct(), product);
         productMapper.updateByPrimaryKeyWithBLOBs(product);
 
+        // 删除原本的sku商品
+        EsSkuProductExample example = new EsSkuProductExample();
+        EsSkuProductExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(product.getId());
+
+        // 删除sku_spec_detail关系
+        List<EsSkuProduct> skuProducts = skuProductMapper.selectByExample(example);
+        deleteSkuSpecDetails(skuProducts);
+
+        // 删除商品对应的所有sku
+        skuProductMapper.deleteByExample(example);
+
         // 传输对象中获取Sku列表
         List<SkuProductParam> skuProductParamList = productParam.getSkuProductList();
         for (SkuProductParam skuProductParam : skuProductParamList) {
-
-            // 删除原本的sku商品
-            EsSkuProductExample example = new EsSkuProductExample();
-            EsSkuProductExample.Criteria criteria = example.createCriteria();
-            criteria.andProductIdEqualTo(product.getId());
-            List<EsSkuProduct> skuProducts = skuProductMapper.selectByExample(example);
-
-            for (EsSkuProduct skuProduct : skuProducts) {
-                // 删除旧的sku和spec关系
-                EsSkuSpecDetailExample example1 = new EsSkuSpecDetailExample();
-                EsSkuSpecDetailExample.Criteria criteria1 = example1.createCriteria();
-                criteria1.andSkuIdEqualTo(skuProduct.getId());
-            }
-            // 删除商品对应的所有sku
-            skuProductMapper.deleteByExample(example);
-
             // 插入新的sku商品
             EsSkuProduct skuProduct = new EsSkuProduct();
             BeanUtils.copyProperties(skuProductParam, skuProduct);
+
+            skuProduct.setName(integrationName(skuProductParam));
             skuProduct.setProductId(product.getId());
             skuProduct.setUpdateTime(new Date());
             skuProductMapper.insert(skuProduct);
@@ -207,6 +217,19 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return 1;
+    }
+
+    /**
+     * 删除sku_spec_detail关系
+     * */
+    private void deleteSkuSpecDetails(List<EsSkuProduct> skuProducts) {
+        for (EsSkuProduct skuProduct : skuProducts) {
+            // 删除旧的sku和spec关系
+            EsSkuSpecDetailExample example1 = new EsSkuSpecDetailExample();
+            EsSkuSpecDetailExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andSkuIdEqualTo(skuProduct.getId());
+            skuSpecDetailMapper.deleteByExample(example1);
+        }
     }
 
     /**
@@ -221,6 +244,24 @@ public class ProductServiceImpl implements ProductService {
             skuSpec.setCreateTime(new Date());
             skuSpecDetailMapper.insert(skuSpec);
         }
+    }
+
+    /**
+     * 整合sku商品规格详情名称
+     * */
+    private String integrationName(SkuProductParam skuProductParam) {
+        StringBuilder builder = new StringBuilder();
+        List<Long> specDetailIds = skuProductParam.getSpecDetails();
+        for (int i = 0; i < specDetailIds.size(); i++) {
+            EsProductSpecDetail productSpecDetail = productSpecDetailMapper.selectByPrimaryKey(specDetailIds.get(i));
+            if (i == specDetailIds.size() - 1) {
+                builder.append(productSpecDetail.getName());
+            } else {
+                builder.append(productSpecDetail.getName()).append("/");
+            }
+
+        }
+        return builder.toString();
     }
 
 }

@@ -23,6 +23,12 @@ zuul:
     PRODUCT-PROVIDER:
       path: /product/**
       url: http://127.0.0.1:8002
+    ORDER-PROVIDER:
+      path: /order/**
+      url: http://127.0.0.1:8003
+    SALE-PROVIDER:
+      path: /sale/**
+      url: http://127.0.0.1:8004
 
 eureka:
   client:
@@ -35,5 +41,5 @@ eureka:
         http://ecin520:guowei00a@www.eureka-2th.com:4002/eureka/
   instance:
     instance-id:
-      e-mall-gateway-provider
+      e-shop-gateway-provider
     prefer-ip-address: true

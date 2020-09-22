@@ -2,6 +2,7 @@ package com.pytap.product.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.pytap.common.utils.Pager;
+import com.pytap.common.utils.QueryParam;
 import com.pytap.common.utils.SortUtil;
 import com.pytap.generator.dao.EsSkuProductMapper;
 import com.pytap.generator.dao.EsSkuSpecDetailMapper;
@@ -11,10 +12,10 @@ import com.pytap.generator.entity.EsSkuSpecDetail;
 import com.pytap.generator.entity.EsSkuSpecDetailExample;
 import com.pytap.product.service.SkuProductService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,16 @@ public class SkuProductServiceImpl implements SkuProductService {
         return skuProductMapper.updateByPrimaryKeySelective(skuProduct);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Integer updateSkuProductList(List<EsSkuProduct> skuProductList) {
+        for (EsSkuProduct skuProduct : skuProductList) {
+            skuProduct.setUpdateTime(new Date());
+            skuProductMapper.updateByPrimaryKeySelective(skuProduct);
+        }
+        return 1;
+    }
+
     @Override
     public EsSkuProduct getSkuProduct(EsSkuProduct queryParam) {
         EsSkuProductExample example = new EsSkuProductExample();
@@ -63,25 +74,29 @@ public class SkuProductServiceImpl implements SkuProductService {
     }
 
     @Override
-    public Pager<EsSkuProduct> listSkuProducts(Integer pageNum, Integer pageSize, EsSkuProduct queryParam) {
-        PageHelper.startPage(pageNum, pageSize);
+    public Pager<EsSkuProduct> listSkuProducts(QueryParam<EsSkuProduct> queryParam) {
+        PageHelper.startPage(queryParam.getPageNum(), queryParam.getPageSize());
         EsSkuProductExample example = new EsSkuProductExample();
         EsSkuProductExample.Criteria criteria = example.createCriteria();
 
-        // sku商品名称模糊搜索
-        if (null != queryParam.getName()) {
-            criteria.andNameLike("%" + queryParam.getName() + "%");
-        }
+        if (null != queryParam.getQueryParam()) {
 
-        // spu搜索sku
-        if (null != queryParam.getProductId()) {
-            criteria.andProductIdEqualTo(queryParam.getProductId());
+            // sku商品名称模糊搜索
+            if (null != queryParam.getQueryParam().getName()) {
+                criteria.andNameLike("%" + queryParam.getQueryParam().getName() + "%");
+            }
+
+            // 商品spu搜索商品sku
+            if (null != queryParam.getQueryParam().getProductId()) {
+                criteria.andProductIdEqualTo(queryParam.getQueryParam().getProductId());
+            }
+
         }
 
         List<EsSkuProduct> list = skuProductMapper.selectByExample(example);
         Pager<EsSkuProduct> pager = new Pager<>();
-        pager.setPageNum(pageNum);
-        pager.setPageSize(pageSize);
+        pager.setPageNum(queryParam.getPageNum());
+        pager.setPageSize(queryParam.getPageSize());
         pager.setContent(list);
         pager.setTotal(skuProductMapper.countByExample(example));
         return pager;

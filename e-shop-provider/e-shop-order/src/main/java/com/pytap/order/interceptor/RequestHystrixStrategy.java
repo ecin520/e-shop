@@ -1,4 +1,4 @@
-package com.pytap.sale.interceptor;
+package com.pytap.order.interceptor;
 
 import com.netflix.hystrix.HystrixThreadPoolKey;
 import com.netflix.hystrix.HystrixThreadPoolProperties;

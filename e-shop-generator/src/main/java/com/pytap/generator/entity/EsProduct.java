@@ -47,6 +47,8 @@ public class EsProduct implements Serializable {
 
     private Date createTime;
 
+    private String parameter;
+
     private String description;
 
     private String detail;
@@ -221,6 +223,14 @@ public class EsProduct implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(String parameter) {
+        this.parameter = parameter;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -264,6 +274,7 @@ public class EsProduct implements Serializable {
         sb.append(", keywords=").append(keywords);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", createTime=").append(createTime);
+        sb.append(", parameter=").append(parameter);
         sb.append(", description=").append(description);
         sb.append(", detail=").append(detail);
         sb.append(", serialVersionUID=").append(serialVersionUID);

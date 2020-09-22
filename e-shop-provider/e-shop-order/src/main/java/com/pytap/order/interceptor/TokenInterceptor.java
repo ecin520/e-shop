@@ -1,4 +1,4 @@
-package com.pytap.sale.interceptor;
+package com.pytap.order.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

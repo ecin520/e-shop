@@ -57,6 +57,11 @@ public class LogAdminController {
 		return ResultEntity.success(errorLogService.listErrorLogs());
 	}
 
+	@RequestMapping(value = "/error/list/{date}", method = RequestMethod.GET)
+	public ResultEntity<List<Object>> listAllErrorLogs(@PathVariable String date) {
+		return ResultEntity.success(errorLogService.listErrorLogsByDate(date));
+	}
+
 	@Log(value = "删除所有异常日志")
 	@RequestMapping(value = "/error/delete", method = RequestMethod.GET)
 	public ResultEntity<String> deleteAllErrorLogs() {

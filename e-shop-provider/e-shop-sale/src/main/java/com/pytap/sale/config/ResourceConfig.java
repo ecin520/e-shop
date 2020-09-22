@@ -1,8 +1,8 @@
-package com.pytap.urp.config;
+package com.pytap.sale.config;
 
 import com.pytap.common.constant.AuthConstant;
-import com.pytap.urp.interceptor.RestAccessDeniedHandler;
-import com.pytap.urp.interceptor.RestAuthenticationEntryPoint;
+import com.pytap.sale.interceptor.RestAccessDeniedHandler;
+import com.pytap.sale.interceptor.RestAuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -20,15 +20,11 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-        // 允许iframe嵌入网页
-        httpSecurity.headers().frameOptions().disable();
         httpSecurity
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers( "/actuator/**", "/register").permitAll()
                 .antMatchers( "/actuator/**").permitAll()
-                .antMatchers("/druid/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v2/**").permitAll()

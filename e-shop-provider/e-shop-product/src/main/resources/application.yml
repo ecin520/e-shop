@@ -53,7 +53,7 @@ eureka:
         http://ecin520:guowei00a@www.eureka-2th.com:4002/eureka/
   instance:
     instance-id:
-      e-mall-product-provider
+      e-shop-product-provider
     prefer-ip-address: true
 
 feign:
@@ -68,7 +68,7 @@ security:
     client:
       access-token-uri: http://localhost:9999/oauth/token
       user-authorization-uri: http://localhost:9999/oauth/authorize
-      clientId: e-mall-client
-      clientSecret: e-mall
+      clientId: e-shop-client
+      clientSecret: e-shop
       grant-type: password
       scope: all

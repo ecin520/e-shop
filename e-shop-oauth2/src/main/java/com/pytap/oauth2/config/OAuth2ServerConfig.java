@@ -52,10 +52,10 @@ public class OAuth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                .withClient("e-mall-client")
+                .withClient("e-shop-client")
                 .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                 .scopes("all")
-                .secret(passwordEncoder.encode("e-mall"))
+                .secret(passwordEncoder.encode("e-shop"))
                 .accessTokenValiditySeconds(60 * 60 * 24)
                 .refreshTokenValiditySeconds(60 * 60 * 24 * 30);
     }

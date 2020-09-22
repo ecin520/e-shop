@@ -31,6 +31,11 @@ public class ErrorLogServiceImpl implements ErrorLogService {
     }
 
     @Override
+    public List<Object> listErrorLogsByDate(String date) {
+        return redisTemplate.opsForList().range("error_log:" + date, 0, -1);
+    }
+
+    @Override
     public List<Object> listErrorLogs() {
         return redisTemplate.opsForList().range("error_log:" + TimeUtil.getDayDate(), 0, -1);
     }

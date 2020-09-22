@@ -78,6 +78,12 @@ public class ProductAdminController {
         return 1 != skuProductService.updateSkuProduct(skuProduct) ? ResultEntity.fail() : ResultEntity.success();
     }
 
+    @Log(value = "批量更新sku商品")
+    @RequestMapping(value = "/skus/update", method = RequestMethod.PUT)
+    public ResultEntity<Object> updateSkuProductList(@RequestBody List<EsSkuProduct> skuProductList) {
+        return 1 != skuProductService.updateSkuProductList(skuProductList) ? ResultEntity.fail() : ResultEntity.success();
+    }
+
     @Log(value = "参数获取sku商品")
     @RequestMapping(value = "/sku/query", method = RequestMethod.POST)
     public ResultEntity<EsSkuProduct> getSkuProduct(@RequestBody EsSkuProduct queryParam) {
@@ -104,32 +110,8 @@ public class ProductAdminController {
 
     @Log(value = "参数获取sku商品列表")
     @RequestMapping(value = "/sku/list", method = RequestMethod.POST)
-    public ResultEntity<Pager<EsSkuProduct>> listSkuProducts(@RequestParam Map<String, String> params) {
-        EsSkuProduct queryParam = new EsSkuProduct();
-        if (!StringUtils.isEmpty(params.get("name"))) {
-            queryParam.setName(params.get("name"));
-        }
-        if (!StringUtils.isEmpty(params.get("productId"))) {
-            queryParam.setProductId(Long.parseLong(params.get("productId")));
-        }
-        return ResultEntity.success(skuProductService.listSkuProducts(getPageNum(params), getPageSize(params), queryParam));
+    public ResultEntity<Pager<EsSkuProduct>> listSkuProducts(@RequestBody QueryParam<EsSkuProduct> queryParam) {
+        return ResultEntity.success(skuProductService.listSkuProducts(queryParam));
     }
-
-    private Integer getPageNum(Map<String, String> params) {
-        int pageNum = 1;
-        if (!StringUtils.isEmpty(params.get("pageNum"))) {
-            pageNum = Integer.parseInt(params.get("pageNum"));
-        }
-        return pageNum;
-    }
-
-    private Integer getPageSize(Map<String, String> params) {
-        int pageSize = 10;
-        if (!StringUtils.isEmpty(params.get("pageSize"))) {
-            pageSize = Integer.parseInt(params.get("pageSize"));
-        }
-        return pageSize;
-    }
-
 
 }

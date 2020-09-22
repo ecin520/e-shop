@@ -23,6 +23,8 @@ public class DocumentationConfig implements SwaggerResourcesProvider {
         resources.add(swaggerResource("OAUTH2-SERVER", "/api/auth/v2/api-docs"));
         resources.add(swaggerResource("URP-PROVIDER", "/api/urp/v2/api-docs"));
         resources.add(swaggerResource("PRODUCT-PROVIDER", "/api/product/v2/api-docs"));
+        resources.add(swaggerResource("ORDER-PROVIDER", "/api/order/v2/api-docs"));
+        resources.add(swaggerResource("SALE-PROVIDER", "/api/sale/v2/api-docs"));
         return resources;
     }
 

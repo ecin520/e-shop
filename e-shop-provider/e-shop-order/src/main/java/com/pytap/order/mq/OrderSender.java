@@ -1,6 +1,6 @@
 package com.pytap.order.mq;
 
-import com.pytap.generator.entity.EmOrder;
+import com.pytap.generator.entity.EsOrder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ public class OrderSender {
     @Resource
     private RabbitTemplate rabbitTemplate;
 
-    public void send(EmOrder order) {
+    public void send(EsOrder order) {
         rabbitTemplate.convertAndSend(exchange, routingKey, order);
     }
 

@@ -1,6 +1,7 @@
 package com.pytap.product.service;
 
 import com.pytap.common.utils.Pager;
+import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.entity.EsSkuProduct;
 
 import java.util.List;
@@ -32,6 +33,13 @@ public interface SkuProductService {
     Integer updateSkuProduct(EsSkuProduct skuProduct);
 
     /**
+     * 批量更新sku商品
+     * @param skuProductList sku商品列表
+     * @return Integer
+     * */
+    Integer updateSkuProductList(List<EsSkuProduct> skuProductList);
+
+    /**
      * 获取sku商品
      * @param queryParam 查询参数
      * @return EsSkuProduct
@@ -40,12 +48,10 @@ public interface SkuProductService {
 
     /**
      * 列取sku商品
-     * @param pageNum 第几页
-     * @param pageSize 每页条目数量
-     * @param queryParam 搜素参数
+     * @param queryParam 查询参数
      * @return Page<EsSkuProduct>
      * */
-    Pager<EsSkuProduct> listSkuProducts(Integer pageNum, Integer pageSize, EsSkuProduct queryParam);
+    Pager<EsSkuProduct> listSkuProducts(QueryParam<EsSkuProduct> queryParam);
 
     /**
      * @param productId 商品id
