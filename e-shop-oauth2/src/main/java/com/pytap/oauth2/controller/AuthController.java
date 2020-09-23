@@ -8,8 +8,8 @@ import com.pytap.common.utils.JsonUtil;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.SysRole;
 import com.pytap.generator.entity.SysUser;
-import com.pytap.oauth2.model.dto.Oauth2TokenDTO;
-import com.pytap.oauth2.model.dto.UserDTO;
+import com.pytap.oauth2.model.vo.Oauth2TokenVO;
+import com.pytap.oauth2.model.vo.UserVO;
 import com.pytap.oauth2.service.AuthService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -79,26 +79,26 @@ public class AuthController {
         } catch (HttpRequestMethodNotSupportedException e) {
             e.printStackTrace();
         }
-        Oauth2TokenDTO oauth2TokenDto = new Oauth2TokenDTO();
+        Oauth2TokenVO oauth2TokenVO = new Oauth2TokenVO();
         if (oAuth2AccessToken != null) {
-            oauth2TokenDto.setAccessToken(oAuth2AccessToken.getValue());
-            oauth2TokenDto.setRefreshToken(oAuth2AccessToken.getRefreshToken().getValue());
-            oauth2TokenDto.setExpiresIn(oAuth2AccessToken.getExpiresIn());
-            oauth2TokenDto.setTokenHead("Bearer ");
+            oauth2TokenVO.setAccessToken(oAuth2AccessToken.getValue());
+            oauth2TokenVO.setRefreshToken(oAuth2AccessToken.getRefreshToken().getValue());
+            oauth2TokenVO.setExpiresIn(oAuth2AccessToken.getExpiresIn());
+            oauth2TokenVO.setTokenHead("Bearer ");
         }
 
-        UserDTO dto = new UserDTO();
+        UserVO vo = new UserVO();
 
         // 复制到传输对象并更新登陆时间
         if (null != user) {
-            BeanUtils.copyProperties(user, dto);
+            BeanUtils.copyProperties(user, vo);
             user.setLoginTime(new Date());
             authService.updateUserInfo(user);
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("oauth", oauth2TokenDto);
-        jsonObject.put("userInfo", dto);
+        jsonObject.put("oauth", oauth2TokenVO);
+        jsonObject.put("userInfo", vo);
 
         return ResultEntity.success(jsonObject);
     }

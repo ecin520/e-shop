@@ -9,6 +9,7 @@
     <result column="freight" jdbcType="DECIMAL" property="freight" />
     <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
     <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="pay_serial" jdbcType="VARCHAR" property="paySerial" />
     <result column="order_source" jdbcType="VARCHAR" property="orderSource" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="order_type" jdbcType="INTEGER" property="orderType" />
@@ -76,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, order_number, member_id, receiver_address_id, freight, total_price, pay_type, 
-    order_source, status, order_type, pay_time, update_time, create_time
+    pay_serial, order_source, status, order_type, pay_time, update_time, create_time
   </sql>
   <select id="selectByExample" parameterType="com.pytap.generator.entity.EsOrderExample" resultMap="BaseResultMap">
     select
@@ -114,14 +115,14 @@
     </selectKey>
     insert into es_order (order_number, member_id, receiver_address_id, 
       freight, total_price, pay_type, 
-      order_source, status, order_type, 
-      pay_time, update_time, create_time
-      )
+      pay_serial, order_source, status, 
+      order_type, pay_time, update_time, 
+      create_time)
     values (#{orderNumber,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{receiverAddressId,jdbcType=BIGINT}, 
       #{freight,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{payType,jdbcType=INTEGER}, 
-      #{orderSource,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, 
-      #{payTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{paySerial,jdbcType=VARCHAR}, #{orderSource,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{orderType,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsOrder">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -146,6 +147,9 @@
       </if>
       <if test="payType != null">
         pay_type,
+      </if>
+      <if test="paySerial != null">
+        pay_serial,
       </if>
       <if test="orderSource != null">
         order_source,
@@ -184,6 +188,9 @@
       </if>
       <if test="payType != null">
         #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="paySerial != null">
+        #{paySerial,jdbcType=VARCHAR},
       </if>
       <if test="orderSource != null">
         #{orderSource,jdbcType=VARCHAR},
@@ -235,6 +242,9 @@
       <if test="record.payType != null">
         pay_type = #{record.payType,jdbcType=INTEGER},
       </if>
+      <if test="record.paySerial != null">
+        pay_serial = #{record.paySerial,jdbcType=VARCHAR},
+      </if>
       <if test="record.orderSource != null">
         order_source = #{record.orderSource,jdbcType=VARCHAR},
       </if>
@@ -267,6 +277,7 @@
       freight = #{record.freight,jdbcType=DECIMAL},
       total_price = #{record.totalPrice,jdbcType=DECIMAL},
       pay_type = #{record.payType,jdbcType=INTEGER},
+      pay_serial = #{record.paySerial,jdbcType=VARCHAR},
       order_source = #{record.orderSource,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
       order_type = #{record.orderType,jdbcType=INTEGER},
@@ -298,6 +309,9 @@
       <if test="payType != null">
         pay_type = #{payType,jdbcType=INTEGER},
       </if>
+      <if test="paySerial != null">
+        pay_serial = #{paySerial,jdbcType=VARCHAR},
+      </if>
       <if test="orderSource != null">
         order_source = #{orderSource,jdbcType=VARCHAR},
       </if>
@@ -327,6 +341,7 @@
       freight = #{freight,jdbcType=DECIMAL},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       pay_type = #{payType,jdbcType=INTEGER},
+      pay_serial = #{paySerial,jdbcType=VARCHAR},
       order_source = #{orderSource,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       order_type = #{orderType,jdbcType=INTEGER},

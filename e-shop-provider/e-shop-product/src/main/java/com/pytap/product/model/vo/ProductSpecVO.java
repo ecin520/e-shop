@@ -1,4 +1,4 @@
-package com.pytap.product.model.dto;
+package com.pytap.product.model.vo;
 
 import com.pytap.generator.entity.EsProductSpecDetail;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2020/9/14 10:34
  */
 @Data
-public class ProductSpecDTO implements Serializable {
+public class ProductSpecVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

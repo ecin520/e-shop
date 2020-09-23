@@ -4,7 +4,7 @@ import com.pytap.common.utils.Pager;
 import com.pytap.generator.entity.SysPermission;
 import com.pytap.generator.entity.SysRole;
 import com.pytap.generator.entity.SysUser;
-import com.pytap.urp.model.dto.UserDTO;
+import com.pytap.urp.model.vo.UserVO;
 
 import java.util.List;
 
@@ -29,11 +29,11 @@ public interface UserService {
     SysUser getUserById(Long id);
 
     /**
-     * 通过主键获取用户DTO
+     * 通过主键获取用户VO
      * @param id 主键
      * @return SysUser 用户
      * */
-    UserDTO getUserDTOById(Long id);
+    UserVO getUserVOById(Long id);
 
     /**
      * 通过用户名获取用户
@@ -43,11 +43,11 @@ public interface UserService {
     SysUser getUserByUsername(String username);
 
     /**
-     * 通过用户名获取用户DTO
+     * 通过用户名获取用户VO
      * @param username 用户名
      * @return SysUser 用户
      * */
-    UserDTO getUserDTOByUsername(String username);
+    UserVO getUserVOByUsername(String username);
 
     /**
      * 添加用户
@@ -76,7 +76,7 @@ public interface UserService {
      * @param pageSize 每页条目数量
      * @return Pager<User>
      * */
-    Pager<UserDTO> listUsers(Integer pageNum, Integer pageSize);
+    Pager<UserVO> listUsers(Integer pageNum, Integer pageSize);
 
     /**
      * 通过用户名获取用户的角色
@@ -112,8 +112,8 @@ public interface UserService {
      * @param pageNum 第几页
      * @param pageSize 页面大小
      * @param keyword 搜索关键字
-     * @return Pager<UserDTO>
+     * @return Pager<UserVO>
      * */
-    Pager<UserDTO> listSearchUsers(Integer pageNum, Integer pageSize, String keyword);
+    Pager<UserVO> listSearchUsers(Integer pageNum, Integer pageSize, String keyword);
 
 }

@@ -1,4 +1,4 @@
-package com.pytap.oauth2.model.dto;
+package com.pytap.oauth2.model.vo;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date 2020/9/2 17:36
  */
 @Data
-public class UserDTO implements Serializable {
+public class UserVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

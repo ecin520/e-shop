@@ -19,6 +19,8 @@ public class EsOrder implements Serializable {
 
     private Integer payType;
 
+    private String paySerial;
+
     private String orderSource;
 
     private Integer status;
@@ -89,6 +91,14 @@ public class EsOrder implements Serializable {
         this.payType = payType;
     }
 
+    public String getPaySerial() {
+        return paySerial;
+    }
+
+    public void setPaySerial(String paySerial) {
+        this.paySerial = paySerial;
+    }
+
     public String getOrderSource() {
         return orderSource;
     }
@@ -150,6 +160,7 @@ public class EsOrder implements Serializable {
         sb.append(", freight=").append(freight);
         sb.append(", totalPrice=").append(totalPrice);
         sb.append(", payType=").append(payType);
+        sb.append(", paySerial=").append(paySerial);
         sb.append(", orderSource=").append(orderSource);
         sb.append(", status=").append(status);
         sb.append(", orderType=").append(orderType);

@@ -5,6 +5,7 @@ import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.dao.EsOrderMapper;
 import com.pytap.generator.entity.EsOrder;
 import com.pytap.generator.entity.EsOrderExample;
+import com.pytap.order.model.dto.OrderQueryDTO;
 import com.pytap.order.service.OrderService;
 import org.springframework.stereotype.Service;
 
@@ -54,22 +55,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Pager<EsOrder> listOrders(QueryParam<EsOrder> queryParam) {
+    public Pager<EsOrder> listOrders(QueryParam<OrderQueryDTO> queryParam) {
         EsOrderExample example = new EsOrderExample();
         EsOrderExample.Criteria criteria = example.createCriteria();
         if (null != queryParam.getQueryParam()) {
-            EsOrder order = queryParam.getQueryParam();
+            OrderQueryDTO orderQueryDTO = queryParam.getQueryParam();
             // 订单号查询
-            if (null != order.getOrderNumber()) {
-                criteria.andIdEqualTo(order.getOrderNumber());
+            if (null != orderQueryDTO.getOrderNumber()) {
+                criteria.andOrderNumberEqualTo(orderQueryDTO.getOrderNumber());
             }
             // 订单状态查询
-            if (null != order.getStatus()) {
-                criteria.andStatusEqualTo(order.getStatus());
+            if (null != orderQueryDTO.getStatus()) {
+                criteria.andStatusEqualTo(orderQueryDTO.getStatus());
             }
             // 订单类型查询，秒杀或者普通订单
-            if (null != order.getOrderType()) {
-                criteria.andStatusEqualTo(order.getOrderType());
+            if (null != orderQueryDTO.getOrderType()) {
+                criteria.andStatusEqualTo(orderQueryDTO.getOrderType());
+            }
+            // 区间时间内查询订单
+            if (null != orderQueryDTO.getStartTime() && null != orderQueryDTO.getEndTime()) {
+                criteria.andCreateTimeBetween(orderQueryDTO.getStartTime(), orderQueryDTO.getEndTime());
             }
         }
         List<EsOrder> list = orderMapper.selectByExample(example);

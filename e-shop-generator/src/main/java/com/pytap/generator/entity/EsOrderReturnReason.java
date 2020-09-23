@@ -6,7 +6,7 @@ import java.util.Date;
 public class EsOrderReturnReason implements Serializable {
     private Long id;
 
-    private String name;
+    private String cause;
 
     private Integer status;
 
@@ -24,12 +24,12 @@ public class EsOrderReturnReason implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCause() {
+        return cause;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCause(String cause) {
+        this.cause = cause;
     }
 
     public Integer getStatus() {
@@ -63,7 +63,7 @@ public class EsOrderReturnReason implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
+        sb.append(", cause=").append(cause);
         sb.append(", status=").append(status);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", createTime=").append(createTime);

@@ -3,21 +3,17 @@ package com.pytap.product.service.impl;
 import com.pytap.generator.dao.EsSkuProductMapper;
 import com.pytap.generator.dao.EsSkuSpecDetailMapper;
 import com.pytap.generator.entity.*;
-import com.pytap.product.model.dto.ProductSpecDTO;
+import com.pytap.product.model.vo.ProductSpecVO;
 import com.pytap.product.service.ProductCategorySpecService;
 import com.pytap.product.service.ProductService;
-import com.pytap.product.service.SkuProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Ecin520
@@ -41,8 +37,8 @@ class ProductCategorySpecServiceImplTest {
 
     @Test
     void listSpecDTOsByCategoryAndProductId() {
-        List<ProductSpecDTO> list = productCategorySpecService.listSpecDTOsByCategoryAndProductId(1001L, 1020L);
-        for (ProductSpecDTO dto : list) {
+        List<ProductSpecVO> list = productCategorySpecService.listSpecVOsByCategoryAndProductId(1001L, 1020L);
+        for (ProductSpecVO dto : list) {
             System.out.println(dto);
             List<EsProductSpecDetail> details = dto.getDetails();
             for (EsProductSpecDetail detail : details) {

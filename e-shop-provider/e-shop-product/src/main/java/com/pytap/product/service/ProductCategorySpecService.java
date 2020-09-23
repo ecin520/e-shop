@@ -3,7 +3,7 @@ package com.pytap.product.service;
 import com.pytap.generator.entity.EsProductCategorySpec;
 import com.pytap.generator.entity.EsProductSpec;
 import com.pytap.generator.entity.EsProductSpecDetail;
-import com.pytap.product.model.dto.ProductSpecDTO;
+import com.pytap.product.model.vo.ProductSpecVO;
 
 import java.util.List;
 
@@ -57,19 +57,19 @@ public interface ProductCategorySpecService {
     List<EsProductSpec> listProductSpecsByCategoryId(Long categoryId);
 
     /**
-     * 通过分类id获取规格DTO列表
+     * 通过分类id获取规格视图列表
      * @param categoryId 分类id
      * @return List<EsProductSpec>
      * */
-    List<ProductSpecDTO> listProductSpecDTOsByCategoryId(Long categoryId);
+    List<ProductSpecVO> listProductSpecVOsByCategoryId(Long categoryId);
 
     /**
-     * 通过分类id获取规格DTO列表
+     * 通过分类id获取规格视图列表
      * @param categoryId 分类id
      * @param productId 产品id
      * @return List<EsProductSpec>
      * */
-    List<ProductSpecDTO> listSpecDTOsByCategoryAndProductId(Long categoryId, Long productId);
+    List<ProductSpecVO> listSpecVOsByCategoryAndProductId(Long categoryId, Long productId);
 
     /**
      * 通过产品id获取规格DTO列表

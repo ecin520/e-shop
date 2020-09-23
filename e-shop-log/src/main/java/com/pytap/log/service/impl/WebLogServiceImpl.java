@@ -1,14 +1,13 @@
 package com.pytap.log.service.impl;
 
 import com.pytap.common.utils.TimeUtil;
-import com.pytap.log.dto.WebLogDTO;
+import com.pytap.log.vo.WebLogVO;
 import com.pytap.log.service.WebLogService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +22,7 @@ public class WebLogServiceImpl implements WebLogService {
 	private RedisTemplate<String, Object> redisTemplate;
 
 	@Override
-	public void insertWebLog(WebLogDTO webLog) {
+	public void insertWebLog(WebLogVO webLog) {
 		redisTemplate.opsForList().leftPush("web_log:" + TimeUtil.getDayDate(), webLog);
 	}
 

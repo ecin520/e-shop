@@ -2,13 +2,14 @@ package com.pytap.product.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.pytap.common.utils.Pager;
+import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.dao.EsProductCategoryDetailMapper;
 import com.pytap.generator.dao.EsProductCategoryMapper;
 import com.pytap.generator.entity.EsProductCategory;
 import com.pytap.generator.entity.EsProductCategoryDetail;
 import com.pytap.generator.entity.EsProductCategoryDetailExample;
 import com.pytap.generator.entity.EsProductCategoryExample;
-import com.pytap.product.model.dto.ProductCategoryDetailDTO;
+import com.pytap.product.model.vo.ProductCategoryDetailVO;
 import com.pytap.product.service.ProductCategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -123,15 +124,15 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public ProductCategoryDetailDTO getProductCategoryDetailDTOById(Long categoryDetailId) {
-        ProductCategoryDetailDTO dto = new ProductCategoryDetailDTO();
+    public ProductCategoryDetailVO getProductCategoryDetailVOById(Long categoryDetailId) {
+        ProductCategoryDetailVO vo = new ProductCategoryDetailVO();
         EsProductCategoryDetail productCategoryDetail = productCategoryDetailMapper.selectByPrimaryKey(categoryDetailId);
-        BeanUtils.copyProperties(productCategoryDetail, dto);
+        BeanUtils.copyProperties(productCategoryDetail, vo);
 
         EsProductCategory productCategory = productCategoryMapper.selectByPrimaryKey(productCategoryDetail.getProductCategoryId());
-        dto.setProductCategory(productCategory);
+        vo.setProductCategory(productCategory);
 
-        return dto;
+        return vo;
     }
 
     @Override
@@ -140,23 +141,28 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
-    public Pager<EsProductCategoryDetail> listProductCategoryDetailsByCategoryId(Integer pageNum, Integer pageSize, Long categoryId) {
-        PageHelper.startPage(pageNum, pageSize);
-        EsProductCategoryDetailExample example = new EsProductCategoryDetailExample();
-        EsProductCategoryDetailExample.Criteria criteria = example.createCriteria();
-        criteria.andProductCategoryIdEqualTo(categoryId);
-        return productCategoryDetailPager(pageNum, pageSize, example);
-    }
-
-    @Override
-    public Pager<EsProductCategoryDetail> listProductCategoryDetails(Integer pageNum, Integer pageSize, String keyword) {
-        PageHelper.startPage(pageNum, pageSize);
-        EsProductCategoryDetailExample example = new EsProductCategoryDetailExample();
-        EsProductCategoryDetailExample.Criteria criteria = example.createCriteria();
-        if (!StringUtils.isEmpty(keyword)) {
-            criteria.andNameLike("%" + keyword + "%");
+    public Pager<EsProductCategoryDetail> listProductCategoryDetailsByParam(QueryParam<EsProductCategoryDetail> queryParam) {
+        if (null != queryParam.getPageNum() && null != queryParam.getPageSize()) {
+            PageHelper.startPage(queryParam.getPageNum(), queryParam.getPageSize());
         }
-        return productCategoryDetailPager(pageNum, pageSize, example);
+        EsProductCategoryDetailExample example = new EsProductCategoryDetailExample();
+        EsProductCategoryDetailExample.Criteria criteria = example.createCriteria();
+        if (null != queryParam.getQueryParam()) {
+            EsProductCategoryDetail esProductCategoryDetail = queryParam.getQueryParam();
+            // 名称查询
+            if (null != esProductCategoryDetail.getName()) {
+                criteria.andNameEqualTo(esProductCategoryDetail.getName());
+            }
+            // 显示状态
+            if (null != esProductCategoryDetail.getShowStatus()) {
+                criteria.andShowStatusEqualTo(esProductCategoryDetail.getShowStatus());
+            }
+            // 分类id
+            if (null != esProductCategoryDetail.getProductCategoryId()) {
+                criteria.andProductCategoryIdEqualTo(esProductCategoryDetail.getProductCategoryId());
+            }
+        }
+        return productCategoryDetailPager(queryParam.getPageNum(), queryParam.getPageSize(), example);
     }
 
     private Pager<EsProductCategoryDetail> productCategoryDetailPager(Integer pageNum, Integer pageSize, EsProductCategoryDetailExample example) {

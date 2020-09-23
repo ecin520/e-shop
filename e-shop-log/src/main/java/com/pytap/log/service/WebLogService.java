@@ -1,7 +1,7 @@
 package com.pytap.log.service;
 
 
-import com.pytap.log.dto.WebLogDTO;
+import com.pytap.log.vo.WebLogVO;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +15,7 @@ public interface WebLogService {
 	/**
 	 * 插入日志信息
 	 * @param webLog 日志信息 */
-	void insertWebLog(WebLogDTO webLog);
+	void insertWebLog(WebLogVO webLog);
 
 
 	/**

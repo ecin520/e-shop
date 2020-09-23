@@ -148,7 +148,6 @@ DROP TABLE IF EXISTS es_product_category_detail;
 CREATE TABLE es_product_category_detail (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`product_category_id` BIGINT NOT NULL COMMENT '产品分类id',
-		`product_spec_id` BIGINT COMMENT '产品规格id，在选择分类后自动加载规格',
 		`name` VARCHAR ( 64 ) UNIQUE COMMENT '分类详情名称',
 		`count` INT COMMENT '产品数量',
 		`keywords` VARCHAR ( 260 ) COMMENT '关键词',
@@ -284,7 +283,7 @@ CREATE TABLE es_promotion (
 		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
 		`create_time` DATETIME COMMENT '创建时间',
 		PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '促销表';;
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '促销表';
 
 
 -- 商品评论表
@@ -349,6 +348,7 @@ CREATE TABLE es_order (
 		`freight` DECIMAL(10,2) COMMENT '运费总额',
 		`total_price` DECIMAL(10,2) COMMENT '总价',
 		`pay_type` INT(1) COMMENT '支付方式， 0 -> 未支付, 1 -> 支付宝, 2 -> 微信, 3 -> 其他',
+		`pay_serial` VARCHAR(500) COMMENT '支付流水号',
 		`order_source` VARCHAR(60) COMMENT '订单来源，网页 or App',
 		`status` INT(1) COMMENT '订单状态, 0 -> 待付款, 1 -> 待发货, 2 -> 已发货, 3 -> 已完成， 4 -> 已关闭, 5 -> 无效订单',
 		`order_type` INT(1) COMMENT '订单类型，0 -> 普通订单， 1 -> 秒杀订单',

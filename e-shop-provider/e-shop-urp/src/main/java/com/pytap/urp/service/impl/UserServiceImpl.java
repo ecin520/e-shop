@@ -7,7 +7,7 @@ import com.pytap.generator.dao.SysUserMapper;
 import com.pytap.generator.dao.SysUserRoleMapper;
 import com.pytap.generator.entity.*;
 import com.pytap.urp.dao.UserDao;
-import com.pytap.urp.model.dto.UserDTO;
+import com.pytap.urp.model.vo.UserVO;
 import com.pytap.urp.service.MemberService;
 import com.pytap.urp.service.MerchantService;
 import com.pytap.urp.service.UserService;
@@ -58,24 +58,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserDTOById(Long id) {
-        UserDTO sysUserDTO = new UserDTO();
+    public UserVO getUserVOById(Long id) {
+        UserVO sysUserVO = new UserVO();
         SysUser sysUser = userMapper.selectByPrimaryKey(id);
         if (null != sysUser) {
-            BeanUtils.copyProperties(sysUser, sysUserDTO);
+            BeanUtils.copyProperties(sysUser, sysUserVO);
 
             EsMember member = new EsMember();
             member.setUserId(id);
-            sysUserDTO.setMember(memberService.getMember(member));
+            sysUserVO.setMember(memberService.getMember(member));
 
             EsMerchant merchant = new EsMerchant();
             merchant.setUserId(id);
-            sysUserDTO.setMerchant(merchantService.getMerchant(merchant));
+            sysUserVO.setMerchant(merchantService.getMerchant(merchant));
 
         } else {
             return null;
         }
-        return sysUserDTO;
+        return sysUserVO;
     }
 
     @Override
@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserDTOByUsername(String username) {
-        UserDTO sysUserDTO = new UserDTO();
+    public UserVO getUserVOByUsername(String username) {
+        UserVO sysUserVO = new UserVO();
 
         SysUserExample example = new SysUserExample();
         SysUserExample.Criteria criteria = example.createCriteria();
@@ -98,20 +98,20 @@ public class UserServiceImpl implements UserService {
         List<SysUser> list = userMapper.selectByExample(example);
 
         if (list.size() != 0) {
-            BeanUtils.copyProperties(list.get(0), sysUserDTO);
+            BeanUtils.copyProperties(list.get(0), sysUserVO);
 
             EsMember member = new EsMember();
             member.setUsername(username);
-            sysUserDTO.setMember(memberService.getMember(member));
+            sysUserVO.setMember(memberService.getMember(member));
 
             EsMerchant merchant = new EsMerchant();
             merchant.setUsername(username);
-            sysUserDTO.setMerchant(merchantService.getMerchant(merchant));
+            sysUserVO.setMerchant(merchantService.getMerchant(merchant));
 
         } else {
             return null;
         }
-        return sysUserDTO;
+        return sysUserVO;
     }
 
 
@@ -155,14 +155,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager<UserDTO> listUsers(Integer pageNum, Integer pageSize) {
+    public Pager<UserVO> listUsers(Integer pageNum, Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
 
         List<SysUser> users = userMapper.selectByExample(null);
 
-        Pager<UserDTO> pager = new Pager<>();
-        pager.setContent(userListToDto(users));
+        Pager<UserVO> pager = new Pager<>();
+        pager.setContent(userListToVO(users));
         pager.setPageNum(pageNum);
         pager.setPageSize(pageSize);
         pager.setTotal(userMapper.countByExample(null));
@@ -236,7 +236,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pager<UserDTO> listSearchUsers(Integer pageNum, Integer pageSize, String keyword) {
+    public Pager<UserVO> listSearchUsers(Integer pageNum, Integer pageSize, String keyword) {
 
         SysUserExample example = new SysUserExample();
         SysUserExample.Criteria criteria = example.createCriteria();
@@ -250,21 +250,21 @@ public class UserServiceImpl implements UserService {
 
         List<SysUser> users = userMapper.selectByExample(example);
 
-        Pager<UserDTO> pager = new Pager<>();
+        Pager<UserVO> pager = new Pager<>();
         pager.setPageNum(pageNum);
         pager.setPageSize(pageSize);
-        pager.setContent(userListToDto(users));
+        pager.setContent(userListToVO(users));
         pager.setTotal(userMapper.countByExample(example));
 
         return pager;
     }
 
-    private List<UserDTO> userListToDto(List<SysUser> users) {
-        List<UserDTO> result = new ArrayList<>(16);
+    private List<UserVO> userListToVO(List<SysUser> users) {
+        List<UserVO> result = new ArrayList<>(16);
         for (SysUser user : users) {
-            UserDTO dto = new UserDTO();
-            BeanUtils.copyProperties(user, dto);
-            result.add(dto);
+            UserVO vo = new UserVO();
+            BeanUtils.copyProperties(user, vo);
+            result.add(vo);
         }
         return result;
     }

@@ -1,9 +1,10 @@
 package com.pytap.product.service;
 
 import com.pytap.common.utils.Pager;
+import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.entity.EsProductCategory;
 import com.pytap.generator.entity.EsProductCategoryDetail;
-import com.pytap.product.model.dto.ProductCategoryDetailDTO;
+import com.pytap.product.model.vo.ProductCategoryDetailVO;
 
 import java.util.List;
 
@@ -80,11 +81,11 @@ public interface ProductCategoryService {
     EsProductCategoryDetail getProductCategoryDetail(EsProductCategoryDetail queryParam);
 
     /**
-     * 通过分类详情id获产品分类DTO
+     * 通过分类详情id获产品分类VO
      * @param categoryDetailId 分类详情id
-     * @return ProductCategoryDetailDTO
+     * @return ProductCategoryDetailVO
      * */
-    ProductCategoryDetailDTO getProductCategoryDetailDTOById(Long categoryDetailId);
+    ProductCategoryDetailVO getProductCategoryDetailVOById(Long categoryDetailId);
 
     /**
      * 列取产品分类详情
@@ -92,22 +93,12 @@ public interface ProductCategoryService {
      * */
     List<EsProductCategoryDetail> listProductCategoryDetails();
 
-    /**
-     * 通过分类id获取分类详情列表
-     * @param pageNum 第几页
-     * @param pageSize 每页条目数量
-     * @param categoryId 分类id
-     * @return List<EsProductCategoryDetail>
-     * */
-    Pager<EsProductCategoryDetail> listProductCategoryDetailsByCategoryId(Integer pageNum, Integer pageSize, Long categoryId);
 
     /**
-     * 通过详情名称模糊查询分类详情列表
-     * @param pageNum 第几页
-     * @param pageSize 每页条目数量
-     * @param keyword 查询参数
+     * 查询参数查询分类详情
+     * @param queryParam 查询参数
      * @return Pager<EsProductCategoryDetail>
      * */
-    Pager<EsProductCategoryDetail> listProductCategoryDetails(Integer pageNum, Integer pageSize, String keyword);
+    Pager<EsProductCategoryDetail> listProductCategoryDetailsByParam(QueryParam<EsProductCategoryDetail> queryParam);
 
 }

@@ -6,7 +6,7 @@ import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.SysRole;
 import com.pytap.generator.entity.SysUser;
-import com.pytap.urp.model.dto.UserDTO;
+import com.pytap.urp.model.vo.UserVO;
 import com.pytap.urp.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,21 +25,21 @@ public class UserAdminController {
     private UserService userService;
 
     @Log("用户名获取用户")
-    @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
-    public ResultEntity<UserDTO> getUserByUsername(@PathVariable String username) {
-        UserDTO user = userService.getUserDTOByUsername(username);
+    @RequestMapping(value = "{username}", method = RequestMethod.GET)
+    public ResultEntity<UserVO> getUserByUsername(@PathVariable String username) {
+        UserVO user = userService.getUserVOByUsername(username);
         return null != user ? ResultEntity.success(user) : ResultEntity.fail(400, "用户不存在");
     }
 
-    @Log("主键获取用户传输对象")
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-    public ResultEntity<UserDTO> getUserDtoById(@PathVariable Long id) {
-        UserDTO sysUserDTO = userService.getUserDTOById(id);
-        return null != sysUserDTO ? ResultEntity.success(sysUserDTO) : ResultEntity.fail(400, "用户不存在");
+    @Log("主键获取用户视图对象")
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+    public ResultEntity<UserVO> getUserVOById(@PathVariable Long id) {
+        UserVO sysUserVO = userService.getUserVOById(id);
+        return null != sysUserVO ? ResultEntity.success(sysUserVO) : ResultEntity.fail(400, "用户不存在");
     }
 
     @Log("主键获取用户")
-    @RequestMapping(value = "/key/id/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResultEntity<SysUser> getUserById(@PathVariable Long id) {
         SysUser user = userService.getUserById(id);
         return null != user ? ResultEntity.success(user) : ResultEntity.fail(400, "用户不存在");
@@ -73,16 +73,16 @@ public class UserAdminController {
 
     @Log(value = "分页获取用户")
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public ResultEntity<Pager<UserDTO>> listAllUsers(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+    public ResultEntity<Pager<UserVO>> listAllUsers(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         return ResultEntity.success(userService.listUsers(pageNum, pageSize));
     }
 
     @Log(value = "关键字搜索用户")
     @RequestMapping(value = "/list/keyword", method = RequestMethod.GET)
-    public ResultEntity<Pager<UserDTO>> listSearchUsers(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                                    @RequestParam(value = "keyword") String keyword) {
+    public ResultEntity<Pager<UserVO>> listSearchUsers(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                                       @RequestParam(value = "keyword") String keyword) {
         return ResultEntity.success(userService.listSearchUsers(pageNum, pageSize, keyword));
     }
 

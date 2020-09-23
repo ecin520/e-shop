@@ -526,6 +526,76 @@ public class EsOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andPaySerialIsNull() {
+            addCriterion("pay_serial is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialIsNotNull() {
+            addCriterion("pay_serial is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialEqualTo(String value) {
+            addCriterion("pay_serial =", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialNotEqualTo(String value) {
+            addCriterion("pay_serial <>", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialGreaterThan(String value) {
+            addCriterion("pay_serial >", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialGreaterThanOrEqualTo(String value) {
+            addCriterion("pay_serial >=", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialLessThan(String value) {
+            addCriterion("pay_serial <", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialLessThanOrEqualTo(String value) {
+            addCriterion("pay_serial <=", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialLike(String value) {
+            addCriterion("pay_serial like", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialNotLike(String value) {
+            addCriterion("pay_serial not like", value, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialIn(List<String> values) {
+            addCriterion("pay_serial in", values, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialNotIn(List<String> values) {
+            addCriterion("pay_serial not in", values, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialBetween(String value1, String value2) {
+            addCriterion("pay_serial between", value1, value2, "paySerial");
+            return (Criteria) this;
+        }
+
+        public Criteria andPaySerialNotBetween(String value1, String value2) {
+            addCriterion("pay_serial not between", value1, value2, "paySerial");
+            return (Criteria) this;
+        }
+
         public Criteria andOrderSourceIsNull() {
             addCriterion("order_source is null");
             return (Criteria) this;

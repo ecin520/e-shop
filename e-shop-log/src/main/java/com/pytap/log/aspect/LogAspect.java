@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.pytap.common.annotation.Log;
 import com.pytap.common.utils.TimeUtil;
-import com.pytap.log.dto.ErrorLogDTO;
-import com.pytap.log.dto.WebLogDTO;
+import com.pytap.log.vo.ErrorLogVO;
+import com.pytap.log.vo.WebLogVO;
 import com.pytap.log.service.ErrorLogService;
 import com.pytap.log.service.WebLogService;
 import com.pytap.log.utils.SecurityUtil;
@@ -57,7 +57,7 @@ public class LogAspect {
 
 		currentTime.set(System.currentTimeMillis());
 
-		WebLogDTO webLogDTO = new WebLogDTO();
+		WebLogVO webLogVO = new WebLogVO();
 
 		Object result;
 
@@ -70,8 +70,8 @@ public class LogAspect {
 
 		if (null != requestAttributes) {
 			HttpServletRequest request = requestAttributes.getRequest();
-			webLogDTO.setIp(request.getRemoteAddr());
-			webLogDTO.setUrl(request.getRequestURI());
+			webLogVO.setIp(request.getRemoteAddr());
+			webLogVO.setUrl(request.getRequestURI());
 
 			if (request.getParameterMap().size() == 0) {
 				StringBuilder sb = new StringBuilder();
@@ -82,30 +82,30 @@ public class LogAspect {
 						sb.append(",");
 					}
 				}
-				webLogDTO.setParam(sb.toString());
+				webLogVO.setParam(sb.toString());
 			} else {
-				webLogDTO.setParam(JSONObject.toJSONString(request.getParameterMap()));
+				webLogVO.setParam(JSONObject.toJSONString(request.getParameterMap()));
 			}
 
 		}
 
 		result = joinPoint.proceed();
 
-		webLogDTO.setMessage(log.value());
-		webLogDTO.setMethod(joinPoint.getSignature().getName());
+		webLogVO.setMessage(log.value());
+		webLogVO.setMethod(joinPoint.getSignature().getName());
 
 		if (null != result) {
-			webLogDTO.setResult(JSONObject.toJSONString(result));
+			webLogVO.setResult(JSONObject.toJSONString(result));
 		} else {
-			webLogDTO.setResult("void");
+			webLogVO.setResult("void");
 		}
-		webLogDTO.setUsername(SecurityUtil.getUsername());
-		webLogDTO.setCreateTime(TimeUtil.getDate());
-		webLogDTO.setSpendTime(System.currentTimeMillis() - currentTime.get());
+		webLogVO.setUsername(SecurityUtil.getUsername());
+		webLogVO.setCreateTime(TimeUtil.getDate());
+		webLogVO.setSpendTime(System.currentTimeMillis() - currentTime.get());
 
-		logger.info(webLogDTO.toString());
+		logger.info(webLogVO.toString());
 
-		webLogService.insertWebLog(webLogDTO);
+		webLogService.insertWebLog(webLogVO);
 
 		currentTime.remove();
 
@@ -124,7 +124,7 @@ public class LogAspect {
 					requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
 			if (null != request) {
 				try {
-					ErrorLogDTO errorLog = new ErrorLogDTO();
+					ErrorLogVO errorLog = new ErrorLogVO();
 
 					MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 					Method method = signature.getMethod();

@@ -23,6 +23,11 @@ public class TimeUtil {
         return simpleDateFormat.format(new Date());
     }
 
+    public static String getDayDate(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(parseDate(date));
+    }
+
     public static Date parseDate (String date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
         try {

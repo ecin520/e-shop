@@ -8,8 +8,6 @@ public class EsProductCategoryDetail implements Serializable {
 
     private Long productCategoryId;
 
-    private Long productSpecId;
-
     private String name;
 
     private Integer count;
@@ -42,14 +40,6 @@ public class EsProductCategoryDetail implements Serializable {
 
     public void setProductCategoryId(Long productCategoryId) {
         this.productCategoryId = productCategoryId;
-    }
-
-    public Long getProductSpecId() {
-        return productSpecId;
-    }
-
-    public void setProductSpecId(Long productSpecId) {
-        this.productSpecId = productSpecId;
     }
 
     public String getName() {
@@ -124,7 +114,6 @@ public class EsProductCategoryDetail implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", productCategoryId=").append(productCategoryId);
-        sb.append(", productSpecId=").append(productSpecId);
         sb.append(", name=").append(name);
         sb.append(", count=").append(count);
         sb.append(", keywords=").append(keywords);

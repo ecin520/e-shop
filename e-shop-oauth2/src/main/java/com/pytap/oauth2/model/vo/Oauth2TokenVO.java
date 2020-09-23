@@ -1,4 +1,4 @@
-package com.pytap.oauth2.model.dto;
+package com.pytap.oauth2.model.vo;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020/8/31 18:11
  */
 @Data
-public class Oauth2TokenDTO {
+public class Oauth2TokenVO {
 
     private String accessToken;
 

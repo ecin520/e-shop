@@ -12,12 +12,12 @@ import java.util.List;
  * @date 2020/9/19 22:28
  */
 @Data
-public class ProductParam  implements Serializable {
+public class ProductDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private EsProduct product;
 
-    private List<SkuProductParam> skuProductList;
+    private List<SkuProductDTO> skuProductList;
 
 }

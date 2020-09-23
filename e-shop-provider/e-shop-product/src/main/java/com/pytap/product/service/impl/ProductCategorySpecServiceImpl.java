@@ -3,10 +3,9 @@ package com.pytap.product.service.impl;
 import com.pytap.common.utils.Pager;
 import com.pytap.generator.dao.EsProductCategorySpecMapper;
 import com.pytap.generator.dao.EsProductSpecDetailMapper;
-import com.pytap.generator.dao.EsSkuProductMapper;
 import com.pytap.generator.entity.*;
 import com.pytap.product.dao.ProductCategorySpecDao;
-import com.pytap.product.model.dto.ProductSpecDTO;
+import com.pytap.product.model.vo.ProductSpecVO;
 import com.pytap.product.service.ProductCategorySpecService;
 import com.pytap.product.service.ProductSpecService;
 import org.springframework.beans.BeanUtils;
@@ -84,30 +83,30 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
     }
 
     @Override
-    public List<ProductSpecDTO> listProductSpecDTOsByCategoryId(Long categoryId) {
-        List<ProductSpecDTO> result = new ArrayList<>(16);
+    public List<ProductSpecVO> listProductSpecVOsByCategoryId(Long categoryId) {
+        List<ProductSpecVO> result = new ArrayList<>(16);
         List<EsProductSpec> productSpecs = productCategorySpecDao.listProductSpecsByCategoryId(categoryId);
         for (EsProductSpec productSpec : productSpecs) {
-            ProductSpecDTO dto = new ProductSpecDTO();
-            BeanUtils.copyProperties(productSpec, dto);
+            ProductSpecVO vo = new ProductSpecVO();
+            BeanUtils.copyProperties(productSpec, vo);
             Pager<EsProductSpecDetail> pager = productSpecService.listProductSpecDetails(0, 0, productSpec.getId());
             if (null != pager.getContent()) {
-                dto.setDetails(pager.getContent().stream().filter((item) -> item.getStandard() == 1).collect(Collectors.toList()));
+                vo.setDetails(pager.getContent().stream().filter((item) -> item.getStandard() == 1).collect(Collectors.toList()));
             }
-            result.add(dto);
+            result.add(vo);
         }
         return result;
     }
 
     @Override
-    public List<ProductSpecDTO> listSpecDTOsByCategoryAndProductId(Long categoryId, Long productId) {
-        List<ProductSpecDTO> result = new ArrayList<>(16);
+    public List<ProductSpecVO> listSpecVOsByCategoryAndProductId(Long categoryId, Long productId) {
+        List<ProductSpecVO> result = new ArrayList<>(16);
         List<EsProductSpec> productSpecs = productCategorySpecDao.listProductSpecsByCategoryId(categoryId);
 
         // 遍历分类对应规格，然后通过规格id获取规格详情
         for (EsProductSpec productSpec : productSpecs) {
-            ProductSpecDTO dto = new ProductSpecDTO();
-            BeanUtils.copyProperties(productSpec, dto);
+            ProductSpecVO vo = new ProductSpecVO();
+            BeanUtils.copyProperties(productSpec, vo);
 
             EsProductSpecDetailExample productSpecDetailExample = new EsProductSpecDetailExample();
             EsProductSpecDetailExample.Criteria criteria = productSpecDetailExample.createCriteria();
@@ -116,9 +115,9 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
             List<EsProductSpecDetail> details = productSpecDetailMapper.selectByExample(productSpecDetailExample);
 
             if (!details.isEmpty()) {
-                dto.setDetails(details);
+                vo.setDetails(details);
             }
-            result.add(dto);
+            result.add(vo);
         }
 
         // 通过商品id获取规格详情列表,这里查询的是standard为0的用户自定义规格详情
@@ -126,12 +125,12 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
 
         // 添加到结果集
         for (EsProductSpecDetail productSpecDetail : productSpecDetails) {
-            for (ProductSpecDTO dto : result) {
-                if (null == dto.getDetails()) {
-                    dto.setDetails(new ArrayList<>(16));
+            for (ProductSpecVO vo : result) {
+                if (null == vo.getDetails()) {
+                    vo.setDetails(new ArrayList<>(16));
                 }
-                if (productSpecDetail.getProductSpecId().equals(dto.getId())) {
-                    dto.getDetails().add(productSpecDetail);
+                if (productSpecDetail.getProductSpecId().equals(vo.getId())) {
+                    vo.getDetails().add(productSpecDetail);
                 }
             }
         }

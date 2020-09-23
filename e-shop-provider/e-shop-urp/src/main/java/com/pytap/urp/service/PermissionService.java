@@ -3,7 +3,6 @@ package com.pytap.urp.service;
 import com.pytap.common.utils.Pager;
 import com.pytap.generator.entity.SysPermission;
 import com.pytap.generator.entity.SysPermissionGroup;
-import com.pytap.urp.model.dto.PermissionGroupDTO;
 
 import java.util.List;
 

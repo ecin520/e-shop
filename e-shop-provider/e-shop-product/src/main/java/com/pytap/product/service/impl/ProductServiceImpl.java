@@ -8,8 +8,8 @@ import com.pytap.generator.dao.EsProductSpecDetailMapper;
 import com.pytap.generator.dao.EsSkuProductMapper;
 import com.pytap.generator.dao.EsSkuSpecDetailMapper;
 import com.pytap.generator.entity.*;
-import com.pytap.product.model.dto.ProductParam;
-import com.pytap.product.model.dto.SkuProductParam;
+import com.pytap.product.model.dto.ProductDTO;
+import com.pytap.product.model.dto.SkuProductDTO;
 import com.pytap.product.service.ProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -150,11 +150,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Integer insertProductByParam(ProductParam productParam) {
+    public Integer insertProductByParam(ProductDTO productDTO) {
 
         // 插入商品
         EsProduct product = new EsProduct();
-        BeanUtils.copyProperties(productParam.getProduct(), product);
+        BeanUtils.copyProperties(productDTO.getProduct(), product);
 
         product.setCreateTime(new Date());
         product.setVerifyStatus(0);
@@ -162,19 +162,19 @@ public class ProductServiceImpl implements ProductService {
         productMapper.insert(product);
 
         // 传输对象中获取Sku列表
-        List<SkuProductParam> skuProductParamList = productParam.getSkuProductList();
-        for (SkuProductParam skuProductParam : skuProductParamList) {
+        List<SkuProductDTO> skuProductDTOList = productDTO.getSkuProductList();
+        for (SkuProductDTO skuProductDTO : skuProductDTOList) {
 
             EsSkuProduct skuProduct = new EsSkuProduct();
-            BeanUtils.copyProperties(skuProductParam, skuProduct);
+            BeanUtils.copyProperties(skuProductDTO, skuProduct);
 
-            skuProduct.setName(integrationName(skuProductParam));
+            skuProduct.setName(integrationName(skuProductDTO));
             skuProduct.setProductId(product.getId());
             skuProduct.setSale(0);
             skuProduct.setCreateTime(new Date());
             skuProductMapper.insert(skuProduct);
 
-            insertSkuSpec(skuProductParam, skuProduct);
+            insertSkuSpec(skuProductDTO, skuProduct);
         }
 
         return 1;
@@ -182,11 +182,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Integer updateProductByParam(ProductParam productParam) {
+    public Integer updateProductByParam(ProductDTO productDTO) {
 
         // 更新商品
         EsProduct product = new EsProduct();
-        BeanUtils.copyProperties(productParam.getProduct(), product);
+        BeanUtils.copyProperties(productDTO.getProduct(), product);
         productMapper.updateByPrimaryKeyWithBLOBs(product);
 
         // 删除原本的sku商品
@@ -202,18 +202,18 @@ public class ProductServiceImpl implements ProductService {
         skuProductMapper.deleteByExample(example);
 
         // 传输对象中获取Sku列表
-        List<SkuProductParam> skuProductParamList = productParam.getSkuProductList();
-        for (SkuProductParam skuProductParam : skuProductParamList) {
+        List<SkuProductDTO> skuProductDTOList = productDTO.getSkuProductList();
+        for (SkuProductDTO skuProductDTO : skuProductDTOList) {
             // 插入新的sku商品
             EsSkuProduct skuProduct = new EsSkuProduct();
-            BeanUtils.copyProperties(skuProductParam, skuProduct);
+            BeanUtils.copyProperties(skuProductDTO, skuProduct);
 
-            skuProduct.setName(integrationName(skuProductParam));
+            skuProduct.setName(integrationName(skuProductDTO));
             skuProduct.setProductId(product.getId());
             skuProduct.setUpdateTime(new Date());
             skuProductMapper.insert(skuProduct);
 
-            insertSkuSpec(skuProductParam, skuProduct);
+            insertSkuSpec(skuProductDTO, skuProduct);
         }
 
         return 1;
@@ -235,8 +235,8 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 插入sku和spec关系
      * */
-    private void insertSkuSpec(SkuProductParam skuProductParam, EsSkuProduct skuProduct) {
-        List<Long> specDetailIds = skuProductParam.getSpecDetails();
+    private void insertSkuSpec(SkuProductDTO skuProductDTO, EsSkuProduct skuProduct) {
+        List<Long> specDetailIds = skuProductDTO.getSpecDetails();
         for (Long specDetailId : specDetailIds) {
             EsSkuSpecDetail skuSpec = new EsSkuSpecDetail();
             skuSpec.setSkuId(skuProduct.getId());
@@ -249,9 +249,9 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 整合sku商品规格详情名称
      * */
-    private String integrationName(SkuProductParam skuProductParam) {
+    private String integrationName(SkuProductDTO skuProductDTO) {
         StringBuilder builder = new StringBuilder();
-        List<Long> specDetailIds = skuProductParam.getSpecDetails();
+        List<Long> specDetailIds = skuProductDTO.getSpecDetails();
         for (int i = 0; i < specDetailIds.size(); i++) {
             EsProductSpecDetail productSpecDetail = productSpecDetailMapper.selectByPrimaryKey(specDetailIds.get(i));
             if (i == specDetailIds.size() - 1) {

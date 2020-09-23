@@ -6,15 +6,13 @@ import com.pytap.common.utils.QueryParam;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsSkuProduct;
-import com.pytap.product.model.dto.ProductParam;
+import com.pytap.product.model.dto.ProductDTO;
 import com.pytap.product.service.ProductService;
 import com.pytap.product.service.SkuProductService;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Ecin520
@@ -92,14 +90,14 @@ public class ProductAdminController {
 
     @Log(value = "插入商品及商品sku")
     @RequestMapping(value = "/param/insert", method = RequestMethod.POST)
-    public ResultEntity<Object> insertProductByParam(@RequestBody ProductParam productParam) {
-        return productService.insertProductByParam(productParam) == 1 ? ResultEntity.success() : ResultEntity.fail();
+    public ResultEntity<Object> insertProductByParam(@RequestBody ProductDTO productDTO) {
+        return productService.insertProductByParam(productDTO) == 1 ? ResultEntity.success() : ResultEntity.fail();
     }
 
     @Log(value = "更新商品及商品sku")
     @RequestMapping(value = "/param/update", method = RequestMethod.POST)
-    public ResultEntity<Object> updateProductByParam(@RequestBody ProductParam productParam) {
-        return productService.updateProductByParam(productParam) == 1 ? ResultEntity.success() : ResultEntity.fail();
+    public ResultEntity<Object> updateProductByParam(@RequestBody ProductDTO productDTO) {
+        return productService.updateProductByParam(productDTO) == 1 ? ResultEntity.success() : ResultEntity.fail();
     }
 
     @Log(value = "通过规格id列表和商品id获取sku")

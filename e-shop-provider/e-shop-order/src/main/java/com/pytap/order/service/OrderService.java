@@ -3,6 +3,7 @@ package com.pytap.order.service;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.entity.EsOrder;
+import com.pytap.order.model.dto.OrderQueryDTO;
 
 /**
  * @author Ecin520
@@ -42,5 +43,5 @@ public interface OrderService {
      * @param queryParam 查询参数
      * @return Page<EsOrder>
      * */
-    Pager<EsOrder> listOrders(QueryParam<EsOrder> queryParam);
+    Pager<EsOrder> listOrders(QueryParam<OrderQueryDTO> queryParam);
 }

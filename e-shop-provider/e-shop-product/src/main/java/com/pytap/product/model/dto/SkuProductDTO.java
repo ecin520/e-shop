@@ -11,7 +11,7 @@ import java.util.List;
  * @date 2020/9/19 22:51
  */
 @Data
-public class SkuProductParam  implements Serializable {
+public class SkuProductDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

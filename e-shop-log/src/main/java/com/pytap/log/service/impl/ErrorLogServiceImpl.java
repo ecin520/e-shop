@@ -2,7 +2,7 @@ package com.pytap.log.service.impl;
 
 
 import com.pytap.common.utils.TimeUtil;
-import com.pytap.log.dto.ErrorLogDTO;
+import com.pytap.log.vo.ErrorLogVO;
 import com.pytap.log.service.ErrorLogService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,12 +21,12 @@ public class ErrorLogServiceImpl implements ErrorLogService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void insertErrorLog(ErrorLogDTO errorLogDTO) {
-        redisTemplate.opsForList().leftPush("error_log:" + TimeUtil.getDayDate(), errorLogDTO);
+    public void insertErrorLog(ErrorLogVO errorLogVO) {
+        redisTemplate.opsForList().leftPush("error_log:" + TimeUtil.getDayDate(), errorLogVO);
     }
 
     @Override
-    public List<ErrorLogDTO> getErrorLogs(ErrorLogDTO errorLogDTO) {
+    public List<ErrorLogVO> getErrorLogs(ErrorLogVO errorLogVO) {
         return null;
     }
 

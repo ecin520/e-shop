@@ -2,7 +2,7 @@ package com.pytap.product.service;
 
 import com.pytap.common.utils.Pager;
 import com.pytap.generator.entity.EsProduct;
-import com.pytap.product.model.dto.ProductParam;
+import com.pytap.product.model.dto.ProductDTO;
 
 /**
  * @author Ecin520
@@ -48,18 +48,16 @@ public interface ProductService {
 
     /**
      * 列取商品
-     * @param productParam 商品参数传输对象
+     * @param productDTO 商品参数传输对象
      * @return Integer
      * */
-    Integer insertProductByParam(ProductParam productParam);
+    Integer insertProductByParam(ProductDTO productDTO);
 
     /**
      * 更新商品
-     * @param productParam 商品参数传输对象
+     * @param productDTO 商品参数传输对象
      * @return Integer
      * */
-    Integer updateProductByParam(ProductParam productParam);
-
-
+    Integer updateProductByParam(ProductDTO productDTO);
 
 }

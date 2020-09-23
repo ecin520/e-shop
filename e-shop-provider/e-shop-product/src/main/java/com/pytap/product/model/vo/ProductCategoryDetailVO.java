@@ -1,4 +1,4 @@
-package com.pytap.product.model.dto;
+package com.pytap.product.model.vo;
 
 import com.pytap.generator.entity.EsProductCategory;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.Date;
  * @date 2020/9/20 21:15
  */
 @Data
-public class ProductCategoryDetailDTO  implements Serializable {
+public class ProductCategoryDetailVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

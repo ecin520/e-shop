@@ -1,4 +1,4 @@
-package com.pytap.urp.model.dto;
+package com.pytap.urp.model.vo;
 
 import com.pytap.generator.entity.EsMember;
 import com.pytap.generator.entity.EsMerchant;
@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2020/8/19 15:13
  */
 @Data
-public class UserDTO implements Serializable {
+public class UserVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,4 +1,4 @@
-package com.pytap.log.dto;
+package com.pytap.log.vo;
 
 import lombok.Data;
 
@@ -6,12 +6,12 @@ import java.io.Serializable;
 
 /**
  * @author Ecin520
- * @date 2020/4/7 2:17
+ * @date 2020/4/15 23:22
  */
 @Data
-public class WebLogDTO implements Serializable {
+public class ErrorLogVO implements Serializable {
 
-	private static final long serialVersionUID = 2618996880016222510L;
+	private static final long serialVersionUID = -4444968338285942063L;
 
 	private Long id;
 	private String message;
@@ -19,9 +19,9 @@ public class WebLogDTO implements Serializable {
 	private String param;
 	private String url;
 	private String method;
-	private Long spendTime;
+	private String name;
 	private String ip;
-	private String result;
 	private String createTime;
+
 
 }

@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="com.pytap.generator.entity.EsProductCategoryDetail">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="product_category_id" jdbcType="BIGINT" property="productCategoryId" />
-    <result column="product_spec_id" jdbcType="BIGINT" property="productSpecId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="count" jdbcType="INTEGER" property="count" />
     <result column="keywords" jdbcType="VARCHAR" property="keywords" />
@@ -75,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, product_category_id, product_spec_id, name, count, keywords, show_status, show_image, 
-    update_time, create_time
+    id, product_category_id, name, count, keywords, show_status, show_image, update_time, 
+    create_time
   </sql>
   <sql id="Blob_Column_List">
     description
@@ -133,14 +132,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into es_product_category_detail (product_category_id, product_spec_id, name, 
-      count, keywords, show_status, 
-      show_image, update_time, create_time, 
-      description)
-    values (#{productCategoryId,jdbcType=BIGINT}, #{productSpecId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{count,jdbcType=INTEGER}, #{keywords,jdbcType=VARCHAR}, #{showStatus,jdbcType=INTEGER}, 
-      #{showImage,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{description,jdbcType=LONGVARCHAR})
+    insert into es_product_category_detail (product_category_id, name, count, 
+      keywords, show_status, show_image, 
+      update_time, create_time, description
+      )
+    values (#{productCategoryId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, 
+      #{keywords,jdbcType=VARCHAR}, #{showStatus,jdbcType=INTEGER}, #{showImage,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsProductCategoryDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -150,9 +149,6 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productCategoryId != null">
         product_category_id,
-      </if>
-      <if test="productSpecId != null">
-        product_spec_id,
       </if>
       <if test="name != null">
         name,
@@ -182,9 +178,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="productCategoryId != null">
         #{productCategoryId,jdbcType=BIGINT},
-      </if>
-      <if test="productSpecId != null">
-        #{productSpecId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -227,9 +220,6 @@
       <if test="record.productCategoryId != null">
         product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
       </if>
-      <if test="record.productSpecId != null">
-        product_spec_id = #{record.productSpecId,jdbcType=BIGINT},
-      </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -263,7 +253,6 @@
     update es_product_category_detail
     set id = #{record.id,jdbcType=BIGINT},
       product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
-      product_spec_id = #{record.productSpecId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       count = #{record.count,jdbcType=INTEGER},
       keywords = #{record.keywords,jdbcType=VARCHAR},
@@ -280,7 +269,6 @@
     update es_product_category_detail
     set id = #{record.id,jdbcType=BIGINT},
       product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
-      product_spec_id = #{record.productSpecId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       count = #{record.count,jdbcType=INTEGER},
       keywords = #{record.keywords,jdbcType=VARCHAR},
@@ -297,9 +285,6 @@
     <set>
       <if test="productCategoryId != null">
         product_category_id = #{productCategoryId,jdbcType=BIGINT},
-      </if>
-      <if test="productSpecId != null">
-        product_spec_id = #{productSpecId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -331,7 +316,6 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pytap.generator.entity.EsProductCategoryDetail">
     update es_product_category_detail
     set product_category_id = #{productCategoryId,jdbcType=BIGINT},
-      product_spec_id = #{productSpecId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       count = #{count,jdbcType=INTEGER},
       keywords = #{keywords,jdbcType=VARCHAR},
@@ -345,7 +329,6 @@
   <update id="updateByPrimaryKey" parameterType="com.pytap.generator.entity.EsProductCategoryDetail">
     update es_product_category_detail
     set product_category_id = #{productCategoryId,jdbcType=BIGINT},
-      product_spec_id = #{productSpecId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       count = #{count,jdbcType=INTEGER},
       keywords = #{keywords,jdbcType=VARCHAR},
