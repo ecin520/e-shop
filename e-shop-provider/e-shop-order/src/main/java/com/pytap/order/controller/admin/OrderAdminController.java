@@ -36,9 +36,9 @@ public class OrderAdminController {
     }
 
     @Log(value = "通过主键获取订单VO")
-    @RequestMapping(value = "/query/{id}", method = RequestMethod.POST)
-    public ResultEntity<OrderVO> updateOrder(@PathVariable Long id) {
-        return ResultEntity.success(null);
+    @RequestMapping(value = "/view/query", method = RequestMethod.POST)
+    public ResultEntity<OrderVO> getOrderVO(@RequestBody EsOrder queryParam) {
+        return ResultEntity.success(orderService.getOrderVO(queryParam));
     }
 
 }

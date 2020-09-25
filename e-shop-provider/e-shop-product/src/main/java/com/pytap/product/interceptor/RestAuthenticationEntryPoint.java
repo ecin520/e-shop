@@ -28,7 +28,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         logger.error(e.getMessage());
-        response.getWriter().println(JSONObject.toJSONString(ResultEntity.fail(HttpCode.FORBIDDEN, e.getMessage())));
+        response.getWriter().println(JSONObject.toJSONString(ResultEntity.fail(HttpCode.OAUTH2_TOKEN_ERROR, e.getMessage())));
         response.getWriter().flush();
     }
 }

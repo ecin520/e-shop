@@ -4,7 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.pytap.generator.dao.EsMemberMapper;
 import com.pytap.generator.entity.EsMember;
 import com.pytap.generator.entity.EsMemberExample;
+import com.pytap.urp.model.vo.MemberVO;
+import com.pytap.urp.model.vo.UserVO;
 import com.pytap.urp.service.MemberService;
+import com.pytap.urp.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +24,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Resource
     private EsMemberMapper memberMapper;
+
+    @Resource
+    private UserService userService;
 
     @Override
     public Integer countMember() {
@@ -53,12 +60,34 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public EsMember getMember(EsMember queryParam) {
+        return getMemberByQueryParam(queryParam);
+    }
+
+    @Override
+    public MemberVO getMemberVO(EsMember queryParam) {
+        EsMember member = getMemberByQueryParam(queryParam);
+        MemberVO vo = new MemberVO();
+        BeanUtils.copyProperties(member, vo);
+        UserVO user = userService.getUserVOById(member.getUserId());
+        if (null != user) {
+            vo.setUser(user);
+        }
+        return vo;
+    }
+
+    @Override
+    public List<EsMember> listMembers(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return memberMapper.selectByExample(null);
+    }
+
+    private EsMember getMemberByQueryParam(EsMember queryParam) {
 
         EsMemberExample example = new EsMemberExample();
         EsMemberExample.Criteria criteria = example.createCriteria();
 
         if (null != queryParam.getId()) {
-            criteria.andIdEqualTo(queryParam.getUserId());
+            criteria.andIdEqualTo(queryParam.getId());
         }
         if (null != queryParam.getMemberNumber()) {
             criteria.andMemberNumberEqualTo(queryParam.getMemberNumber());
@@ -69,15 +98,8 @@ public class MemberServiceImpl implements MemberService {
         if (null != queryParam.getUsername()) {
             criteria.andUsernameEqualTo(queryParam.getUsername());
         }
-
         List<EsMember> list= memberMapper.selectByExample(example);
 
-        return list.size() != 0 ? list.get(0) : null;
-    }
-
-    @Override
-    public List<EsMember> listMembers(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        return memberMapper.selectByExample(null);
+        return list.size() != 0 ? list.get(0) : new EsMember();
     }
 }

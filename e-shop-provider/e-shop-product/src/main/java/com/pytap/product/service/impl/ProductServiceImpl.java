@@ -187,6 +187,7 @@ public class ProductServiceImpl implements ProductService {
         // 更新商品
         EsProduct product = new EsProduct();
         BeanUtils.copyProperties(productDTO.getProduct(), product);
+        product.setUpdateTime(new Date());
         productMapper.updateByPrimaryKeyWithBLOBs(product);
 
         // 删除原本的sku商品

@@ -4,6 +4,7 @@ import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.entity.EsOrder;
 import com.pytap.order.model.dto.OrderQueryDTO;
+import com.pytap.order.model.vo.OrderVO;
 
 /**
  * @author Ecin520
@@ -31,12 +32,6 @@ public interface OrderService {
      * */
     Integer updateOrder(EsOrder order);
 
-    /**
-     * 获取订单
-     * @param queryParam 查询参数
-     * @return EsOrder
-     * */
-    EsOrder getOrder(EsOrder queryParam);
 
     /**
      * 列取订单
@@ -44,4 +39,11 @@ public interface OrderService {
      * @return Page<EsOrder>
      * */
     Pager<EsOrder> listOrders(QueryParam<OrderQueryDTO> queryParam);
+
+    /**
+     * 获取订单视图
+     * @param queryParam 查询参数
+     * @return EsOrder
+     * */
+    OrderVO getOrderVO(EsOrder queryParam);
 }

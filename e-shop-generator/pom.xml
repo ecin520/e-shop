@@ -10,6 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>e-shop-generator</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>e-shop-generator-urp</module>
+        <module>e-shop-generator-product</module>
+        <module>e-shop-generator-order</module>
+        <module>e-shop-generator-sale</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>org.mybatis.generator</groupId>

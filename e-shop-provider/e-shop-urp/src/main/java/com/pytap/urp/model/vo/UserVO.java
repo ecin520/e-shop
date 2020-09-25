@@ -38,8 +38,4 @@ public class UserVO implements Serializable {
 
     private Date createTime;
 
-    private EsMember member;
-
-    private EsMerchant merchant;
-
 }

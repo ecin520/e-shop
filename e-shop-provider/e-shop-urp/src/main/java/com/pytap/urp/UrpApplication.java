@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EnableFeignClients("com.pytap.api")
-@SpringBootApplication(scanBasePackages = {"com.pytap.urp", "com.pytap.log"})
+@SpringBootApplication(scanBasePackages = {"com.pytap.urp", "com.pytap.log", "com.pytap.api"})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableTransactionManagement
 public class UrpApplication {

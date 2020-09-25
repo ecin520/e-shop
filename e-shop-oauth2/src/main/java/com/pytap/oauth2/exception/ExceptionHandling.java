@@ -52,7 +52,7 @@ public class ExceptionHandling {
     @ExceptionHandler(value = OAuth2Exception.class)
     public ResultEntity<Object> oAuth2Exception(OAuth2Exception e) {
         logger.error(e.getMessage());
-        return ResultEntity.fail(HttpCode.UNAUTHORIZED, e.getMessage());
+        return ResultEntity.fail(HttpCode.OAUTH2_AUTH_ERROR, e.getMessage());
     }
 
 }

@@ -1,8 +1,9 @@
 package com.pytap.order.model.vo;
 
+import com.pytap.api.model.vo.MemberVO;
 import com.pytap.generator.entity.EsMember;
-import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsReceiverAddress;
+import com.pytap.generator.entity.EsShop;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,13 +23,15 @@ public class OrderVO implements Serializable {
 
     private Long id;
 
-    private Long orderNumber;
+    private String orderNumber;
 
-    private EsMember member;
+    private EsShop shop;
+
+    private MemberVO member;
 
     private EsReceiverAddress receiverAddress;
 
-    private List<EsProduct> products;
+    private List<OrderProductVO> products;
 
     private BigDecimal freight;
 

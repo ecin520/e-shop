@@ -10,8 +10,10 @@ mybatis:
 spring:
   application:
     name: order-provider
+  main:
+    allow-bean-definition-overriding: true
   rabbitmq:
-    host: 192.168.4.128
+    host: 192.168.4.130
     port: 5672
     username: pytap
     password: guowei00a
@@ -24,7 +26,7 @@ spring:
     name: DruidDataSource
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://192.168.4.128:3306/e_shop?serverTimezone=UTC&characterEncoding=utf-8
+      url: jdbc:mysql://192.168.4.130:3306/e_shop_order?serverTimezone=UTC&characterEncoding=utf-8
       username: root
       password: guowei00a
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -37,7 +39,7 @@ spring:
         login-username: user
         login-password: qwer1234
   redis:
-    host: 192.168.4.128
+    host: 192.168.4.130
     port: 6379
     password: null
     jedis:

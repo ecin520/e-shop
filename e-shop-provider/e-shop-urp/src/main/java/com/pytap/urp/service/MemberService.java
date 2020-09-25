@@ -1,6 +1,7 @@
 package com.pytap.urp.service;
 
 import com.pytap.generator.entity.EsMember;
+import com.pytap.urp.model.vo.MemberVO;
 
 import java.util.List;
 
@@ -49,6 +50,13 @@ public interface MemberService {
      * @return Member 会员实体
      * */
     EsMember getMember(EsMember queryParam);
+
+    /**
+     * 查询会员VO
+     * @param queryParam 查询参数
+     * @return MemberVO 会员VO
+     * */
+    MemberVO getMemberVO(EsMember queryParam);
 
     /**
      * 获取所有会员

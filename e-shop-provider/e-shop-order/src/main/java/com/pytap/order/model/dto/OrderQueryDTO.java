@@ -17,7 +17,7 @@ public class OrderQueryDTO implements Serializable {
 
     private Long id;
 
-    private Long orderNumber;
+    private String orderNumber;
 
     private Long memberId;
 

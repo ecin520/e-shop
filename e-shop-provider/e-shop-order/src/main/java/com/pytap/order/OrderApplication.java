@@ -15,7 +15,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EnableFeignClients("com.pytap.api")
-@SpringBootApplication(scanBasePackages = {"com.pytap.order", "com.pytap.log"})
+@SpringBootApplication(scanBasePackages = {"com.pytap.order", "com.pytap.log", "com.pytap.api"})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class OrderApplication {
     public static void main(String[] args) {

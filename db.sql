@@ -136,7 +136,6 @@ CREATE TABLE es_product_category (
 		`keywords` VARCHAR ( 260 ) COMMENT '关键词',
 		`show_status` INT ( 1 ) COMMENT '是否显示：0 不显示 1 显示',
 		`show_image` VARCHAR ( 260 ) COMMENT '显示图片或图标',
-		`parameter` VARCHAR ( 3600 ) COMMENT '商品参数，使用Json键值对存储',
 		`description` TEXT COMMENT '描述',
 		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
 		`create_time` DATETIME COMMENT '创建时间',
@@ -262,7 +261,7 @@ CREATE TABLE es_sku_product (
 
 -- sku与spec_detail关系表
 DROP TABLE IF EXISTS es_sku_spec_detail;
-CREATE TABLE es_sku_spec (
+CREATE TABLE es_sku_spec_detail (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`sku_id` BIGINT NOT NULL,
 		`spec_detail_id` BIGINT NOT NULL,
@@ -271,19 +270,6 @@ CREATE TABLE es_sku_spec (
 		PRIMARY KEY ( id )
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT 'sku与spec关系表';
 
-
--- 促销表
-DROP TABLE IF EXISTS es_promotion;
-CREATE TABLE es_promotion (
-		`id` BIGINT NOT NULL AUTO_INCREMENT,
-		`product_id` BIGINT NOT NULL COMMENT '商品id',
-		`promotion_price` DECIMAL(10,2) COMMENT '促销价格',
-		`promotion_start_time` DATETIME COMMENT '促销开始时间',
-		`promotion_end_time` DATETIME COMMENT '促销结束时间',
-		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
-		`create_time` DATETIME COMMENT '创建时间',
-		PRIMARY KEY ( id )
-) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '促销表';
 
 
 -- 商品评论表
@@ -342,9 +328,10 @@ CREATE TABLE em_product_verify (
 DROP TABLE IF EXISTS es_order;
 CREATE TABLE es_order (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
-		`order_number` BIGINT NOT NULL COMMENT '订单号',
 		`member_id` BIGINT NOT NULL COMMENT '会员id',
+		`shop_id` BIGINT NOT NULL COMMENT '店铺id',
 		`receiver_address_id` BIGINT NOT NULL COMMENT '会员收货地址id',
+		`order_number` VARCHAR(100) NOT NULL COMMENT '订单号',
 		`freight` DECIMAL(10,2) COMMENT '运费总额',
 		`total_price` DECIMAL(10,2) COMMENT '总价',
 		`pay_type` INT(1) COMMENT '支付方式， 0 -> 未支付, 1 -> 支付宝, 2 -> 微信, 3 -> 其他',
@@ -362,13 +349,10 @@ CREATE TABLE es_order (
 DROP TABLE IF EXISTS es_order_product;
 CREATE TABLE es_order_product (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
-		`member_id` BIGINT NOT NULL COMMENT '会员id',
 		`order_id` BIGINT NOT NULL COMMENT '订单id',
-		`product_id` BIGINT NOT NULL COMMENT '商品id',
-		`shop_id` BIGINT NOT NULL COMMENT '店铺id',
 		`sku_id` BIGINT NOT NULL COMMENT 'sku id',
-		`coupon_id` BIGINT NOT NULL COMMENT '优惠券id',
-		`delivery_id` BIGINT NOT NULL COMMENT '物流id',
+		`coupon_id` BIGINT COMMENT '优惠券id',
+		`delivery_id` BIGINT COMMENT '物流id',
 		`num` INT NOT NULL COMMENT '购买数量',
 		`note` VARCHAR(500) COMMENT '订单备注',
 		`confirm_status` INT(1) COMMENT '收货状态, 0 -> 未确认, 1 -> 已确认',
@@ -384,8 +368,6 @@ CREATE TABLE es_order_product (
 DROP TABLE IF EXISTS es_delivery;
 CREATE TABLE es_delivery (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
-		`order_id` BIGINT NOT NULL COMMENT '订单id',
-		`shop_id` BIGINT NOT NULL COMMENT '店铺id',
 		`delivery_company` VARCHAR(60) COMMENT '物流公司',
 		`delivery_number` VARCHAR(60) COMMENT '物流单号',
 		`delivery_status` VARCHAR(60) COMMENT '物流状态',
@@ -411,7 +393,7 @@ CREATE TABLE es_order_setting (
 DROP TABLE IF EXISTS es_cart_product;
 CREATE TABLE es_cart_product (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
-		`product_id` BIGINT NOT NULL COMMENT '商品id',
+		`sku_id` BIGINT NOT NULL COMMENT '商品sku_id',
 		`member_id` BIGINT NOT NULL COMMENT '会员id',
 		`coupon_id` BIGINT NOT NULL COMMENT '优惠券id',
 		`num` INT NOT NULL COMMENT '购买数量',
@@ -443,7 +425,7 @@ DROP TABLE IF EXISTS es_order_return;
 CREATE TABLE es_order_return (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`member_id` BIGINT NOT NULL COMMENT '会员id',
-		`order_product_id` BIGINT NOT NULL COMMENT '订单商品id',
+		`order_id` BIGINT NOT NULL COMMENT '订单id',
 		`handler_id` BIGINT NOT NULL COMMENT '处理人',
 		`member_address_id` BIGINT NOT NULL COMMENT '会员收货地址',
 		`shop_address_id` BIGINT NOT NULL COMMENT '店铺收货地址，退回地址id',
@@ -462,7 +444,7 @@ CREATE TABLE es_order_return (
 DROP TABLE IF EXISTS es_order_return_reason;
 CREATE TABLE es_order_return_reason (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
-		`name` VARCHAR(100) COMMENT '退货原因',
+		`cause` VARCHAR(100) COMMENT '退货原因',
 		`status` INT(1) COMMENT '显示状态, 0 -> 不显示, 1 -> 显示',
 		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
 		`create_time` DATETIME COMMENT '创建时间',
@@ -471,13 +453,27 @@ CREATE TABLE es_order_return_reason (
 
 
 
--- ----------------------------Q
+-- ----------------------------
 
 
 -- 营销管理
 
 
 -- ----------------------------
+
+
+-- 促销表
+DROP TABLE IF EXISTS es_promotion;
+CREATE TABLE es_promotion (
+		`id` BIGINT NOT NULL AUTO_INCREMENT,
+		`product_id` BIGINT NOT NULL COMMENT '商品id',
+		`promotion_price` DECIMAL(10,2) COMMENT '促销价格',
+		`promotion_start_time` DATETIME COMMENT '促销开始时间',
+		`promotion_end_time` DATETIME COMMENT '促销结束时间',
+		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+		`create_time` DATETIME COMMENT '创建时间',
+		PRIMARY KEY ( id )
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '促销表';
 
 -- 商品优惠券表
 DROP TABLE IF EXISTS es_coupon;

@@ -44,9 +44,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private MemberService memberService;
 
-    @Resource
-    private MerchantService merchantService;
-
     @Override
     public Integer countUser() {
         return userMapper.countByExample(null);
@@ -63,15 +60,6 @@ public class UserServiceImpl implements UserService {
         SysUser sysUser = userMapper.selectByPrimaryKey(id);
         if (null != sysUser) {
             BeanUtils.copyProperties(sysUser, sysUserVO);
-
-            EsMember member = new EsMember();
-            member.setUserId(id);
-            sysUserVO.setMember(memberService.getMember(member));
-
-            EsMerchant merchant = new EsMerchant();
-            merchant.setUserId(id);
-            sysUserVO.setMerchant(merchantService.getMerchant(merchant));
-
         } else {
             return null;
         }
@@ -99,15 +87,6 @@ public class UserServiceImpl implements UserService {
 
         if (list.size() != 0) {
             BeanUtils.copyProperties(list.get(0), sysUserVO);
-
-            EsMember member = new EsMember();
-            member.setUsername(username);
-            sysUserVO.setMember(memberService.getMember(member));
-
-            EsMerchant merchant = new EsMerchant();
-            merchant.setUsername(username);
-            sysUserVO.setMerchant(merchantService.getMerchant(merchant));
-
         } else {
             return null;
         }

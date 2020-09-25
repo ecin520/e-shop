@@ -3,11 +3,9 @@ package com.pytap.order.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.pytap.common.utils.Pager;
 import com.pytap.generator.dao.EsOrderReturnReasonMapper;
-import com.pytap.generator.entity.EsOrder;
 import com.pytap.generator.entity.EsOrderReturnReason;
 import com.pytap.generator.entity.EsOrderReturnReasonExample;
 import com.pytap.order.service.OrderReturnReasonService;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

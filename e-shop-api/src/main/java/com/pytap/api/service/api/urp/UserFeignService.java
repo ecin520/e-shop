@@ -23,4 +23,5 @@ public interface UserFeignService {
      * */
     @RequestMapping(value = "/test/token", method = RequestMethod.POST)
     ResultEntity<Object> updateUser(@RequestBody SysUser user);
+
 }

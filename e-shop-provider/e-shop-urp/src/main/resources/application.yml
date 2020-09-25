@@ -10,6 +10,8 @@ mybatis:
 spring:
   application:
     name: urp-provider
+  main:
+    allow-bean-definition-overriding: true
   servlet:
     multipart:
       max-file-size:
@@ -23,7 +25,7 @@ spring:
     name: DruidDataSource
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://192.168.4.128:3306/e_shop?serverTimezone=UTC&characterEncoding=utf-8
+      url: jdbc:mysql://192.168.4.130:3306/e_shop_urp?serverTimezone=UTC&characterEncoding=utf-8
       username: root
       password: guowei00a
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -36,7 +38,7 @@ spring:
         login-username: user
         login-password: qwer1234
   redis:
-    host: 192.168.4.128
+    host: 192.168.4.130
     port: 6379
     password: null
     jedis:
