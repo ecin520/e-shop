@@ -19,13 +19,13 @@ public class OrderProductVO implements Serializable {
 
     private Long orderId;
 
+    private Long productId;
+
     private Long skuId;
 
+    private String productName;
+
     private EsSkuProduct skuProduct;
-
-    private EsCoupon coupon;
-
-    private EsDelivery delivery;
 
     private Integer num;
 

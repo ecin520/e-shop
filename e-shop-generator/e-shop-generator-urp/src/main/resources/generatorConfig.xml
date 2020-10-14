@@ -14,6 +14,8 @@
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <!-- 为实体添加toString方法 -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <!-- 生成hashcode和equals方法 -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
         <!-- 删除自动添加的注释 -->
         <commentGenerator>
             <property name="suppressDate" value="true"/>

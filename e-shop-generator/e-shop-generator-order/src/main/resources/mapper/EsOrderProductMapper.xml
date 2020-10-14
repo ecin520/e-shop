@@ -4,15 +4,10 @@
   <resultMap id="BaseResultMap" type="com.pytap.generator.entity.EsOrderProduct">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
     <result column="sku_id" jdbcType="BIGINT" property="skuId" />
-    <result column="coupon_id" jdbcType="BIGINT" property="couponId" />
-    <result column="delivery_id" jdbcType="BIGINT" property="deliveryId" />
     <result column="num" jdbcType="INTEGER" property="num" />
-    <result column="note" jdbcType="VARCHAR" property="note" />
-    <result column="confirm_status" jdbcType="INTEGER" property="confirmStatus" />
-    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
-    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
-    <result column="product_status" jdbcType="INTEGER" property="productStatus" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
@@ -75,8 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_id, sku_id, coupon_id, delivery_id, num, note, confirm_status, delivery_time, 
-    receive_time, product_status, update_time, create_time
+    id, order_id, product_id, product_name, sku_id, num, update_time, create_time
   </sql>
   <select id="selectByExample" parameterType="com.pytap.generator.entity.EsOrderProductExample" resultMap="BaseResultMap">
     select
@@ -112,16 +106,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into es_order_product (order_id, sku_id, coupon_id, 
-      delivery_id, num, note, 
-      confirm_status, delivery_time, receive_time, 
-      product_status, update_time, create_time
-      )
-    values (#{orderId,jdbcType=BIGINT}, #{skuId,jdbcType=BIGINT}, #{couponId,jdbcType=BIGINT}, 
-      #{deliveryId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, 
-      #{confirmStatus,jdbcType=INTEGER}, #{deliveryTime,jdbcType=TIMESTAMP}, #{receiveTime,jdbcType=TIMESTAMP}, 
-      #{productStatus,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
-      )
+    insert into es_order_product (order_id, product_id, product_name, 
+      sku_id, num, update_time, 
+      create_time)
+    values (#{orderId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
+      #{skuId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsOrderProduct">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -132,32 +122,17 @@
       <if test="orderId != null">
         order_id,
       </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
       <if test="skuId != null">
         sku_id,
       </if>
-      <if test="couponId != null">
-        coupon_id,
-      </if>
-      <if test="deliveryId != null">
-        delivery_id,
-      </if>
       <if test="num != null">
         num,
-      </if>
-      <if test="note != null">
-        note,
-      </if>
-      <if test="confirmStatus != null">
-        confirm_status,
-      </if>
-      <if test="deliveryTime != null">
-        delivery_time,
-      </if>
-      <if test="receiveTime != null">
-        receive_time,
-      </if>
-      <if test="productStatus != null">
-        product_status,
       </if>
       <if test="updateTime != null">
         update_time,
@@ -170,32 +145,17 @@
       <if test="orderId != null">
         #{orderId,jdbcType=BIGINT},
       </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
       <if test="skuId != null">
         #{skuId,jdbcType=BIGINT},
       </if>
-      <if test="couponId != null">
-        #{couponId,jdbcType=BIGINT},
-      </if>
-      <if test="deliveryId != null">
-        #{deliveryId,jdbcType=BIGINT},
-      </if>
       <if test="num != null">
         #{num,jdbcType=INTEGER},
-      </if>
-      <if test="note != null">
-        #{note,jdbcType=VARCHAR},
-      </if>
-      <if test="confirmStatus != null">
-        #{confirmStatus,jdbcType=INTEGER},
-      </if>
-      <if test="deliveryTime != null">
-        #{deliveryTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="receiveTime != null">
-        #{receiveTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="productStatus != null">
-        #{productStatus,jdbcType=INTEGER},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
@@ -220,32 +180,17 @@
       <if test="record.orderId != null">
         order_id = #{record.orderId,jdbcType=BIGINT},
       </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=BIGINT},
+      </if>
+      <if test="record.productName != null">
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
       <if test="record.skuId != null">
         sku_id = #{record.skuId,jdbcType=BIGINT},
       </if>
-      <if test="record.couponId != null">
-        coupon_id = #{record.couponId,jdbcType=BIGINT},
-      </if>
-      <if test="record.deliveryId != null">
-        delivery_id = #{record.deliveryId,jdbcType=BIGINT},
-      </if>
       <if test="record.num != null">
         num = #{record.num,jdbcType=INTEGER},
-      </if>
-      <if test="record.note != null">
-        note = #{record.note,jdbcType=VARCHAR},
-      </if>
-      <if test="record.confirmStatus != null">
-        confirm_status = #{record.confirmStatus,jdbcType=INTEGER},
-      </if>
-      <if test="record.deliveryTime != null">
-        delivery_time = #{record.deliveryTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.receiveTime != null">
-        receive_time = #{record.receiveTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.productStatus != null">
-        product_status = #{record.productStatus,jdbcType=INTEGER},
       </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -262,15 +207,10 @@
     update es_order_product
     set id = #{record.id,jdbcType=BIGINT},
       order_id = #{record.orderId,jdbcType=BIGINT},
+      product_id = #{record.productId,jdbcType=BIGINT},
+      product_name = #{record.productName,jdbcType=VARCHAR},
       sku_id = #{record.skuId,jdbcType=BIGINT},
-      coupon_id = #{record.couponId,jdbcType=BIGINT},
-      delivery_id = #{record.deliveryId,jdbcType=BIGINT},
       num = #{record.num,jdbcType=INTEGER},
-      note = #{record.note,jdbcType=VARCHAR},
-      confirm_status = #{record.confirmStatus,jdbcType=INTEGER},
-      delivery_time = #{record.deliveryTime,jdbcType=TIMESTAMP},
-      receive_time = #{record.receiveTime,jdbcType=TIMESTAMP},
-      product_status = #{record.productStatus,jdbcType=INTEGER},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -283,32 +223,17 @@
       <if test="orderId != null">
         order_id = #{orderId,jdbcType=BIGINT},
       </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
       <if test="skuId != null">
         sku_id = #{skuId,jdbcType=BIGINT},
       </if>
-      <if test="couponId != null">
-        coupon_id = #{couponId,jdbcType=BIGINT},
-      </if>
-      <if test="deliveryId != null">
-        delivery_id = #{deliveryId,jdbcType=BIGINT},
-      </if>
       <if test="num != null">
         num = #{num,jdbcType=INTEGER},
-      </if>
-      <if test="note != null">
-        note = #{note,jdbcType=VARCHAR},
-      </if>
-      <if test="confirmStatus != null">
-        confirm_status = #{confirmStatus,jdbcType=INTEGER},
-      </if>
-      <if test="deliveryTime != null">
-        delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="receiveTime != null">
-        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="productStatus != null">
-        product_status = #{productStatus,jdbcType=INTEGER},
       </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -322,15 +247,10 @@
   <update id="updateByPrimaryKey" parameterType="com.pytap.generator.entity.EsOrderProduct">
     update es_order_product
     set order_id = #{orderId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_name = #{productName,jdbcType=VARCHAR},
       sku_id = #{skuId,jdbcType=BIGINT},
-      coupon_id = #{couponId,jdbcType=BIGINT},
-      delivery_id = #{deliveryId,jdbcType=BIGINT},
       num = #{num,jdbcType=INTEGER},
-      note = #{note,jdbcType=VARCHAR},
-      confirm_status = #{confirmStatus,jdbcType=INTEGER},
-      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
-      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
-      product_status = #{productStatus,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

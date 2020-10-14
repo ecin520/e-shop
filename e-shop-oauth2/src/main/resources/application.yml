@@ -18,7 +18,7 @@ spring:
     name: DruidDataSource
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://192.168.4.130:3306/e_shop_urp?useSSL=FALSE&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      url: jdbc:mysql://192.168.4.130:3306/e_shop_urp?serverTimezone=UTC&characterEncoding=utf-8
       username: root
       password: guowei00a
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -56,7 +56,7 @@ eureka:
         http://ecin520:guowei00a@www.eureka-2th.com:4002/eureka/
   instance:
     instance-id:
-      e-mall-auth-provider
+      e-shop-auth-provider
     prefer-ip-address: true
 
 logging:

@@ -346,63 +346,63 @@ public class EsCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andRangeIsNull() {
-            addCriterion("range is null");
+        public Criteria andUseRangeIsNull() {
+            addCriterion("use_range is null");
             return (Criteria) this;
         }
 
-        public Criteria andRangeIsNotNull() {
-            addCriterion("range is not null");
+        public Criteria andUseRangeIsNotNull() {
+            addCriterion("use_range is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRangeEqualTo(Integer value) {
-            addCriterion("range =", value, "range");
+        public Criteria andUseRangeEqualTo(Integer value) {
+            addCriterion("use_range =", value, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeNotEqualTo(Integer value) {
-            addCriterion("range <>", value, "range");
+        public Criteria andUseRangeNotEqualTo(Integer value) {
+            addCriterion("use_range <>", value, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeGreaterThan(Integer value) {
-            addCriterion("range >", value, "range");
+        public Criteria andUseRangeGreaterThan(Integer value) {
+            addCriterion("use_range >", value, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("range >=", value, "range");
+        public Criteria andUseRangeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("use_range >=", value, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeLessThan(Integer value) {
-            addCriterion("range <", value, "range");
+        public Criteria andUseRangeLessThan(Integer value) {
+            addCriterion("use_range <", value, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeLessThanOrEqualTo(Integer value) {
-            addCriterion("range <=", value, "range");
+        public Criteria andUseRangeLessThanOrEqualTo(Integer value) {
+            addCriterion("use_range <=", value, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeIn(List<Integer> values) {
-            addCriterion("range in", values, "range");
+        public Criteria andUseRangeIn(List<Integer> values) {
+            addCriterion("use_range in", values, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeNotIn(List<Integer> values) {
-            addCriterion("range not in", values, "range");
+        public Criteria andUseRangeNotIn(List<Integer> values) {
+            addCriterion("use_range not in", values, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeBetween(Integer value1, Integer value2) {
-            addCriterion("range between", value1, value2, "range");
+        public Criteria andUseRangeBetween(Integer value1, Integer value2) {
+            addCriterion("use_range between", value1, value2, "useRange");
             return (Criteria) this;
         }
 
-        public Criteria andRangeNotBetween(Integer value1, Integer value2) {
-            addCriterion("range not between", value1, value2, "range");
+        public Criteria andUseRangeNotBetween(Integer value1, Integer value2) {
+            addCriterion("use_range not between", value1, value2, "useRange");
             return (Criteria) this;
         }
 
@@ -656,63 +656,63 @@ public class EsCouponExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartIsNull() {
-            addCriterion("start is null");
+        public Criteria andStartPointIsNull() {
+            addCriterion("start_point is null");
             return (Criteria) this;
         }
 
-        public Criteria andStartIsNotNull() {
-            addCriterion("start is not null");
+        public Criteria andStartPointIsNotNull() {
+            addCriterion("start_point is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStartEqualTo(BigDecimal value) {
-            addCriterion("start =", value, "start");
+        public Criteria andStartPointEqualTo(BigDecimal value) {
+            addCriterion("start_point =", value, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartNotEqualTo(BigDecimal value) {
-            addCriterion("start <>", value, "start");
+        public Criteria andStartPointNotEqualTo(BigDecimal value) {
+            addCriterion("start_point <>", value, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartGreaterThan(BigDecimal value) {
-            addCriterion("start >", value, "start");
+        public Criteria andStartPointGreaterThan(BigDecimal value) {
+            addCriterion("start_point >", value, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("start >=", value, "start");
+        public Criteria andStartPointGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("start_point >=", value, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartLessThan(BigDecimal value) {
-            addCriterion("start <", value, "start");
+        public Criteria andStartPointLessThan(BigDecimal value) {
+            addCriterion("start_point <", value, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("start <=", value, "start");
+        public Criteria andStartPointLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("start_point <=", value, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartIn(List<BigDecimal> values) {
-            addCriterion("start in", values, "start");
+        public Criteria andStartPointIn(List<BigDecimal> values) {
+            addCriterion("start_point in", values, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartNotIn(List<BigDecimal> values) {
-            addCriterion("start not in", values, "start");
+        public Criteria andStartPointNotIn(List<BigDecimal> values) {
+            addCriterion("start_point not in", values, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("start between", value1, value2, "start");
+        public Criteria andStartPointBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("start_point between", value1, value2, "startPoint");
             return (Criteria) this;
         }
 
-        public Criteria andStartNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("start not between", value1, value2, "start");
+        public Criteria andStartPointNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("start_point not between", value1, value2, "startPoint");
             return (Criteria) this;
         }
 

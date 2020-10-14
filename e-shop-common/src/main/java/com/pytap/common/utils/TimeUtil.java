@@ -10,6 +10,10 @@ import java.util.Date;
  */
 public class TimeUtil {
 
+    public static Date now() {
+        return new Date();
+    }
+
     /**
      * 格式化时间
      * */

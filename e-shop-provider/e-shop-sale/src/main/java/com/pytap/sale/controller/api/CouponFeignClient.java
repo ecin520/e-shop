@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @author Ecin520
  * @date 2020/9/25 10:54
  */
-@RequestMapping("/feign/coupon")
+@RequestMapping("/open/feign/coupon")
 @RestController
 public class CouponFeignClient {
 

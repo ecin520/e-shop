@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 public class MemberVO implements Serializable {
 
-    private static final long serialVersionUID = -3949682809330431537L;
+    private static final long serialVersionUID = -2014111904111038621L;
 
     private Long id;
 

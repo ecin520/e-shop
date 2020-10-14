@@ -43,6 +43,15 @@ spring:
         min-idle: 1
         max-active: 1000
         max-wait: -1
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      cluster-nodes: 192.168.4.130:9300
+      cluster-name: docker-cluster
+  elasticsearch:
+    rest:
+      uris: ["192.168.4.130:9200"]
 
 eureka:
   client:

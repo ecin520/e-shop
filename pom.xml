@@ -44,6 +44,8 @@
         <jedis-version>2.9.0</jedis-version>
         <swagger-version>2.9.2</swagger-version>
         <swagger-ui-version>1.9.6</swagger-ui-version>
+        <bcprov-jdk15on-version>1.60</bcprov-jdk15on-version>
+        <commons-codec-version>1.11</commons-codec-version>
     </properties>
 
     <dependencyManagement>
@@ -131,6 +133,19 @@
                 <artifactId>swagger-bootstrap-ui</artifactId>
                 <version>${swagger-ui-version}</version>
             </dependency>
+            <!--加密解密工具包-->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov-jdk15on-version}</version>
+            </dependency>
+            <!-- apache base64 -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec-version}</version>
+            </dependency>
+
 
             <!--junit-->
             <dependency>

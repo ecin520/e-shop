@@ -57,4 +57,7 @@
     <select id="getUserByUsername" resultType="com.pytap.generator.entity.SysUser">
         SELECT * FROM `sys_user` WHERE `username` = #{username}
     </select>
+    <select id="getUserByTelephone" resultType="com.pytap.generator.entity.SysUser">
+        SELECT * FROM `sys_user` WHERE `telephone` = #{telephone}
+    </select>
 </mapper>

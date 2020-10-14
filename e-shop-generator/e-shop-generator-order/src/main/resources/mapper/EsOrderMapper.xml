@@ -6,12 +6,18 @@
     <result column="member_id" jdbcType="BIGINT" property="memberId" />
     <result column="shop_id" jdbcType="BIGINT" property="shopId" />
     <result column="receiver_address_id" jdbcType="BIGINT" property="receiverAddressId" />
+    <result column="delivery_id" jdbcType="BIGINT" property="deliveryId" />
+    <result column="coupon_id" jdbcType="BIGINT" property="couponId" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
     <result column="freight" jdbcType="DECIMAL" property="freight" />
     <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
     <result column="pay_type" jdbcType="INTEGER" property="payType" />
     <result column="pay_serial" jdbcType="VARCHAR" property="paySerial" />
     <result column="order_source" jdbcType="VARCHAR" property="orderSource" />
+    <result column="confirm_status" jdbcType="INTEGER" property="confirmStatus" />
+    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="order_type" jdbcType="INTEGER" property="orderType" />
     <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
@@ -77,8 +83,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, member_id, shop_id, receiver_address_id, order_number, freight, total_price, 
-    pay_type, pay_serial, order_source, status, order_type, pay_time, update_time, create_time
+    id, member_id, shop_id, receiver_address_id, delivery_id, coupon_id, order_number, 
+    freight, total_price, pay_type, pay_serial, order_source, confirm_status, delivery_time, 
+    receive_time, note, status, order_type, pay_time, update_time, create_time
   </sql>
   <select id="selectByExample" parameterType="com.pytap.generator.entity.EsOrderExample" resultMap="BaseResultMap">
     select
@@ -115,13 +122,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into es_order (member_id, shop_id, receiver_address_id, 
-      order_number, freight, total_price, 
-      pay_type, pay_serial, order_source, 
+      delivery_id, coupon_id, order_number, 
+      freight, total_price, pay_type, 
+      pay_serial, order_source, confirm_status, 
+      delivery_time, receive_time, note, 
       status, order_type, pay_time, 
       update_time, create_time)
     values (#{memberId,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{receiverAddressId,jdbcType=BIGINT}, 
-      #{orderNumber,jdbcType=VARCHAR}, #{freight,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
-      #{payType,jdbcType=INTEGER}, #{paySerial,jdbcType=VARCHAR}, #{orderSource,jdbcType=VARCHAR}, 
+      #{deliveryId,jdbcType=BIGINT}, #{couponId,jdbcType=BIGINT}, #{orderNumber,jdbcType=VARCHAR}, 
+      #{freight,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{payType,jdbcType=INTEGER}, 
+      #{paySerial,jdbcType=VARCHAR}, #{orderSource,jdbcType=VARCHAR}, #{confirmStatus,jdbcType=INTEGER}, 
+      #{deliveryTime,jdbcType=TIMESTAMP}, #{receiveTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
@@ -140,6 +151,12 @@
       <if test="receiverAddressId != null">
         receiver_address_id,
       </if>
+      <if test="deliveryId != null">
+        delivery_id,
+      </if>
+      <if test="couponId != null">
+        coupon_id,
+      </if>
       <if test="orderNumber != null">
         order_number,
       </if>
@@ -157,6 +174,18 @@
       </if>
       <if test="orderSource != null">
         order_source,
+      </if>
+      <if test="confirmStatus != null">
+        confirm_status,
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time,
+      </if>
+      <if test="receiveTime != null">
+        receive_time,
+      </if>
+      <if test="note != null">
+        note,
       </if>
       <if test="status != null">
         status,
@@ -184,6 +213,12 @@
       <if test="receiverAddressId != null">
         #{receiverAddressId,jdbcType=BIGINT},
       </if>
+      <if test="deliveryId != null">
+        #{deliveryId,jdbcType=BIGINT},
+      </if>
+      <if test="couponId != null">
+        #{couponId,jdbcType=BIGINT},
+      </if>
       <if test="orderNumber != null">
         #{orderNumber,jdbcType=VARCHAR},
       </if>
@@ -201,6 +236,18 @@
       </if>
       <if test="orderSource != null">
         #{orderSource,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmStatus != null">
+        #{confirmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryTime != null">
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null">
+        #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -240,6 +287,12 @@
       <if test="record.receiverAddressId != null">
         receiver_address_id = #{record.receiverAddressId,jdbcType=BIGINT},
       </if>
+      <if test="record.deliveryId != null">
+        delivery_id = #{record.deliveryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.couponId != null">
+        coupon_id = #{record.couponId,jdbcType=BIGINT},
+      </if>
       <if test="record.orderNumber != null">
         order_number = #{record.orderNumber,jdbcType=VARCHAR},
       </if>
@@ -257,6 +310,18 @@
       </if>
       <if test="record.orderSource != null">
         order_source = #{record.orderSource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.confirmStatus != null">
+        confirm_status = #{record.confirmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliveryTime != null">
+        delivery_time = #{record.deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.receiveTime != null">
+        receive_time = #{record.receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
@@ -284,12 +349,18 @@
       member_id = #{record.memberId,jdbcType=BIGINT},
       shop_id = #{record.shopId,jdbcType=BIGINT},
       receiver_address_id = #{record.receiverAddressId,jdbcType=BIGINT},
+      delivery_id = #{record.deliveryId,jdbcType=BIGINT},
+      coupon_id = #{record.couponId,jdbcType=BIGINT},
       order_number = #{record.orderNumber,jdbcType=VARCHAR},
       freight = #{record.freight,jdbcType=DECIMAL},
       total_price = #{record.totalPrice,jdbcType=DECIMAL},
       pay_type = #{record.payType,jdbcType=INTEGER},
       pay_serial = #{record.paySerial,jdbcType=VARCHAR},
       order_source = #{record.orderSource,jdbcType=VARCHAR},
+      confirm_status = #{record.confirmStatus,jdbcType=INTEGER},
+      delivery_time = #{record.deliveryTime,jdbcType=TIMESTAMP},
+      receive_time = #{record.receiveTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
       order_type = #{record.orderType,jdbcType=INTEGER},
       pay_time = #{record.payTime,jdbcType=TIMESTAMP},
@@ -311,6 +382,12 @@
       <if test="receiverAddressId != null">
         receiver_address_id = #{receiverAddressId,jdbcType=BIGINT},
       </if>
+      <if test="deliveryId != null">
+        delivery_id = #{deliveryId,jdbcType=BIGINT},
+      </if>
+      <if test="couponId != null">
+        coupon_id = #{couponId,jdbcType=BIGINT},
+      </if>
       <if test="orderNumber != null">
         order_number = #{orderNumber,jdbcType=VARCHAR},
       </if>
@@ -328,6 +405,18 @@
       </if>
       <if test="orderSource != null">
         order_source = #{orderSource,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmStatus != null">
+        confirm_status = #{confirmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiveTime != null">
+        receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
@@ -352,12 +441,18 @@
     set member_id = #{memberId,jdbcType=BIGINT},
       shop_id = #{shopId,jdbcType=BIGINT},
       receiver_address_id = #{receiverAddressId,jdbcType=BIGINT},
+      delivery_id = #{deliveryId,jdbcType=BIGINT},
+      coupon_id = #{couponId,jdbcType=BIGINT},
       order_number = #{orderNumber,jdbcType=VARCHAR},
       freight = #{freight,jdbcType=DECIMAL},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       pay_type = #{payType,jdbcType=INTEGER},
       pay_serial = #{paySerial,jdbcType=VARCHAR},
       order_source = #{orderSource,jdbcType=VARCHAR},
+      confirm_status = #{confirmStatus,jdbcType=INTEGER},
+      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      receive_time = #{receiveTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       order_type = #{orderType,jdbcType=INTEGER},
       pay_time = #{payTime,jdbcType=TIMESTAMP},

@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 public class UserVO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 396586324227803748L;
 
     private Long id;
 

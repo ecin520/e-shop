@@ -42,4 +42,11 @@ public interface AuthMapper {
      * */
     SysUser getUserByUsername(String username);
 
+    /**
+     * 通过电话号码获取用户
+     * @param telephone 手机号码
+     * @return SysUser 用户
+     * */
+    SysUser getUserByTelephone(String telephone);
+
 }

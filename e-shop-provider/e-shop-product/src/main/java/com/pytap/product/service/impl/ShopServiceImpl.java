@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.pytap.common.utils.Pager;
 import com.pytap.generator.dao.EsProductMapper;
 import com.pytap.generator.dao.EsShopMapper;
+import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsProductExample;
 import com.pytap.generator.entity.EsShop;
 import com.pytap.generator.entity.EsShopExample;
+import com.pytap.product.service.ProductService;
 import com.pytap.product.service.ShopService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,9 @@ import java.util.List;
 public class ShopServiceImpl implements ShopService {
 
     @Resource
+    private ProductService productService;
+
+    @Resource
     private EsShopMapper shopMapper;
 
     @Resource
@@ -39,14 +44,18 @@ public class ShopServiceImpl implements ShopService {
         return shopMapper.insert(shop);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer deleteShopById(Long id) {
+
         // 删除店铺所有商品
         EsProductExample example = new EsProductExample();
         EsProductExample.Criteria criteria = example.createCriteria();
         criteria.andShopIdEqualTo(id);
-        productMapper.deleteByExample(example);
+        List<EsProduct> products = productMapper.selectByExample(example);
+        for (EsProduct product : products) {
+            productService.deleteProductById(product.getId());
+        }
 
         // 删除商铺
         shopMapper.deleteByPrimaryKey(id);

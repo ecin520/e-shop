@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class EsSeckillProductExample {
+public class EsFlashSaleProductExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public EsSeckillProductExample() {
+    public EsFlashSaleProductExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -226,63 +226,63 @@ public class EsSeckillProductExample {
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceIsNull() {
-            addCriterion("seckill_price is null");
+        public Criteria andFlashSalePriceIsNull() {
+            addCriterion("flash_sale_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceIsNotNull() {
-            addCriterion("seckill_price is not null");
+        public Criteria andFlashSalePriceIsNotNull() {
+            addCriterion("flash_sale_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceEqualTo(BigDecimal value) {
-            addCriterion("seckill_price =", value, "seckillPrice");
+        public Criteria andFlashSalePriceEqualTo(BigDecimal value) {
+            addCriterion("flash_sale_price =", value, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceNotEqualTo(BigDecimal value) {
-            addCriterion("seckill_price <>", value, "seckillPrice");
+        public Criteria andFlashSalePriceNotEqualTo(BigDecimal value) {
+            addCriterion("flash_sale_price <>", value, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceGreaterThan(BigDecimal value) {
-            addCriterion("seckill_price >", value, "seckillPrice");
+        public Criteria andFlashSalePriceGreaterThan(BigDecimal value) {
+            addCriterion("flash_sale_price >", value, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("seckill_price >=", value, "seckillPrice");
+        public Criteria andFlashSalePriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("flash_sale_price >=", value, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceLessThan(BigDecimal value) {
-            addCriterion("seckill_price <", value, "seckillPrice");
+        public Criteria andFlashSalePriceLessThan(BigDecimal value) {
+            addCriterion("flash_sale_price <", value, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("seckill_price <=", value, "seckillPrice");
+        public Criteria andFlashSalePriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("flash_sale_price <=", value, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceIn(List<BigDecimal> values) {
-            addCriterion("seckill_price in", values, "seckillPrice");
+        public Criteria andFlashSalePriceIn(List<BigDecimal> values) {
+            addCriterion("flash_sale_price in", values, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceNotIn(List<BigDecimal> values) {
-            addCriterion("seckill_price not in", values, "seckillPrice");
+        public Criteria andFlashSalePriceNotIn(List<BigDecimal> values) {
+            addCriterion("flash_sale_price not in", values, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("seckill_price between", value1, value2, "seckillPrice");
+        public Criteria andFlashSalePriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("flash_sale_price between", value1, value2, "flashSalePrice");
             return (Criteria) this;
         }
 
-        public Criteria andSeckillPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("seckill_price not between", value1, value2, "seckillPrice");
+        public Criteria andFlashSalePriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("flash_sale_price not between", value1, value2, "flashSalePrice");
             return (Criteria) this;
         }
 

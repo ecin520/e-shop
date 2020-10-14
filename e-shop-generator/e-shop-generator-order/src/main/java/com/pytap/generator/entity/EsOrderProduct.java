@@ -8,23 +8,13 @@ public class EsOrderProduct implements Serializable {
 
     private Long orderId;
 
+    private Long productId;
+
+    private String productName;
+
     private Long skuId;
 
-    private Long couponId;
-
-    private Long deliveryId;
-
     private Integer num;
-
-    private String note;
-
-    private Integer confirmStatus;
-
-    private Date deliveryTime;
-
-    private Date receiveTime;
-
-    private Integer productStatus;
 
     private Date updateTime;
 
@@ -48,6 +38,22 @@ public class EsOrderProduct implements Serializable {
         this.orderId = orderId;
     }
 
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public Long getSkuId() {
         return skuId;
     }
@@ -56,68 +62,12 @@ public class EsOrderProduct implements Serializable {
         this.skuId = skuId;
     }
 
-    public Long getCouponId() {
-        return couponId;
-    }
-
-    public void setCouponId(Long couponId) {
-        this.couponId = couponId;
-    }
-
-    public Long getDeliveryId() {
-        return deliveryId;
-    }
-
-    public void setDeliveryId(Long deliveryId) {
-        this.deliveryId = deliveryId;
-    }
-
     public Integer getNum() {
         return num;
     }
 
     public void setNum(Integer num) {
         this.num = num;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public Integer getConfirmStatus() {
-        return confirmStatus;
-    }
-
-    public void setConfirmStatus(Integer confirmStatus) {
-        this.confirmStatus = confirmStatus;
-    }
-
-    public Date getDeliveryTime() {
-        return deliveryTime;
-    }
-
-    public void setDeliveryTime(Date deliveryTime) {
-        this.deliveryTime = deliveryTime;
-    }
-
-    public Date getReceiveTime() {
-        return receiveTime;
-    }
-
-    public void setReceiveTime(Date receiveTime) {
-        this.receiveTime = receiveTime;
-    }
-
-    public Integer getProductStatus() {
-        return productStatus;
-    }
-
-    public void setProductStatus(Integer productStatus) {
-        this.productStatus = productStatus;
     }
 
     public Date getUpdateTime() {
@@ -144,19 +94,51 @@ public class EsOrderProduct implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", orderId=").append(orderId);
+        sb.append(", productId=").append(productId);
+        sb.append(", productName=").append(productName);
         sb.append(", skuId=").append(skuId);
-        sb.append(", couponId=").append(couponId);
-        sb.append(", deliveryId=").append(deliveryId);
         sb.append(", num=").append(num);
-        sb.append(", note=").append(note);
-        sb.append(", confirmStatus=").append(confirmStatus);
-        sb.append(", deliveryTime=").append(deliveryTime);
-        sb.append(", receiveTime=").append(receiveTime);
-        sb.append(", productStatus=").append(productStatus);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        EsOrderProduct other = (EsOrderProduct) that;
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getOrderId() == null ? other.getOrderId() == null : this.getOrderId().equals(other.getOrderId()))
+            && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
+            && (this.getProductName() == null ? other.getProductName() == null : this.getProductName().equals(other.getProductName()))
+            && (this.getSkuId() == null ? other.getSkuId() == null : this.getSkuId().equals(other.getSkuId()))
+            && (this.getNum() == null ? other.getNum() == null : this.getNum().equals(other.getNum()))
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getOrderId() == null) ? 0 : getOrderId().hashCode());
+        result = prime * result + ((getProductId() == null) ? 0 : getProductId().hashCode());
+        result = prime * result + ((getProductName() == null) ? 0 : getProductName().hashCode());
+        result = prime * result + ((getSkuId() == null) ? 0 : getSkuId().hashCode());
+        result = prime * result + ((getNum() == null) ? 0 : getNum().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        return result;
     }
 }

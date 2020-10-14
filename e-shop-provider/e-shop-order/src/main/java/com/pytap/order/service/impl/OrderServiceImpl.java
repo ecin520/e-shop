@@ -14,6 +14,7 @@ import com.pytap.generator.dao.EsOrderMapper;
 import com.pytap.generator.dao.EsOrderProductMapper;
 import com.pytap.generator.dao.EsReceiverAddressMapper;
 import com.pytap.generator.entity.*;
+import com.pytap.order.model.dto.OrderParamDTO;
 import com.pytap.order.model.dto.OrderQueryDTO;
 import com.pytap.order.model.vo.OrderProductVO;
 import com.pytap.order.model.vo.OrderVO;
@@ -65,6 +66,11 @@ public class OrderServiceImpl implements OrderService {
     public Integer insertOrder(EsOrder order) {
         order.setCreateTime(new Date());
         return orderMapper.insert(order);
+    }
+
+    @Override
+    public Integer insertOrderByParam(OrderParamDTO orderParamDTO) {
+        return null;
     }
 
     @Override
@@ -135,6 +141,7 @@ public class OrderServiceImpl implements OrderService {
             EsOrder order = list.get(0);
             BeanUtils.copyProperties(order, vo);
 
+            // 添加会员信息
             if (null != order.getMemberId()) {
                 // 调用远程接口通过会员id获取会员
                 EsMember member = new EsMember();
@@ -148,6 +155,7 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
 
+            //添加店铺信息
             if (null != order.getShopId()) {
                 EsShop shop = new EsShop();
                 shop.setId(order.getShopId());
@@ -161,8 +169,26 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
 
+            // 添加优惠券信息
+            if (null != order.getCouponId()) {
+                EsCoupon coupon = new EsCoupon();
+                coupon.setId(order.getCouponId());
+                // 远程调用优惠券查询接口
+                ResultEntity<EsCoupon> resultEntity1 = couponFeignService.getCoupon(coupon);
+                if (HttpCode.SUCCESS.equals(resultEntity1.getCode())) {
+                    vo.setCoupon(resultEntity1.getData());
+                } else {
+                    logger.error(resultEntity1.getMessage());
+                    vo.setCoupon(null);
+                }
+            }
 
+            // 添加物流信息
+            if (null != order.getDeliveryId()) {
+                vo.setDelivery(deliveryMapper.selectByPrimaryKey(order.getDeliveryId()));
+            }
 
+            // 收货地址
             if (null != order.getReceiverAddressId()) {
                 vo.setReceiverAddress(receiverAddressMapper.selectByPrimaryKey(order.getReceiverAddressId()));
             }
@@ -187,23 +213,6 @@ public class OrderServiceImpl implements OrderService {
                         logger.error(resultEntity1.getMessage());
                         orderProductVO.setSkuProduct(null);
                     }
-                }
-
-                if (null != orderProduct.getCouponId()) {
-                    EsCoupon coupon = new EsCoupon();
-                    coupon.setId(orderProduct.getCouponId());
-                    // 远程调用优惠券查询接口
-                    ResultEntity<EsCoupon> resultEntity1 = couponFeignService.getCoupon(coupon);
-                    if (HttpCode.SUCCESS.equals(resultEntity1.getCode())) {
-                        orderProductVO.setCoupon(resultEntity1.getData());
-                    } else {
-                        logger.error(resultEntity1.getMessage());
-                        orderProductVO.setCoupon(null);
-                    }
-                }
-
-                if (null != orderProduct.getDeliveryId()) {
-                    orderProductVO.setDelivery(deliveryMapper.selectByPrimaryKey(orderProduct.getDeliveryId()));
                 }
 
                 if (null == vo.getProducts()) {

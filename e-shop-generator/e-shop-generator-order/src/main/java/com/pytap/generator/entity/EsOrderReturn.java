@@ -170,4 +170,53 @@ public class EsOrderReturn implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        EsOrderReturn other = (EsOrderReturn) that;
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getMemberId() == null ? other.getMemberId() == null : this.getMemberId().equals(other.getMemberId()))
+            && (this.getOrderId() == null ? other.getOrderId() == null : this.getOrderId().equals(other.getOrderId()))
+            && (this.getHandlerId() == null ? other.getHandlerId() == null : this.getHandlerId().equals(other.getHandlerId()))
+            && (this.getMemberAddressId() == null ? other.getMemberAddressId() == null : this.getMemberAddressId().equals(other.getMemberAddressId()))
+            && (this.getShopAddressId() == null ? other.getShopAddressId() == null : this.getShopAddressId().equals(other.getShopAddressId()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+            && (this.getHandleTime() == null ? other.getHandleTime() == null : this.getHandleTime().equals(other.getHandleTime()))
+            && (this.getReason() == null ? other.getReason() == null : this.getReason().equals(other.getReason()))
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getCertificateImage() == null ? other.getCertificateImage() == null : this.getCertificateImage().equals(other.getCertificateImage()))
+            && (this.getHandleNote() == null ? other.getHandleNote() == null : this.getHandleNote().equals(other.getHandleNote()))
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getMemberId() == null) ? 0 : getMemberId().hashCode());
+        result = prime * result + ((getOrderId() == null) ? 0 : getOrderId().hashCode());
+        result = prime * result + ((getHandlerId() == null) ? 0 : getHandlerId().hashCode());
+        result = prime * result + ((getMemberAddressId() == null) ? 0 : getMemberAddressId().hashCode());
+        result = prime * result + ((getShopAddressId() == null) ? 0 : getShopAddressId().hashCode());
+        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
+        result = prime * result + ((getHandleTime() == null) ? 0 : getHandleTime().hashCode());
+        result = prime * result + ((getReason() == null) ? 0 : getReason().hashCode());
+        result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getCertificateImage() == null) ? 0 : getCertificateImage().hashCode());
+        result = prime * result + ((getHandleNote() == null) ? 0 : getHandleNote().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        return result;
+    }
 }

@@ -73,6 +73,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public SysUser getUserByTelephone(String telephone) {
+        return authMapper.getUserByTelephone(telephone);
+    }
+
+    @Override
     public Integer updateUserInfo(SysUser user) {
         return userMapper.updateByPrimaryKeySelective(user);
     }

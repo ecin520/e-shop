@@ -6,9 +6,12 @@ import com.pytap.common.utils.QueryParam;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsSkuProduct;
+import com.pytap.product.model.domain.SearchProduct;
 import com.pytap.product.model.dto.ProductDTO;
 import com.pytap.product.service.ProductService;
+import com.pytap.product.service.SearchProductService;
 import com.pytap.product.service.SkuProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,6 +30,23 @@ public class ProductAdminController {
 
     @Resource
     private SkuProductService skuProductService;
+
+    @Resource
+    private SearchProductService searchProductService;
+
+    @Log(value = "导入商品进ES")
+    @RequestMapping(value = "/import", method = RequestMethod.GET)
+    public ResultEntity<Object> importProduct() {
+        return ResultEntity.success(searchProductService.importAll());
+    }
+
+    @Log(value = "ES中搜索商品")
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResultEntity<Page<SearchProduct>> searchProduct(@RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
+                                                           @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                                           @RequestParam(value = "keyword") String keyword) {
+        return ResultEntity.success(searchProductService.search(keyword, pageNum, pageSize));
+    }
 
     @Log(value = "插入spu商品")
     @RequestMapping(value = "insert", method = RequestMethod.POST)

@@ -281,4 +281,73 @@ public class EsProduct implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        EsProduct other = (EsProduct) that;
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getProductCategoryDetailId() == null ? other.getProductCategoryDetailId() == null : this.getProductCategoryDetailId().equals(other.getProductCategoryDetailId()))
+            && (this.getShopId() == null ? other.getShopId() == null : this.getShopId().equals(other.getShopId()))
+            && (this.getProductCategoryDetailName() == null ? other.getProductCategoryDetailName() == null : this.getProductCategoryDetailName().equals(other.getProductCategoryDetailName()))
+            && (this.getShopName() == null ? other.getShopName() == null : this.getShopName().equals(other.getShopName()))
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+            && (this.getParameter() == null ? other.getParameter() == null : this.getParameter().equals(other.getParameter()))
+            && (this.getShowImage() == null ? other.getShowImage() == null : this.getShowImage().equals(other.getShowImage()))
+            && (this.getItemNo() == null ? other.getItemNo() == null : this.getItemNo().equals(other.getItemNo()))
+            && (this.getDeleteStatus() == null ? other.getDeleteStatus() == null : this.getDeleteStatus().equals(other.getDeleteStatus()))
+            && (this.getShelfStatus() == null ? other.getShelfStatus() == null : this.getShelfStatus().equals(other.getShelfStatus()))
+            && (this.getVerifyStatus() == null ? other.getVerifyStatus() == null : this.getVerifyStatus().equals(other.getVerifyStatus()))
+            && (this.getPrice() == null ? other.getPrice() == null : this.getPrice().equals(other.getPrice()))
+            && (this.getGrowthValue() == null ? other.getGrowthValue() == null : this.getGrowthValue().equals(other.getGrowthValue()))
+            && (this.getIntegral() == null ? other.getIntegral() == null : this.getIntegral().equals(other.getIntegral()))
+            && (this.getSubTitle() == null ? other.getSubTitle() == null : this.getSubTitle().equals(other.getSubTitle()))
+            && (this.getUnit() == null ? other.getUnit() == null : this.getUnit().equals(other.getUnit()))
+            && (this.getPreStatus() == null ? other.getPreStatus() == null : this.getPreStatus().equals(other.getPreStatus()))
+            && (this.getSaleTime() == null ? other.getSaleTime() == null : this.getSaleTime().equals(other.getSaleTime()))
+            && (this.getKeywords() == null ? other.getKeywords() == null : this.getKeywords().equals(other.getKeywords()))
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getDetail() == null ? other.getDetail() == null : this.getDetail().equals(other.getDetail()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getProductCategoryDetailId() == null) ? 0 : getProductCategoryDetailId().hashCode());
+        result = prime * result + ((getShopId() == null) ? 0 : getShopId().hashCode());
+        result = prime * result + ((getProductCategoryDetailName() == null) ? 0 : getProductCategoryDetailName().hashCode());
+        result = prime * result + ((getShopName() == null) ? 0 : getShopName().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getParameter() == null) ? 0 : getParameter().hashCode());
+        result = prime * result + ((getShowImage() == null) ? 0 : getShowImage().hashCode());
+        result = prime * result + ((getItemNo() == null) ? 0 : getItemNo().hashCode());
+        result = prime * result + ((getDeleteStatus() == null) ? 0 : getDeleteStatus().hashCode());
+        result = prime * result + ((getShelfStatus() == null) ? 0 : getShelfStatus().hashCode());
+        result = prime * result + ((getVerifyStatus() == null) ? 0 : getVerifyStatus().hashCode());
+        result = prime * result + ((getPrice() == null) ? 0 : getPrice().hashCode());
+        result = prime * result + ((getGrowthValue() == null) ? 0 : getGrowthValue().hashCode());
+        result = prime * result + ((getIntegral() == null) ? 0 : getIntegral().hashCode());
+        result = prime * result + ((getSubTitle() == null) ? 0 : getSubTitle().hashCode());
+        result = prime * result + ((getUnit() == null) ? 0 : getUnit().hashCode());
+        result = prime * result + ((getPreStatus() == null) ? 0 : getPreStatus().hashCode());
+        result = prime * result + ((getSaleTime() == null) ? 0 : getSaleTime().hashCode());
+        result = prime * result + ((getKeywords() == null) ? 0 : getKeywords().hashCode());
+        result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getDetail() == null) ? 0 : getDetail().hashCode());
+        return result;
+    }
 }

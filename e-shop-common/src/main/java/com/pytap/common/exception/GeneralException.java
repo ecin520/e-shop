@@ -6,6 +6,9 @@ package com.pytap.common.exception;
  * @date 2020/8/19 14:52
  */
 public class GeneralException extends Exception {
+
+    private static final long serialVersionUID = -2282304269742635805L;
+
     public GeneralException(String msg) {
         super(msg);
     }

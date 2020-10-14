@@ -1,9 +1,7 @@
 package com.pytap.order.model.vo;
 
 import com.pytap.api.model.vo.MemberVO;
-import com.pytap.generator.entity.EsMember;
-import com.pytap.generator.entity.EsReceiverAddress;
-import com.pytap.generator.entity.EsShop;
+import com.pytap.generator.entity.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -23,15 +21,19 @@ public class OrderVO implements Serializable {
 
     private Long id;
 
-    private String orderNumber;
+    private MemberVO member;
 
     private EsShop shop;
 
-    private MemberVO member;
-
     private EsReceiverAddress receiverAddress;
 
+    private EsDelivery delivery;
+
+    private EsCoupon coupon;
+
     private List<OrderProductVO> products;
+
+    private String orderNumber;
 
     private BigDecimal freight;
 
@@ -39,7 +41,17 @@ public class OrderVO implements Serializable {
 
     private Integer payType;
 
+    private String paySerial;
+
     private String orderSource;
+
+    private Integer confirmStatus;
+
+    private Date deliveryTime;
+
+    private Date receiveTime;
+
+    private String note;
 
     private Integer status;
 

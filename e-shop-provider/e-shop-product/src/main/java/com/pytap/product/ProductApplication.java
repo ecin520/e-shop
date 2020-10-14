@@ -15,10 +15,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EnableFeignClients("com.pytap.api")
-@SpringBootApplication(scanBasePackages = {"com.pytap.product", "com.pytap.log"})
+@SpringBootApplication(scanBasePackages = {"com.pytap.product", "com.pytap.log", "com.pytap.api"})
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ProductApplication {
     public static void main(String[] args) {
+        System.setProperty("es.set.netty.runtime.available.processors","false");
         SpringApplication application = new SpringApplication(ProductApplication.class);
         application.setBannerMode(Banner.Mode.OFF);
         application.run(args);

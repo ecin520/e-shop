@@ -3,6 +3,7 @@ package com.pytap.order.service;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.entity.EsOrder;
+import com.pytap.order.model.dto.OrderParamDTO;
 import com.pytap.order.model.dto.OrderQueryDTO;
 import com.pytap.order.model.vo.OrderVO;
 
@@ -17,6 +18,13 @@ public interface OrderService {
      * @return Integer
      * */
     Integer insertOrder(EsOrder order);
+
+    /**
+     * 传入订单传输对象进行新增订单操作
+     * @param orderParamDTO 订单传输对象
+     * @return Integer
+     * */
+    Integer insertOrderByParam(OrderParamDTO orderParamDTO);
 
     /**
      * 主键删除订单
