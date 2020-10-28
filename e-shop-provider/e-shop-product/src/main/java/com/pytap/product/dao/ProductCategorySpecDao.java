@@ -42,6 +42,14 @@ public interface ProductCategorySpecDao {
      * @param productId 产品id
      * @return List<EsProductSpec>
      * */
+    List<EsProductSpecDetail> listProductOwnSpecDetailsByProductId(@Param("productId") Long productId);
+
+
+    /**
+     * 通过产品id获取规格详情列表
+     * @param productId 产品id
+     * @return List<EsProductSpec>
+     * */
     List<EsProductSpecDetail> listSpecDetailsByProductId(@Param("productId") Long productId);
 
 }

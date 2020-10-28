@@ -1,6 +1,7 @@
 package com.pytap.product.service.impl;
 
 import com.pytap.common.utils.Pager;
+import com.pytap.generator.dao.EsProductCategoryDetailMapper;
 import com.pytap.generator.dao.EsProductCategorySpecMapper;
 import com.pytap.generator.dao.EsProductSpecDetailMapper;
 import com.pytap.generator.entity.*;
@@ -27,6 +28,9 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
 
     @Resource
     private EsProductCategorySpecMapper productCategorySpecMapper;
+
+    @Resource
+    private EsProductCategoryDetailMapper productCategoryDetailMapper;
 
     @Resource
     private EsProductSpecDetailMapper productSpecDetailMapper;
@@ -84,8 +88,19 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
 
     @Override
     public List<ProductSpecVO> listProductSpecVOsByCategoryId(Long categoryId) {
-        List<ProductSpecVO> result = new ArrayList<>(16);
         List<EsProductSpec> productSpecs = productCategorySpecDao.listProductSpecsByCategoryId(categoryId);
+        return getProductSpecVOList(productSpecs);
+    }
+
+    @Override
+    public List<ProductSpecVO> listProductSpecVOsByCategoryDetailId(Long categoryDetailId) {
+        EsProductCategoryDetail productCategoryDetail = productCategoryDetailMapper.selectByPrimaryKey(categoryDetailId);
+        List<EsProductSpec> productSpecs = productCategorySpecDao.listProductSpecsByCategoryId(productCategoryDetail.getProductCategoryId());
+        return getProductSpecVOList(productSpecs);
+    }
+
+    private List<ProductSpecVO> getProductSpecVOList(List<EsProductSpec> productSpecs) {
+        List<ProductSpecVO> result = new ArrayList<>(16);
         for (EsProductSpec productSpec : productSpecs) {
             ProductSpecVO vo = new ProductSpecVO();
             BeanUtils.copyProperties(productSpec, vo);
@@ -100,8 +115,8 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
 
     @Override
     public List<ProductSpecVO> listSpecVOsByCategoryAndProductId(Long categoryId, Long productId) {
-        List<ProductSpecVO> result = new ArrayList<>(16);
         List<EsProductSpec> productSpecs = productCategorySpecDao.listProductSpecsByCategoryId(categoryId);
+        List<ProductSpecVO> result = new ArrayList<>(16);
 
         // 遍历分类对应规格，然后通过规格id获取规格详情
         for (EsProductSpec productSpec : productSpecs) {
@@ -124,6 +139,33 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
         List<EsProductSpecDetail> productSpecDetails = productCategorySpecDao.listProductSpecDetailsByProductId(0, productId);
 
         // 添加到结果集
+        return addToResult(result, productSpecDetails);
+    }
+
+
+
+    @Override
+    public List<ProductSpecVO> listSpecVOsByCategoryDetailAndProductId(Long categoryDetailId, Long productId) {
+        EsProductCategoryDetail productCategoryDetail = productCategoryDetailMapper.selectByPrimaryKey(categoryDetailId);
+        List<EsProductSpec> productSpecs = productCategorySpecDao.listProductSpecsByCategoryId(productCategoryDetail.getProductCategoryId());
+
+        List<ProductSpecVO> result = new ArrayList<>(16);
+
+        // 遍历分类对应规格，然后通过规格id获取产品拥有的规格详情
+        for (EsProductSpec productSpec : productSpecs) {
+            ProductSpecVO vo = new ProductSpecVO();
+            BeanUtils.copyProperties(productSpec, vo);
+            result.add(vo);
+        }
+
+        List<EsProductSpecDetail> productSpecDetails = productCategorySpecDao.listProductOwnSpecDetailsByProductId(productId);
+
+        // 添加到结果集
+        return addToResult(result, productSpecDetails);
+    }
+
+    private List<ProductSpecVO> addToResult(List<ProductSpecVO> result, List<EsProductSpecDetail> productSpecDetails) {
+        // 添加到结果集
         for (EsProductSpecDetail productSpecDetail : productSpecDetails) {
             for (ProductSpecVO vo : result) {
                 if (null == vo.getDetails()) {
@@ -134,7 +176,6 @@ public class ProductCategorySpecServiceImpl implements ProductCategorySpecServic
                 }
             }
         }
-
         return result;
     }
 

@@ -5,8 +5,8 @@ import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsProductCategory;
-
-import java.util.List;
+import com.pytap.product.model.vo.CarouselProductVO;
+import com.pytap.product.model.vo.FlashSaleProductVO;
 
 /**
  * @author Ecin520
@@ -17,9 +17,9 @@ public interface HomeProductService {
     /**
      * 获取首页秒杀商品列表
      * @param queryParam 查询参数
-     * @return Pager<EsProduct>
+     * @return Pager<FlashSaleProductVO>
      * */
-    Pager<EsProduct> listHomeFlashSaleProducts(QueryParam<FlashSaleDTO> queryParam);
+    Pager<FlashSaleProductVO> listHomeFlashSaleProducts(QueryParam<FlashSaleDTO> queryParam);
 
     /**
      * 获取首页新品列表
@@ -40,9 +40,9 @@ public interface HomeProductService {
 
     /**
      * 获取首页轮播图列表
-     * @return List<EsProduct>
+     * @return Pager<CarouselProductVO>
      * */
-    List<EsProduct> listHomeCarouselProducts();
+    Pager<CarouselProductVO> listHomeCarouselProducts();
 
     /**
      * 获取首页精选分类列表

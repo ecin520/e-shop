@@ -4,11 +4,11 @@ import com.pytap.common.annotation.Log;
 import com.pytap.common.exception.GeneralException;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.SysUser;
+import com.pytap.urp.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 提供远程调用接口
@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserFeignClient {
 
+    @Resource
+    private UserService userService;
+
     @Log("更新用户信息")
     @RequestMapping(value = "/test/token", method = RequestMethod.POST)
     public ResultEntity<Object> updateUser(@RequestBody SysUser user) throws GeneralException {
@@ -28,4 +31,18 @@ public class UserFeignClient {
         }
         throw new GeneralException(currentUser + " 禁止更改其他用户，违者封号");
     }
+
+    @Log("判断操作对象是否为当前用户")
+    @RequestMapping(value = "/judge", method = RequestMethod.GET)
+    public ResultEntity<Boolean> judgeUser(@RequestParam Long userId) {
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        if (null != userId) {
+            SysUser user = userService.getUserById(userId);
+            if (currentUser.equals(user.getUsername())) {
+                return ResultEntity.success(true);
+            }
+        }
+        return ResultEntity.success(false);
+    }
+
 }

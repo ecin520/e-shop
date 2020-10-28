@@ -46,6 +46,7 @@
         <swagger-ui-version>1.9.6</swagger-ui-version>
         <bcprov-jdk15on-version>1.60</bcprov-jdk15on-version>
         <commons-codec-version>1.11</commons-codec-version>
+        <redisson-version>3.12.0</redisson-version>
     </properties>
 
     <dependencyManagement>
@@ -145,7 +146,12 @@
                 <artifactId>commons-codec</artifactId>
                 <version>${commons-codec-version}</version>
             </dependency>
-
+            <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson-version}</version>
+            </dependency>
 
             <!--junit-->
             <dependency>

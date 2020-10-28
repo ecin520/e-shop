@@ -2,6 +2,7 @@ package com.pytap.product.service;
 
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
+import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsSkuProduct;
 
 import java.util.List;
@@ -54,10 +55,25 @@ public interface SkuProductService {
     Pager<EsSkuProduct> listSkuProducts(QueryParam<EsSkuProduct> queryParam);
 
     /**
+     * 通过商品id和规格详情获取sku，比如点击两个规格，颜色：红色，大小：42，传入的就是两个选中的规格，这里必须要是完整规格
      * @param productId 商品id
      * @param specDetailIds 规格id列表，存主键
      * @return EsSkuProduct
      * */
     EsSkuProduct getSkuProductByParam(Long productId, List<Long> specDetailIds);
+
+    /**
+     * 减少商品库存
+     * @param id 商品sku id
+     * @return Integer
+     * */
+    Integer reduceSkuProductStock(Long id);
+
+    /**
+     * 增加商品库存
+     * @param id 商品sku id
+     * @return Integer
+     * */
+    Integer increaseSkuProductStock(Long id);
 
 }

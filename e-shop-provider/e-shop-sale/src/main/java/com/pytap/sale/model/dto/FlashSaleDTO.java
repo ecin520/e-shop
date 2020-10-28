@@ -19,6 +19,8 @@ public class FlashSaleDTO implements Serializable {
 
     private Long productId;
 
+    private Long skuProductId;
+
     private BigDecimal flashSalePrice;
 
     private Integer stockCount;

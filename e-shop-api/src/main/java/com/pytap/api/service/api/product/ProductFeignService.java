@@ -5,6 +5,7 @@ import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsSkuProduct;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,5 +22,11 @@ public interface ProductFeignService {
 
     @RequestMapping(value = "/feign/product/sku/query", method = RequestMethod.POST)
     ResultEntity<EsSkuProduct> getSkuProduct(@RequestBody EsSkuProduct queryParam);
+
+    @RequestMapping(value = "/feign/product/sku/reduce/{id}", method = RequestMethod.GET)
+    ResultEntity<Object> reduceSkuProductStock(@PathVariable Long id);
+
+    @RequestMapping(value = "/feign/product/sku/increase/{id}", method = RequestMethod.GET)
+    ResultEntity<Object> increaseSkuProductStock(@PathVariable Long id);
 
 }

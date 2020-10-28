@@ -1,5 +1,6 @@
 package com.pytap.order.service;
 
+import com.pytap.common.exception.GeneralException;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.generator.entity.EsOrder;
@@ -24,7 +25,7 @@ public interface OrderService {
      * @param orderParamDTO 订单传输对象
      * @return Integer
      * */
-    Integer insertOrderByParam(OrderParamDTO orderParamDTO);
+    Integer insertOrderByParam(OrderParamDTO orderParamDTO) throws GeneralException;
 
     /**
      * 主键删除订单
@@ -51,7 +52,21 @@ public interface OrderService {
     /**
      * 获取订单视图
      * @param queryParam 查询参数
-     * @return EsOrder
+     * @return OrderVO
      * */
     OrderVO getOrderVO(EsOrder queryParam);
+
+    /**
+     * 获取订单
+     * @param queryParam 查询参数
+     * @return EsOrder
+     * */
+    EsOrder getOrder(EsOrder queryParam);
+
+    /**
+     * 取消订单
+     * @param orderParamDTO 订单参数
+     * @return Integer
+     * */
+    Integer cancelOrder(OrderParamDTO orderParamDTO) throws GeneralException;
 }

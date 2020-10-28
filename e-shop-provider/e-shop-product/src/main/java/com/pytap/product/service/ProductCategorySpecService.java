@@ -64,12 +64,27 @@ public interface ProductCategorySpecService {
     List<ProductSpecVO> listProductSpecVOsByCategoryId(Long categoryId);
 
     /**
+     * 通过分类详情id获取规格视图列表
+     * @param categoryDetailId 分类详情id
+     * @return List<EsProductSpec>
+     * */
+    List<ProductSpecVO> listProductSpecVOsByCategoryDetailId(Long categoryDetailId);
+
+    /**
      * 通过分类id获取规格视图列表
      * @param categoryId 分类id
      * @param productId 产品id
      * @return List<EsProductSpec>
      * */
     List<ProductSpecVO> listSpecVOsByCategoryAndProductId(Long categoryId, Long productId);
+
+    /**
+     * 通过分类详情id获取规格视图列表
+     * @param categoryDetailId 分类详情id
+     * @param productId 产品id
+     * @return List<EsProductSpec>
+     * */
+    List<ProductSpecVO> listSpecVOsByCategoryDetailAndProductId(Long categoryDetailId, Long productId);
 
     /**
      * 通过产品id获取规格DTO列表

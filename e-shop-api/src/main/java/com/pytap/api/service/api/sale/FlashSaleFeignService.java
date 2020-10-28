@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(value = "SALE-PROVIDER", fallbackFactory = FlashSaleFeignHystrix.class)
 public interface FlashSaleFeignService {
 
+    @RequestMapping(value = "/open/feign/flash_sale/param/valid/list", method = RequestMethod.POST)
+    ResultEntity<Pager<EsFlashSaleProduct>> listValidFlashSaleProductsByQueryParam (@RequestBody QueryParam<FlashSaleDTO> queryParam);
+
     @RequestMapping(value = "/open/feign/flash_sale/param/list", method = RequestMethod.POST)
-    ResultEntity<Pager<EsFlashSaleProduct>> listFlashSaleProductsByQueryParam (@RequestBody QueryParam<FlashSaleDTO> queryParam);
+    ResultEntity<Pager<EsFlashSaleProduct>> listFlashSaleProductsByQueryParam(@RequestBody QueryParam<FlashSaleDTO> queryParam);
 
 }

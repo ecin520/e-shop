@@ -3,6 +3,8 @@ package com.pytap.product.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.redisson.Redisson;
+import org.redisson.config.Config;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,5 +57,15 @@ public class RedisConfig {
         serializer.setObjectMapper(objectMapper);
 
         return serializer;
+    }
+
+    /**
+     * 配置redis客户端redisson
+     * */
+    @Bean
+    public Redisson redisson() {
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://192.168.4.130:6379").setDatabase(0);
+        return (Redisson) Redisson.create(config);
     }
 }

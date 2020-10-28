@@ -1,14 +1,19 @@
 package com.pytap.order.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.pytap.api.model.vo.MemberVO;
 import com.pytap.api.service.api.product.ProductFeignService;
 import com.pytap.api.service.api.product.ShopFeignService;
 import com.pytap.api.service.api.sale.CouponFeignService;
 import com.pytap.api.service.api.urp.MemberFeignService;
 import com.pytap.common.constant.HttpCode;
+import com.pytap.common.constant.OrderStatus;
+import com.pytap.common.constant.TimeConstant;
+import com.pytap.common.exception.GeneralException;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.common.utils.ResultEntity;
+import com.pytap.common.utils.UUIDUtil;
 import com.pytap.generator.dao.EsDeliveryMapper;
 import com.pytap.generator.dao.EsOrderMapper;
 import com.pytap.generator.dao.EsOrderProductMapper;
@@ -18,11 +23,13 @@ import com.pytap.order.model.dto.OrderParamDTO;
 import com.pytap.order.model.dto.OrderQueryDTO;
 import com.pytap.order.model.vo.OrderProductVO;
 import com.pytap.order.model.vo.OrderVO;
+import com.pytap.order.mq.OrderSender;
 import com.pytap.order.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -62,15 +69,53 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private ShopFeignService shopFeignService;
 
+    @Resource
+    private OrderSender orderSender;
+
     @Override
     public Integer insertOrder(EsOrder order) {
         order.setCreateTime(new Date());
         return orderMapper.insert(order);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public Integer insertOrderByParam(OrderParamDTO orderParamDTO) {
-        return null;
+    public Integer insertOrderByParam(OrderParamDTO orderParamDTO) throws GeneralException {
+
+        EsOrder order = new EsOrder();
+        BeanUtils.copyProperties(orderParamDTO, order);
+
+        // 生成订单号
+        order.setOrderNumber(UUIDUtil.uuidNumberString());
+        order.setCreateTime(new Date());
+        // 修改状态为待支付
+        order.setStatus(OrderStatus.WAITING_FOR_PAYMENT);
+        orderMapper.insert(order);
+
+        // 添加订单到延时队列，区分普通订单和秒杀订单
+        if (0 == orderParamDTO.getOrderType()) {
+            // 添加到订单商品
+            List<EsOrderProduct> orderProducts = orderParamDTO.getOrderProducts();
+            for (EsOrderProduct orderProduct : orderProducts) {
+                orderProduct.setOrderId(order.getId());
+                orderProductMapper.insert(orderProduct);
+
+                // 远程调用减库存系统
+                ResultEntity<Object> resultEntity = productFeignService.reduceSkuProductStock(orderProduct.getSkuId());
+
+                // 如果减库存失败，则进行回滚
+                if (200 != resultEntity.getCode()) {
+                    throw new GeneralException("库存不足或库存系统异常，订单生产失败");
+                }
+
+            }
+            orderSender.send(JSONObject.toJSONString(orderParamDTO), TimeConstant.NORMAL_SALE_OVER_TIME);
+        } else if (1 == orderParamDTO.getOrderType()) {
+            orderSender.send(JSONObject.toJSONString(orderParamDTO), TimeConstant.FLASH_SALE_OVER_TIME);
+        }
+
+        return 1;
+
     }
 
     @Override
@@ -224,5 +269,45 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return null;
+    }
+
+    @Override
+    public EsOrder getOrder(EsOrder queryParam) {
+        if (null != queryParam.getId()) {
+            return orderMapper.selectByPrimaryKey(queryParam.getId());
+        }
+        return null;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Integer cancelOrder(OrderParamDTO orderParamDTO) throws GeneralException {
+
+        // 更新订单状态为订单关闭，不可再次发起
+        EsOrder order = new EsOrder();
+        BeanUtils.copyProperties(orderParamDTO, order);
+        order.setStatus(OrderStatus.CLOSED);
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        // 如果是秒杀订单，则不减库存，因为秒杀订单的库存是在付款后才减的
+        if (1 == orderParamDTO.getOrderType()) {
+            return 1;
+        }
+
+        List<EsOrderProduct> orderProducts = orderParamDTO.getOrderProducts();
+        for (EsOrderProduct orderProduct : orderProducts) {
+            // 远程调用增加库存服务
+            ResultEntity<Object> resultEntity = productFeignService.increaseSkuProductStock(orderProduct.getSkuId());
+            if (200 != resultEntity.getCode()) {
+                logger.error("恢复库存失败，sku id为{}，开始事务回滚，且重新添加到延时队列。", orderProduct.getSkuId());
+                orderSender.send(JSONObject.toJSONString(orderParamDTO), 300L);
+                throw new GeneralException(resultEntity.getMessage());
+            } else {
+                logger.info("库存恢复成功，sku id 为 {}", orderProduct.getSkuId());
+            }
+        }
+
+        return 1;
+
     }
 }

@@ -25,8 +25,19 @@ public class ProductFeignHystrix implements FallbackFactory<ProductFeignService>
 
             @Override
             public ResultEntity<EsSkuProduct> getSkuProduct(EsSkuProduct queryParam) {
-                return ResultEntity.fail(500, "服务暂时不可用");
+                return ResultEntity.fail(500, "获取商品信息失败，服务暂时不可用");
             }
+
+            @Override
+            public ResultEntity<Object> reduceSkuProductStock(Long id) {
+                return ResultEntity.fail(500, "减库存失败，服务暂时不可用");
+            }
+
+            @Override
+            public ResultEntity<Object> increaseSkuProductStock(Long id) {
+                return ResultEntity.fail(500, "恢复库存失败，服务暂时不可用");
+            }
+
         };
     }
 

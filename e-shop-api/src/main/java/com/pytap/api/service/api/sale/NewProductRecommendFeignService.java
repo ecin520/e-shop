@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface NewProductRecommendFeignService {
 
     @RequestMapping(value = "/open/feign/new_product_recommend/list", method = RequestMethod.GET)
-    ResultEntity<Pager<EsNewProductRecommend>> listNewProductsRecommend (
-            @RequestParam(defaultValue = "0") Integer pageNum, @RequestParam(defaultValue = "8") Integer pageSize
-    );
+    ResultEntity<Pager<EsNewProductRecommend>> listNewProductsRecommend (@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize")  Integer pageSize);
 
 }

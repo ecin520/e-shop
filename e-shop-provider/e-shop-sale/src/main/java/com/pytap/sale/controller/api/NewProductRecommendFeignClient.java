@@ -25,9 +25,7 @@ public class NewProductRecommendFeignClient {
 
     @Log("远程调用新品查询接口")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResultEntity<Pager<EsNewProductRecommend>> listNewProductsRecommend(
-            @RequestParam(defaultValue = "0") Integer pageNum,
-            @RequestParam(defaultValue = "8") Integer pageSize) {
+    public ResultEntity<Pager<EsNewProductRecommend>> listNewProductsRecommend(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize")  Integer pageSize) {
         return ResultEntity.success(newProductRecommendService.listNewProductsRecommend(pageNum, pageSize));
     }
 

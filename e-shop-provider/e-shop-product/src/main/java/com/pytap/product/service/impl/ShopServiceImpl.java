@@ -76,7 +76,7 @@ public class ShopServiceImpl implements ShopService {
         if (null != queryParam.getId()) {
             criteria.andIdEqualTo(queryParam.getId());
         }
-        List<EsShop> list =  shopMapper.selectByExample(example);
+        List<EsShop> list =  shopMapper.selectByExampleWithBLOBs(example);
         return !list.isEmpty() ? list.get(0) : null;
     }
 

@@ -20,6 +20,11 @@ public class UserFeignHystrix implements FallbackFactory<UserFeignService> {
             public ResultEntity<Object> updateUser(SysUser user) {
                 return ResultEntity.fail(500, "服务已降级，请等候服务器恢复。");
             }
+
+            @Override
+            public ResultEntity<Boolean> judgeUser(Long userId) {
+                return ResultEntity.fail(500, "服务已降级，请等候服务器恢复。");
+            }
         };
     }
 }

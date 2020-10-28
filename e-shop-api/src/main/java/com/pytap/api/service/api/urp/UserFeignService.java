@@ -4,10 +4,10 @@ import com.pytap.api.service.hystrix.urp.UserFeignHystrix;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.SysUser;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Feign远程调用
@@ -23,5 +23,8 @@ public interface UserFeignService {
      * */
     @RequestMapping(value = "/test/token", method = RequestMethod.POST)
     ResultEntity<Object> updateUser(@RequestBody SysUser user);
+
+    @RequestMapping(value = "/feign/user/judge", method = RequestMethod.GET)
+    ResultEntity<Boolean> judgeUser(@RequestParam Long userId);
 
 }

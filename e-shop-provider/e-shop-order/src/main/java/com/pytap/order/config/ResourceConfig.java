@@ -29,6 +29,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v2/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/web/**").permitAll()
                 .antMatchers("/admin/**").hasRole(AuthConstant.ROLE_SYS_ADMIN)
                 .anyRequest().authenticated();
     }

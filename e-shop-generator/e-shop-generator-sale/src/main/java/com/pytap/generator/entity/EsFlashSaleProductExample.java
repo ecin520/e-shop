@@ -226,6 +226,66 @@ public class EsFlashSaleProductExample {
             return (Criteria) this;
         }
 
+        public Criteria andSkuProductIdIsNull() {
+            addCriterion("sku_product_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdIsNotNull() {
+            addCriterion("sku_product_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdEqualTo(Long value) {
+            addCriterion("sku_product_id =", value, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdNotEqualTo(Long value) {
+            addCriterion("sku_product_id <>", value, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdGreaterThan(Long value) {
+            addCriterion("sku_product_id >", value, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("sku_product_id >=", value, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdLessThan(Long value) {
+            addCriterion("sku_product_id <", value, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdLessThanOrEqualTo(Long value) {
+            addCriterion("sku_product_id <=", value, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdIn(List<Long> values) {
+            addCriterion("sku_product_id in", values, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdNotIn(List<Long> values) {
+            addCriterion("sku_product_id not in", values, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdBetween(Long value1, Long value2) {
+            addCriterion("sku_product_id between", value1, value2, "skuProductId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuProductIdNotBetween(Long value1, Long value2) {
+            addCriterion("sku_product_id not between", value1, value2, "skuProductId");
+            return (Criteria) this;
+        }
+
         public Criteria andFlashSalePriceIsNull() {
             addCriterion("flash_sale_price is null");
             return (Criteria) this;

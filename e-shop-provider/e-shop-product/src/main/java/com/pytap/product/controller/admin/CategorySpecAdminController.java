@@ -46,6 +46,12 @@ public class CategorySpecAdminController {
         return ResultEntity.success(productCategorySpecService.listSpecVOsByCategoryAndProductId(categoryId, productId));
     }
 
+    @Log(value = "通过分类详情id和商品id获取对应的规格视图列表")
+    @RequestMapping(value = "/view/list/by/category_detail_product", method = RequestMethod.GET)
+    public ResultEntity<List<ProductSpecVO>> listSpecVOsByCategoryDetailAndProductId(@RequestParam Long categoryDetailId, @RequestParam Long productId) {
+        return ResultEntity.success(productCategorySpecService.listSpecVOsByCategoryDetailAndProductId(categoryDetailId, productId));
+    }
+
     @Log(value = "通过和商品id获取对应的规格详情列表")
     @RequestMapping(value = "/spec_detail/list", method = RequestMethod.GET)
     public ResultEntity<List<EsProductSpecDetail>> listSpecDetailsByProductId(@RequestParam Long productId) {

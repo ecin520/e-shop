@@ -11,6 +11,8 @@ import com.pytap.generator.entity.EsSkuProductExample;
 import com.pytap.generator.entity.EsSkuSpecDetail;
 import com.pytap.generator.entity.EsSkuSpecDetailExample;
 import com.pytap.product.service.SkuProductService;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,9 @@ import java.util.List;
  */
 @Service
 public class SkuProductServiceImpl implements SkuProductService {
+
+    @Resource
+    private Redisson redisson;
 
     @Resource
     private EsSkuProductMapper skuProductMapper;
@@ -104,11 +109,13 @@ public class SkuProductServiceImpl implements SkuProductService {
 
     @Override
     public EsSkuProduct getSkuProductByParam(Long productId, List<Long> specDetailIds) {
+        // 通过商品id获取所有的商品sku
         EsSkuProductExample skuProductExample = new EsSkuProductExample();
         EsSkuProductExample.Criteria criteria = skuProductExample.createCriteria();
         criteria.andProductIdEqualTo(productId);
         List<EsSkuProduct> skuProducts = skuProductMapper.selectByExample(skuProductExample);
 
+        // 通过对比传入的规格详情列表和通过sku_spec_detail表获取的规格详情列表来判断哪个sku才是用户选区的
         for (EsSkuProduct skuProduct : skuProducts) {
             EsSkuSpecDetailExample skuSpecDetailExample = new EsSkuSpecDetailExample();
             EsSkuSpecDetailExample.Criteria criteria1 = skuSpecDetailExample.createCriteria();
@@ -123,6 +130,57 @@ public class SkuProductServiceImpl implements SkuProductService {
             }
         }
         return null;
+    }
+
+    @Transactional
+    @Override
+    public Integer reduceSkuProductStock(Long id) {
+
+        // 获取商品锁
+        RLock lock = redisson.getLock("sku-product-" + id);
+        lock.lock();
+
+        int result = 0;
+
+        try {
+            // 取出商品sku
+            EsSkuProduct skuProduct = skuProductMapper.selectByPrimaryKey(id);
+            if (null == skuProduct) {
+                return 0;
+            }
+            // 若库存大于0则减库存
+            if (skuProduct.getStock() > 0) {
+                skuProduct.setStock(skuProduct.getStock() - 1);
+                result = skuProductMapper.updateByPrimaryKeySelective(skuProduct);
+            }
+        } finally {
+            lock.unlock();
+        }
+
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Integer increaseSkuProductStock(Long id) {
+
+        // 获取商品锁
+        RLock lock = redisson.getLock("sku-product-" + id);
+        lock.lock();
+
+        int result;
+
+        try {
+            EsSkuProduct skuProduct = skuProductMapper.selectByPrimaryKey(id);
+            if (null == skuProduct) {
+                return 0;
+            }
+            skuProduct.setStock(skuProduct.getStock() + 1);
+            result = skuProductMapper.updateByPrimaryKeySelective(skuProduct);
+        } finally {
+            lock.unlock();
+        }
+        return result;
     }
 
 

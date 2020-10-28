@@ -49,12 +49,26 @@ public class AuthController {
     /**
      * 自定义登录返回结果
      */
-    @Limit(seconds = 30, maxCount = 5)
+    @Limit(seconds = 30, maxCount = 10)
     @RequestMapping(value = "/token", method = RequestMethod.POST)
-    public ResultEntity<JSONObject> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws GeneralException {
+    public ResultEntity<JSONObject> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws GeneralException, HttpRequestMethodNotSupportedException {
+
+        // 如果是刷新token，则直接拦截刷新token
+        if (!StringUtils.isEmpty(parameters.get("refresh_token"))) {
+            OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+            Oauth2TokenVO oauth2TokenVO = new Oauth2TokenVO();
+            if (oAuth2AccessToken != null) {
+                oauth2TokenVO.setAccessToken(oAuth2AccessToken.getValue());
+                oauth2TokenVO.setRefreshToken(oAuth2AccessToken.getRefreshToken().getValue());
+                oauth2TokenVO.setExpiresIn(oAuth2AccessToken.getExpiresIn());
+                oauth2TokenVO.setTokenHead("Bearer ");
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("oauth", oauth2TokenVO);
+            return ResultEntity.success(jsonObject);
+        }
 
         boolean flag = false;
-
         SysUser user = null;
 
         // 解密密码
@@ -93,16 +107,14 @@ public class AuthController {
             }
         }
 
-        OAuth2AccessToken oAuth2AccessToken = null;
+        OAuth2AccessToken oAuth2AccessToken;
 
-        try {
-            if (null == parameters.get("username") || "".equals(parameters.get("username"))) {
-                parameters.put("username", user.getUsername());
-            }
-            oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
-        } catch (HttpRequestMethodNotSupportedException e) {
-            e.printStackTrace();
+        if (null == parameters.get("username") || "".equals(parameters.get("username"))) {
+            parameters.put("username", user.getUsername());
         }
+
+        oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+
         Oauth2TokenVO oauth2TokenVO = new Oauth2TokenVO();
         if (oAuth2AccessToken != null) {
             oauth2TokenVO.setAccessToken(oAuth2AccessToken.getValue());

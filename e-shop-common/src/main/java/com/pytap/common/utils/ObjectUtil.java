@@ -5,11 +5,16 @@ package com.pytap.common.utils;
  * @date 2020/9/14 16:15
  */
 public class ObjectUtil {
-    public static boolean isNull(Object obj) {
-        return null == obj || obj.equals((Object)null);
+
+    public static boolean isAllNull(Object ...objects) {
+        boolean flag = false;
+        for (Object object : objects) {
+            if (null != object) {
+                flag = true;
+                break;
+            }
+        }
+        return !flag;
     }
 
-    public static boolean isNotNull(Object obj) {
-        return null != obj && !obj.equals((Object)null);
-    }
 }

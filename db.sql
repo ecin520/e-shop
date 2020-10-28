@@ -220,7 +220,7 @@ CREATE TABLE es_product (
 		`shop_id` BIGINT NOT NULL COMMENT '店铺id',
 		`product_category_detail_name` VARCHAR ( 64 ) COMMENT '分类详情名称',
 		`shop_name` VARCHAR ( 64 ) COMMENT '店铺名称',
-		`name` VARCHAR(64) NOT NULL COMMENT '商品名称',
+		`name` VARCHAR(640) NOT NULL COMMENT '商品名称',
 		`parameter` VARCHAR(2400) COMMENT '商品参数，键值对JSON存储',
 		`show_image` VARCHAR(2600) COMMENT '展示图片，英文逗号隔开',
 		`item_no` VARCHAR(64) NOT NULL COMMENT '货号',
@@ -518,6 +518,7 @@ DROP TABLE IF EXISTS es_flash_sale_product;
 CREATE TABLE es_flash_sale_product (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`product_id` BIGINT NOT NULL COMMENT '商品id',
+		`sku_product_id` BIGINT UNIQUE NOT NULL COMMENT 'sku_id',
 		`flash_sale_price` DECIMAL(10,2) COMMENT '秒杀价',
 		`stock_count` INT COMMENT '库存',
 		`start_time` DATETIME COMMENT '开始时间',
@@ -546,7 +547,7 @@ CREATE TABLE es_home_shop (
 DROP TABLE IF EXISTS es_new_product_recommend;
 CREATE TABLE es_new_product_recommend (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
-		`product_id` BIGINT NOT NULL COMMENT '商品id',
+		`product_id` BIGINT UNIQUE NOT NULL COMMENT '商品id',
 		`product_name` VARCHAR(60) COMMENT '商品名称',
 		`status` INT(1) COMMENT '推荐状态, 0 -> 不推荐, 1 -> 推荐',
 		`power` INT COMMENT '权重',
@@ -554,6 +555,32 @@ CREATE TABLE es_new_product_recommend (
 		`create_time` DATETIME COMMENT '创建时间',
 		PRIMARY KEY ( id )
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '新品推荐表';
+
+-- 广告推荐表
+DROP TABLE IF EXISTS es_product_ad;
+CREATE TABLE es_product_ad (
+		`id` BIGINT NOT NULL AUTO_INCREMENT,
+		`product_id` BIGINT UNIQUE NOT NULL COMMENT '商品id',
+		`status` INT(1) COMMENT '推荐状态, 0 -> 不推荐, 1 -> 推荐',
+		`power` INT COMMENT '权重',
+		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+		`create_time` DATETIME COMMENT '创建时间',
+		PRIMARY KEY ( id )
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '广告推荐表';
+
+
+-- 轮播图表
+DROP TABLE IF EXISTS es_product_carousel;
+CREATE TABLE es_product_carousel (
+		`id` BIGINT NOT NULL AUTO_INCREMENT,
+		`product_id` BIGINT UNIQUE NOT NULL COMMENT '商品id',
+		`show_image` VARCHAR ( 960 ) COMMENT '轮播图片',
+		`status` INT(1) COMMENT '推荐状态, 0 -> 不推荐, 1 -> 推荐',
+		`power` INT COMMENT '权重',
+		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
+		`create_time` DATETIME COMMENT '创建时间',
+		PRIMARY KEY ( id )
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '轮播图表';
 
 
 

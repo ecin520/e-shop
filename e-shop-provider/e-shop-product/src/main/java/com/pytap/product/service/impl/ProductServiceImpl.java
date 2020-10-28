@@ -1,7 +1,13 @@
 package com.pytap.product.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.pytap.api.model.dto.FlashSaleDTO;
+import com.pytap.api.service.api.sale.CarouselFeignService;
+import com.pytap.api.service.api.sale.FlashSaleFeignService;
+import com.pytap.api.service.api.sale.NewProductRecommendFeignService;
 import com.pytap.common.utils.Pager;
+import com.pytap.common.utils.QueryParam;
+import com.pytap.common.utils.ResultEntity;
 import com.pytap.common.utils.UUIDUtil;
 import com.pytap.generator.dao.EsProductMapper;
 import com.pytap.generator.dao.EsProductSpecDetailMapper;
@@ -10,12 +16,17 @@ import com.pytap.generator.dao.EsSkuSpecDetailMapper;
 import com.pytap.generator.entity.*;
 import com.pytap.product.model.dto.ProductDTO;
 import com.pytap.product.model.dto.SkuProductDTO;
+import com.pytap.product.model.vo.*;
 import com.pytap.product.service.ProductService;
+import com.pytap.product.service.SkuProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +36,11 @@ import java.util.List;
  */
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+
+    @Resource
+    private SkuProductService skuProductService;
 
     @Resource
     private EsProductMapper productMapper;
@@ -37,6 +53,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private EsProductSpecDetailMapper productSpecDetailMapper;
+
+    @Resource
+    private FlashSaleFeignService flashSaleFeignService;
+
+    @Resource
+    private NewProductRecommendFeignService newProductRecommendFeignService;
+
+    @Resource
+    private CarouselFeignService carouselFeignService;
 
     @Override
     public Integer insertProduct(EsProduct product) {
@@ -74,19 +99,55 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductVO getProductVO(EsProduct queryParam) {
+
+        List<EsProduct> list = getProductListByQueryParam(queryParam);
+
+        if (!list.isEmpty()) {
+            EsProduct product = list.get(0);
+            ProductVO vo = new ProductVO();
+
+            BeanUtils.copyProperties(product, vo);
+
+            vo.setStock(getStockByProductId(product.getId()));
+
+            return vo;
+        }
+
+        return null;
+    }
+
+    @Override
+    public ProductWebVO getProductWebVO(EsProduct queryParam) {
+        
+        List<EsProduct> list = getProductListByQueryParam(queryParam);
+
+        if (!list.isEmpty()) {
+            EsProduct product = list.get(0);
+            ProductWebVO vo = new ProductWebVO();
+
+            BeanUtils.copyProperties(product, vo);
+
+            // 通过商品id查询到sku列表
+            EsSkuProduct skuProduct = new EsSkuProduct();
+            skuProduct.setProductId(product.getId());
+            
+            EsSkuProductExample example = new EsSkuProductExample();
+            EsSkuProductExample.Criteria criteria = example.createCriteria();
+            criteria.andProductIdEqualTo(product.getId());
+            
+            List<EsSkuProduct> skuProducts = skuProductMapper.selectByExample(example);
+
+            vo.setSkuProducts(skuProducts);
+
+            return vo;
+        }
+        return null;
+    }
+
+    @Override
     public EsProduct getProduct(EsProduct queryParam) {
-        EsProductExample example = new EsProductExample();
-        EsProductExample.Criteria criteria = example.createCriteria();
-        if (null != queryParam.getName()) {
-            criteria.andNameEqualTo(queryParam.getName());
-        }
-        if (null != queryParam.getId()) {
-            criteria.andIdEqualTo(queryParam.getId());
-        }
-        if (null != queryParam.getItemNo()) {
-            criteria.andItemNoEqualTo(queryParam.getItemNo());
-        }
-        List<EsProduct> list = productMapper.selectByExampleWithBLOBs(example);
+        List<EsProduct> list = getProductListByQueryParam(queryParam);
         return !list.isEmpty() ? list.get(0) : null;
     }
 
@@ -220,9 +281,179 @@ public class ProductServiceImpl implements ProductService {
         return 1;
     }
 
+    @Override
+    public Pager<FlashSaleProductVO> listValidFlashSaleProducts(QueryParam<FlashSaleDTO> queryParam) {
+        ResultEntity<Pager<EsFlashSaleProduct>> resultEntity = flashSaleFeignService.listValidFlashSaleProductsByQueryParam(queryParam);
+        return getFlashSalePagerFromEntity(resultEntity);
+    }
+
+    @Override
+    public Pager<FlashSaleProductVO> listFlashSaleProducts(QueryParam<FlashSaleDTO> queryParam) {
+        ResultEntity<Pager<EsFlashSaleProduct>> resultEntity = flashSaleFeignService.listFlashSaleProductsByQueryParam(queryParam);
+        return getFlashSalePagerFromEntity(resultEntity);
+    }
+
+    @Override
+    public Pager<NewProductRecommendVO> listNewProductRecommends(Integer pageNum, Integer pageSize) {
+        ResultEntity<Pager<EsNewProductRecommend>> resultEntity = newProductRecommendFeignService.listNewProductsRecommend(pageNum, pageSize);
+
+        Pager<NewProductRecommendVO> pager = new Pager<>();
+        List<NewProductRecommendVO> newProductRecommends = new ArrayList<>(16);
+
+        if (200 == resultEntity.getCode()) {
+            if (null != resultEntity.getData()) {
+                if (null != resultEntity.getData().getContent()) {
+                    List<EsNewProductRecommend> list = resultEntity.getData().getContent();
+                    for (EsNewProductRecommend newProductRecommend : list) {
+
+                        // 将新品推荐参数复制到vo
+                        NewProductRecommendVO vo = new NewProductRecommendVO();
+                        BeanUtils.copyProperties(newProductRecommend, vo);
+
+                        // 通过商品id查询商品
+                        EsProduct product = new EsProduct();
+                        product.setId(newProductRecommend.getProductId());
+                        product = getProduct(product);
+
+                        vo.setProduct(product);
+
+                        newProductRecommends.add(vo);
+                    }
+                    pager.setTotal(resultEntity.getData().getTotal());
+                    pager.setPageNum(resultEntity.getData().getPageNum());
+                    pager.setPageSize(resultEntity.getData().getPageSize());
+                    pager.setContent(newProductRecommends);
+                    return pager;
+                }
+            }
+        } else {
+            logger.error(resultEntity.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Pager<CarouselProductVO> listCarouselProducts(QueryParam<EsProductCarousel> queryParam) {
+        ResultEntity<Pager<EsProductCarousel>> resultEntity = carouselFeignService.listProductCarousels(queryParam);
+        Pager<CarouselProductVO> pager = new Pager<>();
+        List<CarouselProductVO> carouselProducts = new ArrayList<>(16);
+
+        if (200 == resultEntity.getCode()) {
+            if (null != resultEntity.getData()) {
+                if (null != resultEntity.getData().getContent()) {
+                    List<EsProductCarousel> productCarousels = resultEntity.getData().getContent();
+
+                    for (EsProductCarousel productCarousel : productCarousels) {
+
+                        CarouselProductVO vo = new CarouselProductVO();
+                        BeanUtils.copyProperties(productCarousel, vo);
+
+                        EsProduct product = new EsProduct();
+                        product.setId(productCarousel.getProductId());
+                        product = getProduct(product);
+
+                        vo.setProduct(product);
+
+                        carouselProducts.add(vo);
+                    }
+
+                    pager.setTotal(resultEntity.getData().getTotal());
+                    pager.setPageNum(resultEntity.getData().getPageNum());
+                    pager.setPageSize(resultEntity.getData().getPageSize());
+                    pager.setContent(carouselProducts);
+                    return pager;
+                }
+            }
+        } else {
+            logger.error(resultEntity.getMessage());
+        }
+        return null;
+    }
+
+    private Pager<FlashSaleProductVO> getFlashSalePagerFromEntity(ResultEntity<Pager<EsFlashSaleProduct>> resultEntity) {
+        Pager<FlashSaleProductVO> pager = new Pager<>();
+        List<FlashSaleProductVO> products = new ArrayList<>(16);
+
+        if (200 == resultEntity.getCode()) {
+            if (null != resultEntity.getData()) {
+                if (null != resultEntity.getData().getContent()) {
+                    List<EsFlashSaleProduct> list = resultEntity.getData().getContent();
+                    for (EsFlashSaleProduct flashSaleProduct : list) {
+
+                        // 将秒杀商品类复制到vo中
+                        FlashSaleProductVO vo = new FlashSaleProductVO();
+                        BeanUtils.copyProperties(flashSaleProduct, vo);
+
+                        // 通过商品id查询商品
+                        EsProduct product = new EsProduct();
+                        product.setId(flashSaleProduct.getProductId());
+                        product = getProduct(product);
+
+                        EsSkuProduct skuProduct = new EsSkuProduct();
+                        skuProduct.setId(flashSaleProduct.getSkuProductId());
+                        skuProduct = skuProductService.getSkuProduct(skuProduct);
+                        vo.setSkuProduct(skuProduct);
+
+                        // 获取商品库存，也就是计算sku库存总和，添加到ProductVO
+                        ProductVO productVO = new ProductVO();
+                        BeanUtils.copyProperties(product, productVO);
+                        productVO.setStock(getStockByProductId(productVO.getId()));
+
+                        vo.setProduct(productVO);
+                        products.add(vo);
+                    }
+                    pager.setTotal(resultEntity.getData().getTotal());
+                    pager.setPageNum(resultEntity.getData().getPageNum());
+                    pager.setPageSize(resultEntity.getData().getPageSize());
+                    pager.setContent(products);
+                    return pager;
+                }
+            }
+        } else {
+            logger.error(resultEntity.getMessage());
+        }
+        return null;
+    }
+
+    private List<EsProduct> getProductListByQueryParam(EsProduct queryParam) {
+        EsProductExample example = new EsProductExample();
+        EsProductExample.Criteria criteria = example.createCriteria();
+        if (null != queryParam.getName()) {
+            criteria.andNameEqualTo(queryParam.getName());
+        }
+        if (null != queryParam.getId()) {
+            criteria.andIdEqualTo(queryParam.getId());
+        }
+        if (null != queryParam.getItemNo()) {
+            criteria.andItemNoEqualTo(queryParam.getItemNo());
+        }
+        return productMapper.selectByExampleWithBLOBs(example);
+    }
+
+    /**
+     * 通过商品id获取库存（sku库存综合）
+     */
+    private Integer getStockByProductId(Long productId) {
+
+        int sum = 0;
+
+        EsSkuProductExample example = new EsSkuProductExample();
+        EsSkuProductExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(productId);
+
+        List<EsSkuProduct> skuProducts = skuProductMapper.selectByExample(example);
+
+        for (EsSkuProduct skuProduct : skuProducts) {
+            sum += skuProduct.getStock();
+        }
+
+        return sum;
+
+    }
+
     /**
      * 删除sku_spec_detail关系
-     * */
+     */
     private void deleteSkuSpecDetails(List<EsSkuProduct> skuProducts) {
         for (EsSkuProduct skuProduct : skuProducts) {
             // 删除旧的sku和spec关系
@@ -235,7 +466,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 插入sku和spec关系
-     * */
+     */
     private void insertSkuSpec(SkuProductDTO skuProductDTO, EsSkuProduct skuProduct) {
         List<Long> specDetailIds = skuProductDTO.getSpecDetails();
         for (Long specDetailId : specDetailIds) {
@@ -249,7 +480,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 整合sku商品规格详情名称
-     * */
+     */
     private String integrationName(SkuProductDTO skuProductDTO) {
         StringBuilder builder = new StringBuilder();
         List<Long> specDetailIds = skuProductDTO.getSpecDetails();

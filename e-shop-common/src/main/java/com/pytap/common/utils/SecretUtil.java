@@ -5,6 +5,8 @@ import org.apache.commons.codec.binary.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * 安全工具包
@@ -33,6 +35,11 @@ public class SecretUtil {
     }
 
     public static String decrypt(String data) {
+        try {
+            data = URLDecoder.decode(data, "UTF-8").replaceAll(" ", "+");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return decrypt(data, KEY, IV);
     }
 

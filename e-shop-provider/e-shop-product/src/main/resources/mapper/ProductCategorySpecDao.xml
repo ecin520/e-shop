@@ -46,5 +46,19 @@
         WHERE
             `sku_id` IN ( SELECT `es_sku_product`.`id` FROM `es_sku_product` WHERE `product_id` = #{productId} ))
     </select>
+    <select id="listProductOwnSpecDetailsByProductId" resultType="com.pytap.generator.entity.EsProductSpecDetail">
+        SELECT
+            *
+        FROM
+            `es_product_spec_detail`
+        WHERE
+            `id` IN (
+            SELECT
+                `spec_detail_id`
+            FROM
+                `es_sku_spec_detail`
+        WHERE
+            `sku_id` IN ( SELECT `es_sku_product`.`id` FROM `es_sku_product` WHERE `product_id` = #{productId} ))
+    </select>
 
 </mapper>

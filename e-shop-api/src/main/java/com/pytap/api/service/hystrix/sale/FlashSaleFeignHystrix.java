@@ -20,6 +20,11 @@ public class FlashSaleFeignHystrix implements FallbackFactory<FlashSaleFeignServ
     public FlashSaleFeignService create(Throwable throwable) {
         return new FlashSaleFeignService() {
             @Override
+            public ResultEntity<Pager<EsFlashSaleProduct>> listValidFlashSaleProductsByQueryParam(QueryParam<FlashSaleDTO> queryParam) {
+                return ResultEntity.fail(500, "服务暂时不可用");
+            }
+
+            @Override
             public ResultEntity<Pager<EsFlashSaleProduct>> listFlashSaleProductsByQueryParam(QueryParam<FlashSaleDTO> queryParam) {
                 return ResultEntity.fail(500, "服务暂时不可用");
             }

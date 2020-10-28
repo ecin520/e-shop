@@ -1,13 +1,19 @@
 package com.pytap.product.controller.admin;
 
+import com.pytap.api.model.dto.FlashSaleDTO;
 import com.pytap.common.annotation.Log;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProduct;
+import com.pytap.generator.entity.EsProductCarousel;
 import com.pytap.generator.entity.EsSkuProduct;
 import com.pytap.product.model.domain.SearchProduct;
 import com.pytap.product.model.dto.ProductDTO;
+import com.pytap.product.model.vo.CarouselProductVO;
+import com.pytap.product.model.vo.FlashSaleProductVO;
+import com.pytap.product.model.vo.NewProductRecommendVO;
+import com.pytap.product.model.vo.ProductVO;
 import com.pytap.product.service.ProductService;
 import com.pytap.product.service.SearchProductService;
 import com.pytap.product.service.SkuProductService;
@@ -72,6 +78,12 @@ public class ProductAdminController {
         return ResultEntity.success(productService.getProduct(queryParam));
     }
 
+    @Log(value = "参数获取商品视图")
+    @RequestMapping(value = "/view/query", method = RequestMethod.POST)
+    public ResultEntity<ProductVO> getProductVO(@RequestBody EsProduct queryParam) {
+        return ResultEntity.success(productService.getProductVO(queryParam));
+    }
+
     @Log(value = "参数获取商品列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public ResultEntity<Pager<EsProduct>> listProducts(@RequestBody QueryParam<EsProduct> queryParam) {
@@ -130,6 +142,24 @@ public class ProductAdminController {
     @RequestMapping(value = "/sku/list", method = RequestMethod.POST)
     public ResultEntity<Pager<EsSkuProduct>> listSkuProducts(@RequestBody QueryParam<EsSkuProduct> queryParam) {
         return ResultEntity.success(skuProductService.listSkuProducts(queryParam));
+    }
+
+    @Log(value = "参数获取商品秒杀列表")
+    @RequestMapping(value = "/flash_sale/list", method = RequestMethod.POST)
+    public ResultEntity<Pager<FlashSaleProductVO>> listFlashSaleProducts(@RequestBody QueryParam<FlashSaleDTO> queryParam) {
+        return ResultEntity.success(productService.listFlashSaleProducts(queryParam));
+    }
+
+    @Log(value = "参数获取新品推荐列表")
+    @RequestMapping(value = "/new_product_recommend/list", method = RequestMethod.GET)
+    public ResultEntity<Pager<NewProductRecommendVO>> listNewProductRecommends(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize")  Integer pageSize) {
+        return ResultEntity.success(productService.listNewProductRecommends(pageNum, pageSize));
+    }
+
+    @Log(value = "参数获取轮播图商品")
+    @RequestMapping(value = "/carousel/list", method = RequestMethod.POST)
+    public ResultEntity<Pager<CarouselProductVO>> listCarouselProducts(@RequestBody QueryParam<EsProductCarousel> queryParam) {
+        return ResultEntity.success(productService.listCarouselProducts(queryParam));
     }
 
 }

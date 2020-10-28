@@ -9,6 +9,8 @@ public class EsFlashSaleProduct implements Serializable {
 
     private Long productId;
 
+    private Long skuProductId;
+
     private BigDecimal flashSalePrice;
 
     private Integer stockCount;
@@ -37,6 +39,14 @@ public class EsFlashSaleProduct implements Serializable {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Long getSkuProductId() {
+        return skuProductId;
+    }
+
+    public void setSkuProductId(Long skuProductId) {
+        this.skuProductId = skuProductId;
     }
 
     public BigDecimal getFlashSalePrice() {
@@ -95,6 +105,7 @@ public class EsFlashSaleProduct implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", productId=").append(productId);
+        sb.append(", skuProductId=").append(skuProductId);
         sb.append(", flashSalePrice=").append(flashSalePrice);
         sb.append(", stockCount=").append(stockCount);
         sb.append(", startTime=").append(startTime);
@@ -120,6 +131,7 @@ public class EsFlashSaleProduct implements Serializable {
         EsFlashSaleProduct other = (EsFlashSaleProduct) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
+            && (this.getSkuProductId() == null ? other.getSkuProductId() == null : this.getSkuProductId().equals(other.getSkuProductId()))
             && (this.getFlashSalePrice() == null ? other.getFlashSalePrice() == null : this.getFlashSalePrice().equals(other.getFlashSalePrice()))
             && (this.getStockCount() == null ? other.getStockCount() == null : this.getStockCount().equals(other.getStockCount()))
             && (this.getStartTime() == null ? other.getStartTime() == null : this.getStartTime().equals(other.getStartTime()))
@@ -134,6 +146,7 @@ public class EsFlashSaleProduct implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getProductId() == null) ? 0 : getProductId().hashCode());
+        result = prime * result + ((getSkuProductId() == null) ? 0 : getSkuProductId().hashCode());
         result = prime * result + ((getFlashSalePrice() == null) ? 0 : getFlashSalePrice().hashCode());
         result = prime * result + ((getStockCount() == null) ? 0 : getStockCount().hashCode());
         result = prime * result + ((getStartTime() == null) ? 0 : getStartTime().hashCode());
