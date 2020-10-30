@@ -33,6 +33,7 @@ public class CartProductServiceImpl implements CartProductService {
         if (ObjectUtil.isAllNull(param.getId(), param.getMemberId())) {
             return 0;
         }
+
         if (null != param.getId()) {
             criteria.andIdEqualTo(param.getId());
         }

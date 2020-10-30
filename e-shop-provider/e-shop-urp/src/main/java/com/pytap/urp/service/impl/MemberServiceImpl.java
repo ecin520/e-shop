@@ -100,6 +100,6 @@ public class MemberServiceImpl implements MemberService {
         }
         List<EsMember> list= memberMapper.selectByExample(example);
 
-        return list.size() != 0 ? list.get(0) : new EsMember();
+        return list.size() != 0 ? list.get(0) : null;
     }
 }

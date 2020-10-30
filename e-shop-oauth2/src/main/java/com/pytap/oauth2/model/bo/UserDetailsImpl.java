@@ -23,9 +23,15 @@ public class UserDetailsImpl implements UserDetails {
 
     private final List<AuthDTO> auths;
 
+
+
     public UserDetailsImpl(SysUser sysUser, List<AuthDTO> auths) {
         this.sysUser = sysUser;
         this.auths = auths;
+    }
+
+    public SysUser getSysUser() {
+        return sysUser;
     }
 
     /**
@@ -69,4 +75,5 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return sysUser.getStatus().equals(1);
     }
+
 }

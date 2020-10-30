@@ -27,7 +27,7 @@ public class OrderSender {
             message1.getMessageProperties().setExpiration(String.valueOf(delayTime));
             return message1;
         });
-        logger.info("消息队列添加订单，超时时间为{}", delayTime);
+        logger.info("延时消息队列添加订单，超时时间为{}", delayTime);
     }
 
 }

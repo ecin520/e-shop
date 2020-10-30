@@ -4,6 +4,7 @@ import com.pytap.common.annotation.Log;
 import com.pytap.common.exception.GeneralException;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.SysUser;
+import com.pytap.urp.model.vo.UserVO;
 import com.pytap.urp.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,12 @@ public class UserFeignClient {
 
     @Resource
     private UserService userService;
+
+    @Log("远程通过用户名获取用户信息视图")
+    @RequestMapping(value = "{username}", method = RequestMethod.GET)
+    public ResultEntity<UserVO> getUserByUsername(@PathVariable String username) {
+        return ResultEntity.success(userService.getUserVOByUsername(username));
+    }
 
     @Log("更新用户信息")
     @RequestMapping(value = "/test/token", method = RequestMethod.POST)

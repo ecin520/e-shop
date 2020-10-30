@@ -14,11 +14,11 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import javax.annotation.Resource;
 
 /**
- * 取消订单消息接收
+ * 取消订单消息接收，从死信队列中接收消息
  * @author Ecin520
  * @date 2020/10/28 14:35
  */
-@RabbitListener(queues = "QUEUE")
+@RabbitListener(queues = "dead.letter.queue")
 public class OrderCancelReceiver {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderCancelReceiver.class);

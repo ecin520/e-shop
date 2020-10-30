@@ -81,15 +81,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer insertOrderByParam(OrderParamDTO orderParamDTO) throws GeneralException {
-
         EsOrder order = new EsOrder();
         BeanUtils.copyProperties(orderParamDTO, order);
 
         // 生成订单号
         order.setOrderNumber(UUIDUtil.uuidNumberString());
-        order.setCreateTime(new Date());
         // 修改状态为待支付
         order.setStatus(OrderStatus.WAITING_FOR_PAYMENT);
+        order.setCreateTime(new Date());
         orderMapper.insert(order);
 
         // 添加订单到延时队列，区分普通订单和秒杀订单
@@ -105,17 +104,21 @@ public class OrderServiceImpl implements OrderService {
 
                 // 如果减库存失败，则进行回滚
                 if (200 != resultEntity.getCode()) {
-                    throw new GeneralException("库存不足或库存系统异常，订单生产失败");
+                    throw new GeneralException("库存不足或库存系统异常，订单创建失败");
                 }
-
             }
             orderSender.send(JSONObject.toJSONString(orderParamDTO), TimeConstant.NORMAL_SALE_OVER_TIME);
         } else if (1 == orderParamDTO.getOrderType()) {
+            // 添加到订单商品，先生成订单，等到支付的时候再判断库存
+            List<EsOrderProduct> orderProducts = orderParamDTO.getOrderProducts();
+            for (EsOrderProduct orderProduct : orderProducts) {
+                orderProduct.setOrderId(order.getId());
+                orderProductMapper.insert(orderProduct);
+            }
             orderSender.send(JSONObject.toJSONString(orderParamDTO), TimeConstant.FLASH_SALE_OVER_TIME);
         }
 
         return 1;
-
     }
 
     @Override

@@ -1,13 +1,12 @@
 package com.pytap.api.service.api.urp;
 
+import com.pytap.api.model.vo.UserVO;
 import com.pytap.api.service.hystrix.urp.UserFeignHystrix;
+import com.pytap.common.annotation.Log;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.SysUser;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Feign远程调用
@@ -26,5 +25,11 @@ public interface UserFeignService {
 
     @RequestMapping(value = "/feign/user/judge", method = RequestMethod.GET)
     ResultEntity<Boolean> judgeUser(@RequestParam Long userId);
+
+    /**
+     * 远程通过用户名获取用户信息视图
+     * */
+    @RequestMapping(value = "/feign/user/{username}", method = RequestMethod.GET)
+    ResultEntity<UserVO> getUserByUsername(@PathVariable String username);
 
 }

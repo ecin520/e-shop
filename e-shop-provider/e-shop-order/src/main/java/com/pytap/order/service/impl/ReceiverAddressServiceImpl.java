@@ -1,5 +1,6 @@
 package com.pytap.order.service.impl;
 
+import com.pytap.common.utils.ObjectUtil;
 import com.pytap.generator.dao.EsReceiverAddressMapper;
 import com.pytap.generator.entity.EsReceiverAddress;
 import com.pytap.generator.entity.EsReceiverAddressExample;
@@ -27,13 +28,24 @@ public class ReceiverAddressServiceImpl implements ReceiverAddressService {
     }
 
     @Override
-    public Integer deleteReceiverAddressById(Long id) {
+    public Integer deleteReceiverAddressById(Long id, Long userId) {
+        EsReceiverAddressExample example = new EsReceiverAddressExample();
+        EsReceiverAddressExample.Criteria criteria = example.createCriteria();
+
+        if (null == id || null == userId) {
+            return null;
+        }
+
+        criteria.andUserIdEqualTo(userId).andIdEqualTo(id);
         return receiverAddressMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public Integer updateReceiverAddress(EsReceiverAddress receiverAddress) {
-        return receiverAddressMapper.updateByPrimaryKeySelective(receiverAddress);
+        EsReceiverAddressExample example = new EsReceiverAddressExample();
+        EsReceiverAddressExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(receiverAddress.getUserId()).andIdEqualTo(receiverAddress.getId());
+        return receiverAddressMapper.updateByExampleSelective(receiverAddress, example);
     }
 
     @Override

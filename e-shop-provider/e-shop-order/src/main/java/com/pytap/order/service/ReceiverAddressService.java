@@ -19,9 +19,10 @@ public interface ReceiverAddressService {
     /**
      * 主键删除收货地址
      * @param id 收货地址主键
+     * @param userId 用户id
      * @return Integer
      * */
-    Integer deleteReceiverAddressById(Long id);
+    Integer deleteReceiverAddressById(Long id, Long userId);
 
     /**
      * 更新收货地址

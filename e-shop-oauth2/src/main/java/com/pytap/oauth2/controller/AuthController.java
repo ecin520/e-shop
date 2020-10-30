@@ -3,6 +3,7 @@ package com.pytap.oauth2.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.pytap.common.annotation.Limit;
 import com.pytap.common.constant.AuthConstant;
+import com.pytap.common.constant.RedisKey;
 import com.pytap.common.exception.GeneralException;
 import com.pytap.common.utils.JsonUtil;
 import com.pytap.common.utils.ResultEntity;
@@ -12,6 +13,7 @@ import com.pytap.generator.entity.SysUser;
 import com.pytap.oauth2.model.vo.Oauth2TokenVO;
 import com.pytap.oauth2.model.vo.UserVO;
 import com.pytap.oauth2.service.AuthService;
+import com.pytap.oauth2.utils.RedisUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
@@ -45,6 +47,9 @@ public class AuthController {
 
     @Resource
     private AuthService authService;
+
+    @Resource
+    private RedisUtil redisUtil;
 
     /**
      * 自定义登录返回结果
@@ -133,6 +138,9 @@ public class AuthController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("oauth", oauth2TokenVO);
         jsonObject.put("userInfo", vo);
+
+        // 将用户名对应的用户id放到redis中，以便后续操作
+        redisUtil.set(RedisKey.USER_KEY + user.getUsername(), user.getId());
 
         return ResultEntity.success(jsonObject);
     }
