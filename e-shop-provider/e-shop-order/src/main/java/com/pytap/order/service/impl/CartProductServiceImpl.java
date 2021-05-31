@@ -8,6 +8,8 @@ import com.pytap.order.service.CartProductService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ public class CartProductServiceImpl implements CartProductService {
 
     @Override
     public Integer insertCartProduct(EsCartProduct cartProduct) {
+        cartProduct.setCreateTime(new Date());
         return cartProductMapper.insert(cartProduct);
     }
 
@@ -47,7 +50,13 @@ public class CartProductServiceImpl implements CartProductService {
 
     @Override
     public Integer updateCartProduct(EsCartProduct cartProduct) {
+        cartProduct.setUpdateTime(new Date());
         return cartProductMapper.updateByPrimaryKeySelective(cartProduct);
+    }
+
+    @Override
+    public Integer cartSettlement() {
+        return null;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.pytap.api.service.api.product;
 
+import com.pytap.api.model.dto.StockDTO;
 import com.pytap.api.service.hystrix.product.ProductFeignHystrix;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProduct;
@@ -23,10 +24,10 @@ public interface ProductFeignService {
     @RequestMapping(value = "/feign/product/sku/query", method = RequestMethod.POST)
     ResultEntity<EsSkuProduct> getSkuProduct(@RequestBody EsSkuProduct queryParam);
 
-    @RequestMapping(value = "/feign/product/sku/reduce/{id}", method = RequestMethod.GET)
-    ResultEntity<Object> reduceSkuProductStock(@PathVariable Long id);
+    @RequestMapping(value = "/feign/product/sku/reduce", method = RequestMethod.POST)
+    ResultEntity<Object> reduceSkuProductStock(@RequestBody StockDTO stockDTO);
 
-    @RequestMapping(value = "/feign/product/sku/increase/{id}", method = RequestMethod.GET)
-    ResultEntity<Object> increaseSkuProductStock(@PathVariable Long id);
+    @RequestMapping(value = "/feign/product/sku/increase", method = RequestMethod.POST)
+    ResultEntity<Object> increaseSkuProductStock(@RequestBody String param);
 
 }

@@ -1,9 +1,7 @@
 package com.pytap.sale.service;
 
 import com.pytap.common.utils.Pager;
-import com.pytap.generator.entity.EsFlashSaleProduct;
 import com.pytap.generator.entity.EsNewProductRecommend;
-import com.pytap.sale.model.dto.FlashSaleDTO;
 
 /**
  * @author Ecin520

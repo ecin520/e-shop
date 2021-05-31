@@ -1,8 +1,8 @@
 package com.pytap.product.service;
 
+import com.pytap.api.model.dto.StockDTO;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
-import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsSkuProduct;
 
 import java.util.List;
@@ -64,16 +64,16 @@ public interface SkuProductService {
 
     /**
      * 减少商品库存
-     * @param id 商品sku id
+     * @param stockDTO 库存信息
      * @return Integer
      * */
-    Integer reduceSkuProductStock(Long id);
+    Integer reduceSkuProductStock(StockDTO stockDTO);
 
     /**
      * 增加商品库存
-     * @param id 商品sku id
+     * @param stockDTO 库存信息
      * @return Integer
      * */
-    Integer increaseSkuProductStock(Long id);
+    Integer increaseSkuProductStock(StockDTO stockDTO);
 
 }

@@ -355,6 +355,76 @@ public class EsOrderProductExample {
             return (Criteria) this;
         }
 
+        public Criteria andSkuNameIsNull() {
+            addCriterion("sku_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameIsNotNull() {
+            addCriterion("sku_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameEqualTo(String value) {
+            addCriterion("sku_name =", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotEqualTo(String value) {
+            addCriterion("sku_name <>", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameGreaterThan(String value) {
+            addCriterion("sku_name >", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sku_name >=", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameLessThan(String value) {
+            addCriterion("sku_name <", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameLessThanOrEqualTo(String value) {
+            addCriterion("sku_name <=", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameLike(String value) {
+            addCriterion("sku_name like", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotLike(String value) {
+            addCriterion("sku_name not like", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameIn(List<String> values) {
+            addCriterion("sku_name in", values, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotIn(List<String> values) {
+            addCriterion("sku_name not in", values, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameBetween(String value1, String value2) {
+            addCriterion("sku_name between", value1, value2, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotBetween(String value1, String value2) {
+            addCriterion("sku_name not between", value1, value2, "skuName");
+            return (Criteria) this;
+        }
+
         public Criteria andSkuIdIsNull() {
             addCriterion("sku_id is null");
             return (Criteria) this;
@@ -412,6 +482,76 @@ public class EsOrderProductExample {
 
         public Criteria andSkuIdNotBetween(Long value1, Long value2) {
             addCriterion("sku_id not between", value1, value2, "skuId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageIsNull() {
+            addCriterion("sku_image is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageIsNotNull() {
+            addCriterion("sku_image is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageEqualTo(String value) {
+            addCriterion("sku_image =", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageNotEqualTo(String value) {
+            addCriterion("sku_image <>", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageGreaterThan(String value) {
+            addCriterion("sku_image >", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageGreaterThanOrEqualTo(String value) {
+            addCriterion("sku_image >=", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageLessThan(String value) {
+            addCriterion("sku_image <", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageLessThanOrEqualTo(String value) {
+            addCriterion("sku_image <=", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageLike(String value) {
+            addCriterion("sku_image like", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageNotLike(String value) {
+            addCriterion("sku_image not like", value, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageIn(List<String> values) {
+            addCriterion("sku_image in", values, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageNotIn(List<String> values) {
+            addCriterion("sku_image not in", values, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageBetween(String value1, String value2) {
+            addCriterion("sku_image between", value1, value2, "skuImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuImageNotBetween(String value1, String value2) {
+            addCriterion("sku_image not between", value1, value2, "skuImage");
             return (Criteria) this;
         }
 

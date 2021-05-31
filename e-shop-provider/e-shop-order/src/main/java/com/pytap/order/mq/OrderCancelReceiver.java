@@ -36,6 +36,7 @@ public class OrderCancelReceiver {
         EsOrder order = new EsOrder();
         order.setId(dto.getId());
         order = orderService.getOrder(order);
+        System.out.println(order.toString());
         if (!OrderStatus.WAITING_FOR_PAYMENT.equals(order.getStatus())) {
             return;
         }

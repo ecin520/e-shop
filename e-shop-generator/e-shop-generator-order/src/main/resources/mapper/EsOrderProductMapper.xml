@@ -6,7 +6,9 @@
     <result column="order_id" jdbcType="BIGINT" property="orderId" />
     <result column="product_id" jdbcType="BIGINT" property="productId" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
     <result column="sku_id" jdbcType="BIGINT" property="skuId" />
+    <result column="sku_image" jdbcType="VARCHAR" property="skuImage" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -70,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_id, product_id, product_name, sku_id, num, update_time, create_time
+    id, order_id, product_id, product_name, sku_name, sku_id, sku_image, num, update_time, 
+    create_time
   </sql>
   <select id="selectByExample" parameterType="com.pytap.generator.entity.EsOrderProductExample" resultMap="BaseResultMap">
     select
@@ -107,11 +110,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into es_order_product (order_id, product_id, product_name, 
-      sku_id, num, update_time, 
-      create_time)
+      sku_name, sku_id, sku_image, 
+      num, update_time, create_time
+      )
     values (#{orderId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
-      #{skuId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{skuName,jdbcType=VARCHAR}, #{skuId,jdbcType=BIGINT}, #{skuImage,jdbcType=VARCHAR}, 
+      #{num,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsOrderProduct">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -128,8 +133,14 @@
       <if test="productName != null">
         product_name,
       </if>
+      <if test="skuName != null">
+        sku_name,
+      </if>
       <if test="skuId != null">
         sku_id,
+      </if>
+      <if test="skuImage != null">
+        sku_image,
       </if>
       <if test="num != null">
         num,
@@ -151,8 +162,14 @@
       <if test="productName != null">
         #{productName,jdbcType=VARCHAR},
       </if>
+      <if test="skuName != null">
+        #{skuName,jdbcType=VARCHAR},
+      </if>
       <if test="skuId != null">
         #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="skuImage != null">
+        #{skuImage,jdbcType=VARCHAR},
       </if>
       <if test="num != null">
         #{num,jdbcType=INTEGER},
@@ -186,8 +203,14 @@
       <if test="record.productName != null">
         product_name = #{record.productName,jdbcType=VARCHAR},
       </if>
+      <if test="record.skuName != null">
+        sku_name = #{record.skuName,jdbcType=VARCHAR},
+      </if>
       <if test="record.skuId != null">
         sku_id = #{record.skuId,jdbcType=BIGINT},
+      </if>
+      <if test="record.skuImage != null">
+        sku_image = #{record.skuImage,jdbcType=VARCHAR},
       </if>
       <if test="record.num != null">
         num = #{record.num,jdbcType=INTEGER},
@@ -209,7 +232,9 @@
       order_id = #{record.orderId,jdbcType=BIGINT},
       product_id = #{record.productId,jdbcType=BIGINT},
       product_name = #{record.productName,jdbcType=VARCHAR},
+      sku_name = #{record.skuName,jdbcType=VARCHAR},
       sku_id = #{record.skuId,jdbcType=BIGINT},
+      sku_image = #{record.skuImage,jdbcType=VARCHAR},
       num = #{record.num,jdbcType=INTEGER},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP}
@@ -229,8 +254,14 @@
       <if test="productName != null">
         product_name = #{productName,jdbcType=VARCHAR},
       </if>
+      <if test="skuName != null">
+        sku_name = #{skuName,jdbcType=VARCHAR},
+      </if>
       <if test="skuId != null">
         sku_id = #{skuId,jdbcType=BIGINT},
+      </if>
+      <if test="skuImage != null">
+        sku_image = #{skuImage,jdbcType=VARCHAR},
       </if>
       <if test="num != null">
         num = #{num,jdbcType=INTEGER},
@@ -249,7 +280,9 @@
     set order_id = #{orderId,jdbcType=BIGINT},
       product_id = #{productId,jdbcType=BIGINT},
       product_name = #{productName,jdbcType=VARCHAR},
+      sku_name = #{skuName,jdbcType=VARCHAR},
       sku_id = #{skuId,jdbcType=BIGINT},
+      sku_image = #{skuImage,jdbcType=VARCHAR},
       num = #{num,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP}

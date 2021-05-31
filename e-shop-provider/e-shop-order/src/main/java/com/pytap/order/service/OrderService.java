@@ -50,6 +50,15 @@ public interface OrderService {
     Pager<EsOrder> listOrders(QueryParam<OrderQueryDTO> queryParam);
 
     /**
+     * 获取用户订单列表视图
+     * @param pageNum 第几页
+     * @param pageSize 每页大小
+     * @param queryParam 查询参数
+     * @return  Pager<OrderVO>
+     * */
+    Pager<OrderVO> listUserOrders(Integer pageNum, Integer pageSize, EsOrder queryParam);
+
+    /**
      * 获取订单视图
      * @param queryParam 查询参数
      * @return OrderVO

@@ -27,6 +27,10 @@ public class OrderProductVO implements Serializable {
 
     private EsSkuProduct skuProduct;
 
+    private String skuImage;
+
+    private String skuName;
+
     private Integer num;
 
     private String note;

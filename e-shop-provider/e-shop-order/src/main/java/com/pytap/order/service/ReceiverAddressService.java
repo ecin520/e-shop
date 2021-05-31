@@ -9,6 +9,7 @@ import java.util.List;
  * @date 2020/10/22 16:25
  */
 public interface ReceiverAddressService {
+
     /**
      * 插入收货地址
      * @param receiverAddress 收货地址

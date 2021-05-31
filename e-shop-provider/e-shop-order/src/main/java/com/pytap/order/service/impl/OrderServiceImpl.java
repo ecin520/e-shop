@@ -1,6 +1,8 @@
 package com.pytap.order.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.pytap.api.model.dto.StockDTO;
 import com.pytap.api.model.vo.MemberVO;
 import com.pytap.api.service.api.product.ProductFeignService;
 import com.pytap.api.service.api.product.ShopFeignService;
@@ -10,10 +12,7 @@ import com.pytap.common.constant.HttpCode;
 import com.pytap.common.constant.OrderStatus;
 import com.pytap.common.constant.TimeConstant;
 import com.pytap.common.exception.GeneralException;
-import com.pytap.common.utils.Pager;
-import com.pytap.common.utils.QueryParam;
-import com.pytap.common.utils.ResultEntity;
-import com.pytap.common.utils.UUIDUtil;
+import com.pytap.common.utils.*;
 import com.pytap.generator.dao.EsDeliveryMapper;
 import com.pytap.generator.dao.EsOrderMapper;
 import com.pytap.generator.dao.EsOrderProductMapper;
@@ -88,8 +87,13 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderNumber(UUIDUtil.uuidNumberString());
         // 修改状态为待支付
         order.setStatus(OrderStatus.WAITING_FOR_PAYMENT);
+        // 未支付状态
+        order.setPayType(0);
         order.setCreateTime(new Date());
+
+
         orderMapper.insert(order);
+        BeanUtils.copyProperties(order, orderParamDTO);
 
         // 添加订单到延时队列，区分普通订单和秒杀订单
         if (0 == orderParamDTO.getOrderType()) {
@@ -99,8 +103,12 @@ public class OrderServiceImpl implements OrderService {
                 orderProduct.setOrderId(order.getId());
                 orderProductMapper.insert(orderProduct);
 
+                StockDTO dto = new StockDTO();
+                dto.setSkuId(orderProduct.getSkuId());
+                dto.setReduceStock(orderProduct.getNum());
+
                 // 远程调用减库存系统
-                ResultEntity<Object> resultEntity = productFeignService.reduceSkuProductStock(orderProduct.getSkuId());
+                ResultEntity<Object> resultEntity = productFeignService.reduceSkuProductStock(dto);
 
                 // 如果减库存失败，则进行回滚
                 if (200 != resultEntity.getCode()) {
@@ -145,6 +153,7 @@ public class OrderServiceImpl implements OrderService {
             // 订单状态查询
             if (null != orderQueryDTO.getStatus()) {
                 criteria.andStatusEqualTo(orderQueryDTO.getStatus());
+                criteria.andStatusEqualTo(orderQueryDTO.getStatus());
             }
             // 订单类型查询，秒杀或者普通订单
             if (null != orderQueryDTO.getOrderType()) {
@@ -155,6 +164,9 @@ public class OrderServiceImpl implements OrderService {
                 criteria.andCreateTimeBetween(orderQueryDTO.getStartTime(), orderQueryDTO.getEndTime());
             }
         }
+
+        PageHelper.startPage(queryParam.getPageNum(), queryParam.getPageSize());
+
         List<EsOrder> list = orderMapper.selectByExample(example);
 
         Pager<EsOrder> pager = new Pager<>();
@@ -167,22 +179,54 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderVO getOrderVO(EsOrder queryParam) {
-        OrderVO vo = new OrderVO();
+    public Pager<OrderVO> listUserOrders(Integer pageNum, Integer pageSize, EsOrder queryParam) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<EsOrder> list = getOrderList(queryParam);
+        List<OrderVO> vos = new ArrayList<>(16);
+        for (EsOrder order : list) {
+            OrderVO vo = new OrderVO();
+            BeanUtils.copyProperties(order, vo);
+
+            EsOrderProductExample example = new EsOrderProductExample();
+            EsOrderProductExample.Criteria criteria = example.createCriteria();
+            criteria.andOrderIdEqualTo(order.getId());
+
+            List<EsOrderProduct> orderProductList = orderProductMapper.selectByExample(example);
+
+            for (EsOrderProduct orderProduct : orderProductList) {
+                OrderProductVO orderProductVO = new OrderProductVO();
+                BeanUtils.copyProperties(orderProduct, orderProductVO);
+
+                if (null == vo.getProducts()) {
+                    vo.setProducts(new ArrayList<>(16));
+                }
+
+                vo.getProducts().add(orderProductVO);
+            }
+
+            vos.add(vo);
+
+        }
+
+        Pager<OrderVO> pager = new Pager<>();
+        pager.setPageNum(pageNum);
+        pager.setPageSize(pageSize);
+        pager.setContent(vos);
 
         EsOrderExample example = new EsOrderExample();
         EsOrderExample.Criteria criteria = example.createCriteria();
-        if (null != queryParam.getId()) {
-            criteria.andIdEqualTo(queryParam.getId());
-        }
-        if (null != queryParam.getOrderNumber()) {
-            criteria.andOrderNumberEqualTo(queryParam.getOrderNumber());
-        }
-        if (null == queryParam.getId() && null == queryParam.getOrderNumber()) {
-            return null;
-        }
+        criteria.andMemberIdEqualTo(queryParam.getMemberId());
+        pager.setTotal(orderMapper.countByExample(example));
 
-        List<EsOrder> list  = orderMapper.selectByExample(example);
+        return pager;
+    }
+
+    @Override
+    public OrderVO getOrderVO(EsOrder queryParam) {
+        OrderVO vo = new OrderVO();
+
+        List<EsOrder> list  = getOrderList(queryParam);
 
         if (!list.isEmpty()) {
 
@@ -266,6 +310,7 @@ public class OrderServiceImpl implements OrderService {
                 if (null == vo.getProducts()) {
                     vo.setProducts(new ArrayList<>(16));
                 }
+
                 vo.getProducts().add(orderProductVO);
             }
             return vo;
@@ -276,10 +321,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public EsOrder getOrder(EsOrder queryParam) {
-        if (null != queryParam.getId()) {
-            return orderMapper.selectByPrimaryKey(queryParam.getId());
-        }
-        return null;
+        List<EsOrder> list = getOrderList(queryParam);
+        return !list.isEmpty() ? list.get(0) : null;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -300,10 +343,13 @@ public class OrderServiceImpl implements OrderService {
         List<EsOrderProduct> orderProducts = orderParamDTO.getOrderProducts();
         for (EsOrderProduct orderProduct : orderProducts) {
             // 远程调用增加库存服务
-            ResultEntity<Object> resultEntity = productFeignService.increaseSkuProductStock(orderProduct.getSkuId());
+            StockDTO dto = new StockDTO();
+            dto.setSkuId(orderProduct.getSkuId());
+            dto.setIncreaseStock(orderProduct.getNum());
+            String param = SecretUtil.encrypt(JSONObject.toJSONString(dto));
+            ResultEntity<Object> resultEntity = productFeignService.increaseSkuProductStock(param);
             if (200 != resultEntity.getCode()) {
-                logger.error("恢复库存失败，sku id为{}，开始事务回滚，且重新添加到延时队列。", orderProduct.getSkuId());
-                orderSender.send(JSONObject.toJSONString(orderParamDTO), 300L);
+                logger.error("恢复库存失败，sku id为{}，开始事务回滚。", orderProduct.getSkuId());
                 throw new GeneralException(resultEntity.getMessage());
             } else {
                 logger.info("库存恢复成功，sku id 为 {}", orderProduct.getSkuId());
@@ -313,4 +359,25 @@ public class OrderServiceImpl implements OrderService {
         return 1;
 
     }
+
+    private List<EsOrder> getOrderList(EsOrder queryParam) {
+        EsOrderExample example = new EsOrderExample();
+        EsOrderExample.Criteria criteria = example.createCriteria();
+        if (null != queryParam.getId()) {
+            criteria.andIdEqualTo(queryParam.getId());
+        }
+        if (null != queryParam.getOrderNumber()) {
+            criteria.andOrderNumberEqualTo(queryParam.getOrderNumber());
+        }
+        if (null != queryParam.getMemberId()) {
+            criteria.andMemberIdEqualTo(queryParam.getMemberId());
+        }
+
+        if (ObjectUtil.isAllNull(queryParam.getId(), queryParam.getOrderNumber(), queryParam.getMemberId())) {
+            return new ArrayList<>();
+        }
+
+        return orderMapper.selectByExample(example);
+    }
+
 }

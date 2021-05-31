@@ -10,7 +10,9 @@ public class EsDelivery implements Serializable {
 
     private String deliveryNumber;
 
-    private String deliveryStatus;
+    private Integer deliveryStatus;
+
+    private String deliveryInfo;
 
     private Date updateTime;
 
@@ -42,12 +44,20 @@ public class EsDelivery implements Serializable {
         this.deliveryNumber = deliveryNumber;
     }
 
-    public String getDeliveryStatus() {
+    public Integer getDeliveryStatus() {
         return deliveryStatus;
     }
 
-    public void setDeliveryStatus(String deliveryStatus) {
+    public void setDeliveryStatus(Integer deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
+    }
+
+    public String getDeliveryInfo() {
+        return deliveryInfo;
+    }
+
+    public void setDeliveryInfo(String deliveryInfo) {
+        this.deliveryInfo = deliveryInfo;
     }
 
     public Date getUpdateTime() {
@@ -76,6 +86,7 @@ public class EsDelivery implements Serializable {
         sb.append(", deliveryCompany=").append(deliveryCompany);
         sb.append(", deliveryNumber=").append(deliveryNumber);
         sb.append(", deliveryStatus=").append(deliveryStatus);
+        sb.append(", deliveryInfo=").append(deliveryInfo);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
@@ -99,6 +110,7 @@ public class EsDelivery implements Serializable {
             && (this.getDeliveryCompany() == null ? other.getDeliveryCompany() == null : this.getDeliveryCompany().equals(other.getDeliveryCompany()))
             && (this.getDeliveryNumber() == null ? other.getDeliveryNumber() == null : this.getDeliveryNumber().equals(other.getDeliveryNumber()))
             && (this.getDeliveryStatus() == null ? other.getDeliveryStatus() == null : this.getDeliveryStatus().equals(other.getDeliveryStatus()))
+            && (this.getDeliveryInfo() == null ? other.getDeliveryInfo() == null : this.getDeliveryInfo().equals(other.getDeliveryInfo()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
     }
@@ -111,6 +123,7 @@ public class EsDelivery implements Serializable {
         result = prime * result + ((getDeliveryCompany() == null) ? 0 : getDeliveryCompany().hashCode());
         result = prime * result + ((getDeliveryNumber() == null) ? 0 : getDeliveryNumber().hashCode());
         result = prime * result + ((getDeliveryStatus() == null) ? 0 : getDeliveryStatus().hashCode());
+        result = prime * result + ((getDeliveryInfo() == null) ? 0 : getDeliveryInfo().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         return result;

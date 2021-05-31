@@ -33,7 +33,7 @@ public class TimeUtil {
     }
 
     public static Date parseDate (String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             return simpleDateFormat.parse(date);
         } catch (ParseException e) {

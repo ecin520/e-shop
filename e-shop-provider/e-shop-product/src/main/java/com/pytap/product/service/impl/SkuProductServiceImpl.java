@@ -1,6 +1,7 @@
 package com.pytap.product.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.pytap.api.model.dto.StockDTO;
 import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.QueryParam;
 import com.pytap.common.utils.SortUtil;
@@ -134,23 +135,23 @@ public class SkuProductServiceImpl implements SkuProductService {
 
     @Transactional
     @Override
-    public Integer reduceSkuProductStock(Long id) {
+    public Integer reduceSkuProductStock(StockDTO stockInfo) {
 
         // 获取商品锁
-        RLock lock = redisson.getLock("sku-product-" + id);
+        RLock lock = redisson.getLock("sku-product-" + stockInfo.getSkuId());
         lock.lock();
 
         int result = 0;
 
         try {
             // 取出商品sku
-            EsSkuProduct skuProduct = skuProductMapper.selectByPrimaryKey(id);
+            EsSkuProduct skuProduct = skuProductMapper.selectByPrimaryKey(stockInfo.getSkuId());
             if (null == skuProduct) {
                 return 0;
             }
-            // 若库存大于0则减库存
-            if (skuProduct.getStock() > 0) {
-                skuProduct.setStock(skuProduct.getStock() - 1);
+            // 若库存大于所需库存则减去相应的库存
+            if (skuProduct.getStock() - stockInfo.getReduceStock() >= 0) {
+                skuProduct.setStock(skuProduct.getStock() - stockInfo.getReduceStock());
                 result = skuProductMapper.updateByPrimaryKeySelective(skuProduct);
             }
         } finally {
@@ -162,20 +163,20 @@ public class SkuProductServiceImpl implements SkuProductService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Integer increaseSkuProductStock(Long id) {
+    public Integer increaseSkuProductStock(StockDTO stockDTO) {
 
         // 获取商品锁
-        RLock lock = redisson.getLock("sku-product-" + id);
+        RLock lock = redisson.getLock("sku-product-" + stockDTO.getSkuId());
         lock.lock();
 
         int result;
 
         try {
-            EsSkuProduct skuProduct = skuProductMapper.selectByPrimaryKey(id);
+            EsSkuProduct skuProduct = skuProductMapper.selectByPrimaryKey(stockDTO.getSkuId());
             if (null == skuProduct) {
                 return 0;
             }
-            skuProduct.setStock(skuProduct.getStock() + 1);
+            skuProduct.setStock(skuProduct.getStock() + stockDTO.getIncreaseStock());
             result = skuProductMapper.updateByPrimaryKeySelective(skuProduct);
         } finally {
             lock.unlock();

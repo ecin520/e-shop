@@ -11,6 +11,8 @@ public class EsOrder implements Serializable {
 
     private Long shopId;
 
+    private String shopName;
+
     private Long receiverAddressId;
 
     private Long deliveryId;
@@ -71,6 +73,14 @@ public class EsOrder implements Serializable {
 
     public void setShopId(Long shopId) {
         this.shopId = shopId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     public Long getReceiverAddressId() {
@@ -226,6 +236,7 @@ public class EsOrder implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", memberId=").append(memberId);
         sb.append(", shopId=").append(shopId);
+        sb.append(", shopName=").append(shopName);
         sb.append(", receiverAddressId=").append(receiverAddressId);
         sb.append(", deliveryId=").append(deliveryId);
         sb.append(", couponId=").append(couponId);
@@ -264,6 +275,7 @@ public class EsOrder implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getMemberId() == null ? other.getMemberId() == null : this.getMemberId().equals(other.getMemberId()))
             && (this.getShopId() == null ? other.getShopId() == null : this.getShopId().equals(other.getShopId()))
+            && (this.getShopName() == null ? other.getShopName() == null : this.getShopName().equals(other.getShopName()))
             && (this.getReceiverAddressId() == null ? other.getReceiverAddressId() == null : this.getReceiverAddressId().equals(other.getReceiverAddressId()))
             && (this.getDeliveryId() == null ? other.getDeliveryId() == null : this.getDeliveryId().equals(other.getDeliveryId()))
             && (this.getCouponId() == null ? other.getCouponId() == null : this.getCouponId().equals(other.getCouponId()))
@@ -291,6 +303,7 @@ public class EsOrder implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getMemberId() == null) ? 0 : getMemberId().hashCode());
         result = prime * result + ((getShopId() == null) ? 0 : getShopId().hashCode());
+        result = prime * result + ((getShopName() == null) ? 0 : getShopName().hashCode());
         result = prime * result + ((getReceiverAddressId() == null) ? 0 : getReceiverAddressId().hashCode());
         result = prime * result + ((getDeliveryId() == null) ? 0 : getDeliveryId().hashCode());
         result = prime * result + ((getCouponId() == null) ? 0 : getCouponId().hashCode());

@@ -3,9 +3,15 @@
 <mapper namespace="com.pytap.generator.dao.EsCartProductMapper">
   <resultMap id="BaseResultMap" type="com.pytap.generator.entity.EsCartProduct">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
     <result column="sku_id" jdbcType="BIGINT" property="skuId" />
     <result column="member_id" jdbcType="BIGINT" property="memberId" />
     <result column="coupon_id" jdbcType="BIGINT" property="couponId" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+    <result column="sku_image" jdbcType="VARCHAR" property="skuImage" />
     <result column="num" jdbcType="INTEGER" property="num" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -69,7 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sku_id, member_id, coupon_id, num, update_time, create_time
+    id, shop_id, sku_id, member_id, coupon_id, product_id, shop_name, product_name, sku_name, 
+    sku_image, num, update_time, create_time
   </sql>
   <select id="selectByExample" parameterType="com.pytap.generator.entity.EsCartProductExample" resultMap="BaseResultMap">
     select
@@ -105,10 +112,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into es_cart_product (sku_id, member_id, coupon_id, 
+    insert into es_cart_product (shop_id, sku_id, member_id, 
+      coupon_id, product_id, shop_name, 
+      product_name, sku_name, sku_image, 
       num, update_time, create_time
       )
-    values (#{skuId,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{couponId,jdbcType=BIGINT}, 
+    values (#{shopId,jdbcType=BIGINT}, #{skuId,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, 
+      #{couponId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{shopName,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{skuName,jdbcType=VARCHAR}, #{skuImage,jdbcType=VARCHAR}, 
       #{num,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -118,6 +129,9 @@
     </selectKey>
     insert into es_cart_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopId != null">
+        shop_id,
+      </if>
       <if test="skuId != null">
         sku_id,
       </if>
@@ -126,6 +140,21 @@
       </if>
       <if test="couponId != null">
         coupon_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="shopName != null">
+        shop_name,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="skuName != null">
+        sku_name,
+      </if>
+      <if test="skuImage != null">
+        sku_image,
       </if>
       <if test="num != null">
         num,
@@ -138,6 +167,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
       <if test="skuId != null">
         #{skuId,jdbcType=BIGINT},
       </if>
@@ -146,6 +178,21 @@
       </if>
       <if test="couponId != null">
         #{couponId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null">
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null">
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuImage != null">
+        #{skuImage,jdbcType=VARCHAR},
       </if>
       <if test="num != null">
         #{num,jdbcType=INTEGER},
@@ -170,6 +217,9 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.shopId != null">
+        shop_id = #{record.shopId,jdbcType=BIGINT},
+      </if>
       <if test="record.skuId != null">
         sku_id = #{record.skuId,jdbcType=BIGINT},
       </if>
@@ -178,6 +228,21 @@
       </if>
       <if test="record.couponId != null">
         coupon_id = #{record.couponId,jdbcType=BIGINT},
+      </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopName != null">
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null">
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuName != null">
+        sku_name = #{record.skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuImage != null">
+        sku_image = #{record.skuImage,jdbcType=VARCHAR},
       </if>
       <if test="record.num != null">
         num = #{record.num,jdbcType=INTEGER},
@@ -196,9 +261,15 @@
   <update id="updateByExample" parameterType="map">
     update es_cart_product
     set id = #{record.id,jdbcType=BIGINT},
+      shop_id = #{record.shopId,jdbcType=BIGINT},
       sku_id = #{record.skuId,jdbcType=BIGINT},
       member_id = #{record.memberId,jdbcType=BIGINT},
       coupon_id = #{record.couponId,jdbcType=BIGINT},
+      product_id = #{record.productId,jdbcType=BIGINT},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      sku_name = #{record.skuName,jdbcType=VARCHAR},
+      sku_image = #{record.skuImage,jdbcType=VARCHAR},
       num = #{record.num,jdbcType=INTEGER},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP}
@@ -209,6 +280,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.pytap.generator.entity.EsCartProduct">
     update es_cart_product
     <set>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
       <if test="skuId != null">
         sku_id = #{skuId,jdbcType=BIGINT},
       </if>
@@ -217,6 +291,21 @@
       </if>
       <if test="couponId != null">
         coupon_id = #{couponId,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="shopName != null">
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null">
+        sku_name = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuImage != null">
+        sku_image = #{skuImage,jdbcType=VARCHAR},
       </if>
       <if test="num != null">
         num = #{num,jdbcType=INTEGER},
@@ -232,9 +321,15 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.pytap.generator.entity.EsCartProduct">
     update es_cart_product
-    set sku_id = #{skuId,jdbcType=BIGINT},
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      sku_id = #{skuId,jdbcType=BIGINT},
       member_id = #{memberId,jdbcType=BIGINT},
       coupon_id = #{couponId,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      sku_name = #{skuName,jdbcType=VARCHAR},
+      sku_image = #{skuImage,jdbcType=VARCHAR},
       num = #{num,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP}

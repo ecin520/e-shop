@@ -1,12 +1,18 @@
 package com.pytap.product.controller.api;
 
+import com.alibaba.fastjson.JSONObject;
+import com.pytap.api.model.dto.StockDTO;
 import com.pytap.common.annotation.Log;
 import com.pytap.common.utils.ResultEntity;
+import com.pytap.common.utils.SecretUtil;
 import com.pytap.generator.entity.EsProduct;
 import com.pytap.generator.entity.EsSkuProduct;
 import com.pytap.product.service.ProductService;
 import com.pytap.product.service.SkuProductService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -36,14 +42,15 @@ public class ProductFeignClient {
         return ResultEntity.success(skuProductService.getSkuProduct(queryParam));
     }
 
-    @RequestMapping(value = "/sku/reduce/{id}", method = RequestMethod.GET)
-    public ResultEntity<Object> reduceSkuProductStock(@PathVariable Long id) {
-        return 1 != skuProductService.reduceSkuProductStock(id) ? ResultEntity.fail("购买失败，库存不足") : ResultEntity.success("购买成功");
+    @RequestMapping(value = "/sku/reduce", method = RequestMethod.POST)
+    public ResultEntity<Object> reduceSkuProductStock(@RequestBody StockDTO stockDTO) {
+        return 1 != skuProductService.reduceSkuProductStock(stockDTO) ? ResultEntity.fail("购买失败，库存不足") : ResultEntity.success("购买成功");
     }
 
-    @RequestMapping(value = "/sku/increase/{id}", method = RequestMethod.GET)
-    public ResultEntity<Object> increaseSkuProductStock(@PathVariable Long id) {
-        return 1 != skuProductService.increaseSkuProductStock(id) ? ResultEntity.fail("库存恢复失败") : ResultEntity.success("库存恢复成功");
+    @RequestMapping(value = "/sku/increase", method = RequestMethod.POST)
+    public ResultEntity<Object> increaseSkuProductStock(@RequestBody String param) {
+        StockDTO stockDTO = JSONObject.parseObject(SecretUtil.decrypt(param), StockDTO.class);
+        return 1 != skuProductService.increaseSkuProductStock(stockDTO) ? ResultEntity.fail("库存恢复失败") : ResultEntity.success("库存恢复成功");
     }
 
 }

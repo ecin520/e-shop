@@ -16,6 +16,8 @@ public interface CartProductService {
 
     Integer updateCartProduct(EsCartProduct cartProduct);
 
+    Integer cartSettlement();
+
     List<EsCartProduct> listCartProducts(EsCartProduct queryParam);
 
 }

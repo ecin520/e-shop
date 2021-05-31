@@ -5,6 +5,7 @@ import com.pytap.api.service.api.urp.MemberFeignService;
 import com.pytap.api.service.api.urp.UserFeignService;
 import com.pytap.common.constant.RedisKey;
 import com.pytap.common.exception.GeneralException;
+import com.pytap.common.utils.JsonUtil;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsMember;
 import com.pytap.order.utils.RedisUtil;
@@ -42,7 +43,7 @@ public class BaseController {
                 UserVO vo = resultEntity.getData();
 
                 if (null == vo) {
-                    throw new GeneralException("用户不存在");
+                    throw new GeneralException(JsonUtil.ExceptionObject(400, "用户不存在"));
                 }
 
                 redisUtil.set(RedisKey.USER_KEY + username, vo.getId());
@@ -69,6 +70,19 @@ public class BaseController {
             }
         }
         return (EsMember) object;
+    }
+
+    protected void checkLegalityById(Long userId) throws GeneralException {
+        if (!getUserId().equals(userId)) {
+            throw new GeneralException(JsonUtil.ExceptionObject(400, "用户异常"));
+        }
+    }
+
+    protected void checkLegalityByUsername(String username) throws GeneralException {
+        String original = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!username.equals(original)) {
+            throw new GeneralException(JsonUtil.ExceptionObject(400, "用户异常"));
+        }
     }
 
 }

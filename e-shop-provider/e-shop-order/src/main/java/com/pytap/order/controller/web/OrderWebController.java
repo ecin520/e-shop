@@ -1,31 +1,27 @@
 package com.pytap.order.controller.web;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.pytap.common.annotation.Log;
 import com.pytap.common.exception.GeneralException;
+import com.pytap.common.utils.Pager;
 import com.pytap.common.utils.ResultEntity;
-import com.pytap.common.utils.SecretUtil;
+import com.pytap.generator.entity.EsOrder;
 import com.pytap.order.controller.BaseController;
+import com.pytap.order.model.dto.AlipayDTO;
 import com.pytap.order.model.dto.OrderParamDTO;
+import com.pytap.order.model.vo.OrderVO;
+import com.pytap.order.model.vo.PaySuccessVO;
 import com.pytap.order.service.OrderService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.pytap.order.service.PayService;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Ecin520
@@ -38,15 +34,19 @@ public class OrderWebController extends BaseController {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private PayService payService;
+
     @Log(value = "生成订单")
     @RequestMapping(value = "generate", method = RequestMethod.POST)
-    public ResultEntity<Object> generateOrder(@RequestBody OrderParamDTO orderParamDTO) throws GeneralException {
+    public ResultEntity<OrderParamDTO> generateOrder(@RequestBody OrderParamDTO orderParamDTO) throws GeneralException {
         orderParamDTO.setMemberId(getMember().getId());
-        return 1 != orderService.insertOrderByParam(orderParamDTO) ? ResultEntity.fail() : ResultEntity.success();
+        return 1 != orderService.insertOrderByParam(orderParamDTO) ? ResultEntity.fail() : ResultEntity.success(orderParamDTO);
     }
 
-    @RequestMapping(value = "pay", method = RequestMethod.GET)
-    public String pay(String orderNo, String price) throws UnsupportedEncodingException {
+    @Log(value = "调用支付接口")
+    @RequestMapping(value = "pay", method = RequestMethod.POST)
+    public ResultEntity<String> pay(@RequestBody AlipayDTO alipayDTO) throws UnsupportedEncodingException {
 
         AlipayClient alipayClient = new DefaultAlipayClient(
                 "https://openapi.alipaydev.com/gateway.do",
@@ -58,21 +58,22 @@ public class OrderWebController extends BaseController {
                 "RSA2"
         );
 
-        String out_trade_no = orderNo;
-        out_trade_no = URLDecoder.decode(out_trade_no, "UTF-8");
-        String total_amount = price;
-        total_amount = URLDecoder.decode(total_amount, "UTF-8");
-        String subject = "iPhone12pro";
-        subject = URLDecoder.decode(subject, "UTF-8");
-        String body = "description";
-        body = URLDecoder.decode(body, "UTF-8");
-        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        //同步通知
-        alipayRequest.setReturnUrl("http://127.0.0.1:10010/api/order/web/order/alipay/callback/return");
-        //异步通知
-        alipayRequest.setNotifyUrl("/web/order/notify");
+        String out_trade_no = alipayDTO.getOrderNo();
+        String total_amount = String.valueOf(alipayDTO.getPrice());
+        String subject = alipayDTO.getSubject();
+        String body = alipayDTO.getBody();
 
-        //配置参数
+        out_trade_no = URLDecoder.decode(out_trade_no, "UTF-8");
+        total_amount = URLDecoder.decode(total_amount, "UTF-8");
+        subject = URLDecoder.decode(subject, "UTF-8");
+        body = URLDecoder.decode(body, "UTF-8");
+
+        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+        // 支付成功后前端跳转url
+        alipayRequest.setReturnUrl("http://127.0.0.1:8080/pay-success");
+        // 通知本地url，这里如果是本地调试需要将此接口暴露给外网，否则支付宝无法通知到
+        alipayRequest.setNotifyUrl("http://pytap.free.idcfengye.com/api/order/web/order/alipay/callback/notify");
+
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + out_trade_no + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
@@ -80,38 +81,39 @@ public class OrderWebController extends BaseController {
                 "    \"subject\":\"" + subject + "\"," +
                 "    \"body\":\"" + body + "\"" +
                 "    }" +
-                "  }");//填充业务参数
+                "  }");
+
         String form = "";
         try {
-            form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+            form = alipayClient.pageExecute(alipayRequest).getBody();
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-        //form就是一个表单 html 直接给前端 替换 body标签里面的东西
-        return form;
-
+        return ResultEntity.success("success", form);
     }
 
+    @Log(value = "支付成功通知方法")
+    @RequestMapping(value = "/alipay/callback/notify")
+    public ResultEntity<PaySuccessVO> Notify(HttpServletRequest request) {
+        PaySuccessVO vo = payService.paySuccessReturn(request);
+        return ResultEntity.success(vo);
+    }
 
-    @Log(value = "支付成功回调方法")
-    @RequestMapping("/alipay/callback/return")
-    public String AlipayReturn(HttpServletRequest request) {
-        String trade_no = request.getParameter("trade_no");
-        Map<String,Object> receiveMap = new HashMap<String,Object>();
-        Enumeration<String> enu = request.getParameterNames();
-        while (enu.hasMoreElements()) {
-            String key = String.valueOf(enu.nextElement());
-            String value = request.getParameter(key);
-            receiveMap.put(key, value);
-        }
-        System.out.println("支付宝交易号是:" + trade_no);
+    @Log(value = "获取用户订单列表视图")
+    @RequestMapping(value = "/view/list", method = RequestMethod.GET)
+    public ResultEntity<Pager<OrderVO>> listUserOrders(Integer pageNum, Integer pageSize) throws GeneralException {
+        EsOrder order = new EsOrder();
+        order.setMemberId(getMember().getId());
+        return ResultEntity.success(orderService.listUserOrders(pageNum, pageSize, order));
+    }
 
-        receiveMap.forEach((k, v) -> {
-            System.out.println(k);
-            System.out.println(v);
-        });
-
-        return trade_no;
+    @Log(value = "获取用户订单详情信息")
+    @RequestMapping(value = "/detail/{orderId}", method = RequestMethod.GET)
+    public ResultEntity<OrderVO> getMemberOrderVO(@PathVariable Long orderId) throws GeneralException {
+        EsOrder order = new EsOrder();
+        order.setMemberId(getMember().getId());
+        order.setId(orderId);
+        return ResultEntity.success(orderService.getOrderVO(order));
     }
 
 }

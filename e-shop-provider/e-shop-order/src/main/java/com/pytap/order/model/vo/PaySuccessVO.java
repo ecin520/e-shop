@@ -1,39 +1,31 @@
 package com.pytap.order.model.vo;
 
-import com.pytap.api.model.vo.MemberVO;
-import com.pytap.generator.entity.*;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
- * 订单视图
  * @author Ecin520
- * @date 2020/9/23 11:53
+ * @date 2020/11/2 17:56
  */
 @Data
-public class OrderVO implements Serializable {
+public class PaySuccessVO implements Serializable {
 
-    private static final long serialVersionUID = -3355083803583445755L;
+    private static final long serialVersionUID = 115022092757038665L;
 
     private Long id;
 
-    private MemberVO member;
+    private Long memberId;
 
-    private EsShop shop;
+    private Long shopId;
 
-    private String shopName;
+    private Long receiverAddressId;
 
-    private EsReceiverAddress receiverAddress;
+    private Long deliveryId;
 
-    private EsDelivery delivery;
-
-    private EsCoupon coupon;
-
-    private List<OrderProductVO> products;
+    private Long couponId;
 
     private String orderNumber;
 
@@ -64,5 +56,4 @@ public class OrderVO implements Serializable {
     private Date updateTime;
 
     private Date createTime;
-
 }

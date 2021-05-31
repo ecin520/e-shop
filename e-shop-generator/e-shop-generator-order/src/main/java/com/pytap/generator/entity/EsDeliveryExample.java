@@ -315,63 +315,123 @@ public class EsDeliveryExample {
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusEqualTo(String value) {
+        public Criteria andDeliveryStatusEqualTo(Integer value) {
             addCriterion("delivery_status =", value, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusNotEqualTo(String value) {
+        public Criteria andDeliveryStatusNotEqualTo(Integer value) {
             addCriterion("delivery_status <>", value, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusGreaterThan(String value) {
+        public Criteria andDeliveryStatusGreaterThan(Integer value) {
             addCriterion("delivery_status >", value, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusGreaterThanOrEqualTo(String value) {
+        public Criteria andDeliveryStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("delivery_status >=", value, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusLessThan(String value) {
+        public Criteria andDeliveryStatusLessThan(Integer value) {
             addCriterion("delivery_status <", value, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusLessThanOrEqualTo(String value) {
+        public Criteria andDeliveryStatusLessThanOrEqualTo(Integer value) {
             addCriterion("delivery_status <=", value, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusLike(String value) {
-            addCriterion("delivery_status like", value, "deliveryStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeliveryStatusNotLike(String value) {
-            addCriterion("delivery_status not like", value, "deliveryStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeliveryStatusIn(List<String> values) {
+        public Criteria andDeliveryStatusIn(List<Integer> values) {
             addCriterion("delivery_status in", values, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusNotIn(List<String> values) {
+        public Criteria andDeliveryStatusNotIn(List<Integer> values) {
             addCriterion("delivery_status not in", values, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusBetween(String value1, String value2) {
+        public Criteria andDeliveryStatusBetween(Integer value1, Integer value2) {
             addCriterion("delivery_status between", value1, value2, "deliveryStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDeliveryStatusNotBetween(String value1, String value2) {
+        public Criteria andDeliveryStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("delivery_status not between", value1, value2, "deliveryStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoIsNull() {
+            addCriterion("delivery_info is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoIsNotNull() {
+            addCriterion("delivery_info is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoEqualTo(String value) {
+            addCriterion("delivery_info =", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoNotEqualTo(String value) {
+            addCriterion("delivery_info <>", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoGreaterThan(String value) {
+            addCriterion("delivery_info >", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoGreaterThanOrEqualTo(String value) {
+            addCriterion("delivery_info >=", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoLessThan(String value) {
+            addCriterion("delivery_info <", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoLessThanOrEqualTo(String value) {
+            addCriterion("delivery_info <=", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoLike(String value) {
+            addCriterion("delivery_info like", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoNotLike(String value) {
+            addCriterion("delivery_info not like", value, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoIn(List<String> values) {
+            addCriterion("delivery_info in", values, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoNotIn(List<String> values) {
+            addCriterion("delivery_info not in", values, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoBetween(String value1, String value2) {
+            addCriterion("delivery_info between", value1, value2, "deliveryInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeliveryInfoNotBetween(String value1, String value2) {
+            addCriterion("delivery_info not between", value1, value2, "deliveryInfo");
             return (Criteria) this;
         }
 

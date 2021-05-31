@@ -9,7 +9,6 @@ import com.pytap.generator.entity.*;
 import com.pytap.urp.dao.UserDao;
 import com.pytap.urp.model.vo.UserVO;
 import com.pytap.urp.service.MemberService;
-import com.pytap.urp.service.MerchantService;
 import com.pytap.urp.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;

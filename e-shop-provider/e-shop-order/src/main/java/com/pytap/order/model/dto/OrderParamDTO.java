@@ -24,6 +24,8 @@ public class OrderParamDTO implements Serializable {
 
     private Long shopId;
 
+    private String shopName;
+
     private Long receiverAddressId;
 
     private Long deliveryId;

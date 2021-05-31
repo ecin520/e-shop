@@ -330,6 +330,7 @@ CREATE TABLE es_order (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`member_id` BIGINT NOT NULL COMMENT '会员id',
 		`shop_id` BIGINT NOT NULL COMMENT '店铺id',
+		`shop_name` VARCHAR(3600) COMMENT '店铺名称',
 		`receiver_address_id` BIGINT NOT NULL COMMENT '会员收货地址id',
 		`delivery_id` BIGINT COMMENT '物流id',
 		`coupon_id` BIGINT COMMENT '优惠券id',
@@ -357,8 +358,10 @@ CREATE TABLE es_order_product (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`order_id` BIGINT NOT NULL COMMENT '订单id',
 		`product_id` BIGINT COMMENT '商品id',
-		`product_name` VARCHAR(64) COMMENT '商品名称',
+		`product_name` VARCHAR(3600) COMMENT '商品名称',
+		`sku_name` VARCHAR(360) COMMENT 'sku商品名称',
 		`sku_id` BIGINT NOT NULL COMMENT 'sku id',
+		`sku_image` VARCHAR(3600) COMMENT 'sku图片',
 		`num` INT NOT NULL COMMENT '购买数量',
 		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
 		`create_time` DATETIME COMMENT '创建时间',
@@ -371,10 +374,11 @@ CREATE TABLE es_delivery (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
 		`delivery_company` VARCHAR(60) COMMENT '物流公司',
 		`delivery_number` VARCHAR(60) COMMENT '物流单号',
-		`delivery_status` VARCHAR(60) COMMENT '物流状态',
+		`delivery_status` INT(1) COMMENT '物流状态',
+		`delivery_info` VARCHAR(3600) COMMENT '物流信息',
 		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
 		`create_time` DATETIME COMMENT '创建时间',
-        PRIMARY KEY ( id )
+    PRIMARY KEY ( id )
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 COMMENT '物流表';
 
 -- 订单设置表
@@ -394,9 +398,15 @@ CREATE TABLE es_order_setting (
 DROP TABLE IF EXISTS es_cart_product;
 CREATE TABLE es_cart_product (
 		`id` BIGINT NOT NULL AUTO_INCREMENT,
+		`shop_id` BIGINT NOT NULL COMMENT '店铺id',
 		`sku_id` BIGINT NOT NULL COMMENT '商品sku_id',
 		`member_id` BIGINT NOT NULL COMMENT '会员id',
-		`coupon_id` BIGINT NOT NULL COMMENT '优惠券id',
+		`coupon_id` BIGINT COMMENT '优惠券id',
+		`product_id` BIGINT COMMENT '商品id',
+		`shop_name` VARCHAR(3600) COMMENT '店铺名称',
+		`product_name` VARCHAR(3600) COMMENT '商品名称',
+		`sku_name` VARCHAR(360) COMMENT 'sku商品名称',
+		`sku_image` VARCHAR(3600) COMMENT 'sku图片',
 		`num` INT NOT NULL COMMENT '购买数量',
 		`update_time` DATETIME DEFAULT NULL COMMENT '更新时间',
 		`create_time` DATETIME COMMENT '创建时间',

@@ -1,5 +1,6 @@
 package com.pytap.api.service.hystrix.product;
 
+import com.pytap.api.model.dto.StockDTO;
 import com.pytap.api.service.api.product.ProductFeignService;
 import com.pytap.common.utils.ResultEntity;
 import com.pytap.generator.entity.EsProduct;
@@ -29,12 +30,12 @@ public class ProductFeignHystrix implements FallbackFactory<ProductFeignService>
             }
 
             @Override
-            public ResultEntity<Object> reduceSkuProductStock(Long id) {
+            public ResultEntity<Object> reduceSkuProductStock(StockDTO stockDTO) {
                 return ResultEntity.fail(500, "减库存失败，服务暂时不可用");
             }
 
             @Override
-            public ResultEntity<Object> increaseSkuProductStock(Long id) {
+            public ResultEntity<Object> increaseSkuProductStock(String param) {
                 return ResultEntity.fail(500, "恢复库存失败，服务暂时不可用");
             }
 

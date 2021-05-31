@@ -5,7 +5,8 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="delivery_company" jdbcType="VARCHAR" property="deliveryCompany" />
     <result column="delivery_number" jdbcType="VARCHAR" property="deliveryNumber" />
-    <result column="delivery_status" jdbcType="VARCHAR" property="deliveryStatus" />
+    <result column="delivery_status" jdbcType="INTEGER" property="deliveryStatus" />
+    <result column="delivery_info" jdbcType="VARCHAR" property="deliveryInfo" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
@@ -68,7 +69,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, delivery_company, delivery_number, delivery_status, update_time, create_time
+    id, delivery_company, delivery_number, delivery_status, delivery_info, update_time, 
+    create_time
   </sql>
   <select id="selectByExample" parameterType="com.pytap.generator.entity.EsDeliveryExample" resultMap="BaseResultMap">
     select
@@ -105,11 +107,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into es_delivery (delivery_company, delivery_number, 
-      delivery_status, update_time, create_time
-      )
+      delivery_status, delivery_info, update_time, 
+      create_time)
     values (#{deliveryCompany,jdbcType=VARCHAR}, #{deliveryNumber,jdbcType=VARCHAR}, 
-      #{deliveryStatus,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{deliveryStatus,jdbcType=INTEGER}, #{deliveryInfo,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.pytap.generator.entity.EsDelivery">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -126,6 +128,9 @@
       <if test="deliveryStatus != null">
         delivery_status,
       </if>
+      <if test="deliveryInfo != null">
+        delivery_info,
+      </if>
       <if test="updateTime != null">
         update_time,
       </if>
@@ -141,7 +146,10 @@
         #{deliveryNumber,jdbcType=VARCHAR},
       </if>
       <if test="deliveryStatus != null">
-        #{deliveryStatus,jdbcType=VARCHAR},
+        #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryInfo != null">
+        #{deliveryInfo,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
@@ -170,7 +178,10 @@
         delivery_number = #{record.deliveryNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.deliveryStatus != null">
-        delivery_status = #{record.deliveryStatus,jdbcType=VARCHAR},
+        delivery_status = #{record.deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliveryInfo != null">
+        delivery_info = #{record.deliveryInfo,jdbcType=VARCHAR},
       </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -188,7 +199,8 @@
     set id = #{record.id,jdbcType=BIGINT},
       delivery_company = #{record.deliveryCompany,jdbcType=VARCHAR},
       delivery_number = #{record.deliveryNumber,jdbcType=VARCHAR},
-      delivery_status = #{record.deliveryStatus,jdbcType=VARCHAR},
+      delivery_status = #{record.deliveryStatus,jdbcType=INTEGER},
+      delivery_info = #{record.deliveryInfo,jdbcType=VARCHAR},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -205,7 +217,10 @@
         delivery_number = #{deliveryNumber,jdbcType=VARCHAR},
       </if>
       <if test="deliveryStatus != null">
-        delivery_status = #{deliveryStatus,jdbcType=VARCHAR},
+        delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryInfo != null">
+        delivery_info = #{deliveryInfo,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -220,7 +235,8 @@
     update es_delivery
     set delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
       delivery_number = #{deliveryNumber,jdbcType=VARCHAR},
-      delivery_status = #{deliveryStatus,jdbcType=VARCHAR},
+      delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      delivery_info = #{deliveryInfo,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
